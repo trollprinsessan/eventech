@@ -120,7 +120,7 @@ button { cursor: pointer; }
 }
 
 .nav-title-text svg {
-  height: 10px;
+  height: 13px;
   width: auto;
   display: block;
 }
@@ -147,17 +147,7 @@ button { cursor: pointer; }
 }
 .nav-profile svg { width: 16px; height: 16px; }
 
-.notif-dot {
-  position: absolute;
-  top: 12px;
-  right: -2px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: red;
-  display: none;
-}
-.notif-dot.active { display: block; }
+.notif-dot { display: none !important; }
 
 /* ===== BOTTOM TAB BAR (SSENSE-style) ===== */
 .event-bar {
@@ -173,27 +163,28 @@ button { cursor: pointer; }
   z-index: 100;
   border-top: 1px solid var(--black);
   align-items: center;
-  justify-content: stretch;
-  padding: 0;
+  justify-content: space-evenly;
+  padding: 0 16px;
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 .event-bar.visible { display: flex; }
 .event-bar-item {
-  flex: 1;
+  flex: none;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 400;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--grey);
   cursor: pointer;
   border: none;
   background: none;
   position: relative;
+  padding: 0;
 }
 .event-bar-item.active { color: var(--black); }
 .event-bar-item.active::after {
@@ -275,26 +266,26 @@ button { cursor: pointer; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 9px 20px;
   cursor: pointer;
   user-select: none;
   font-family: var(--font);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--grey);
 }
 .filter-header span {
   font-family: var(--font);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--grey);
 }
-.filter-chevron { font-size: 11px; color: var(--grey); transition: transform 0.2s; }
-.filter-group.open .filter-chevron { transform: rotate(90deg); }
+.filter-chevron { font-size: 12px; font-weight: 300; color: var(--grey); transition: none; }
+.filter-group.open .filter-chevron { transform: none; }
 
 .filter-options { display: none; }
 .filter-group.open .filter-options { display: block; }
@@ -391,7 +382,7 @@ button { cursor: pointer; }
   font-size: 11px;
   color: var(--grey);
   letter-spacing: 0.02em;
-  margin-top: 1px;
+  margin-top: 4px;
 }
 
 .agenda-slot-expand {
@@ -411,22 +402,10 @@ button { cursor: pointer; }
 
 .agenda-slot-detail {
   display: none;
-  margin-top: 12px;
-  padding-top: 10px;
+  margin-top: 10px;
+  padding-top: 0;
 }
 .agenda-slot.expanded .agenda-slot-detail { display: block; }
-
-.agenda-slot-desc {
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--black);
-  line-height: 16px;
-  margin-bottom: 10px;
-}
-.inline-readmore {
-  text-decoration: underline;
-  font-weight: 500;
-}
 
 .agenda-slot-meta {
   font-family: var(--font);
@@ -435,14 +414,32 @@ button { cursor: pointer; }
   letter-spacing: 0.02em;
   color: var(--grey);
   line-height: 18px;
+  margin-bottom: 12px;
 }
-.agenda-slot-meta strong { font-weight: 500; color: var(--black); }
+.agenda-slot-meta-label {
+  color: var(--black);
+  font-weight: 400;
+}
+
+.agenda-slot-desc {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--black);
+  line-height: 16px;
+  margin-bottom: 14px;
+}
+.inline-readmore {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 400;
+}
 
 .agenda-slot-actions {
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
   align-items: center;
   margin-top: 12px;
+  padding-top: 0;
 }
 .agenda-slot-actions button {
   font-family: var(--font);
@@ -464,7 +461,7 @@ button { cursor: pointer; }
   align-items: center;
   gap: 4px;
 }
-.agenda-slot-actions .heart-btn svg { width: 10px; height: 10px; }
+.agenda-slot-actions .heart-btn svg { width: 12px; height: 12px; }
 
 .agenda-slot-readmore {
   display: inline-block;
@@ -486,18 +483,22 @@ button { cursor: pointer; }
 .card-list {}
 
 .person-card {
-  padding: 12px 20px;
+  padding: 15px 20px;
   border-bottom: 1px solid var(--grey-light);
   position: relative;
   cursor: pointer;
+}
+.person-card.expanded { border-bottom: 1px solid var(--black); }
+
+.person-card-header {
   display: flex;
-  gap: 12px;
-  align-items: center;
+  gap: 10px;
+  align-items: flex-start;
 }
 
 .person-card-photo {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 0;
   object-fit: cover;
   flex-shrink: 0;
@@ -510,7 +511,11 @@ button { cursor: pointer; }
   font-family: var(--font);
   font-size: 11px;
   font-weight: 400;
+  letter-spacing: 0.02em;
   line-height: 15px;
+  text-transform: uppercase;
+  color: var(--black);
+  padding-right: 24px;
 }
 
 .person-card-role { margin-top: 2px; }
@@ -540,8 +545,9 @@ button { cursor: pointer; }
   font-family: var(--font);
   font-size: 11px;
   font-weight: 400;
+  letter-spacing: 0.02em;
   line-height: 15px;
-  margin-top: 2px;
+  margin-top: 3px;
   color: var(--grey);
 }
 
@@ -549,25 +555,101 @@ button { cursor: pointer; }
   font-family: var(--font);
   font-size: 11px;
   font-weight: 400;
+  letter-spacing: 0.02em;
   line-height: 15px;
   color: var(--grey);
 }
 
 .person-card-expand {
-  display: none;
+  display: block;
   position: absolute;
+  top: 15px;
   right: 20px;
-  top: 16px;
   font-size: 14px;
   font-weight: 300;
-  color: var(--grey);
+  color: var(--black);
   line-height: 1;
-  cursor: pointer;
+  width: 16px;
+  text-align: center;
   background: none;
   border: none;
-  padding: 4px;
-  width: 24px;
-  text-align: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.person-card-detail {
+  display: none;
+  margin-top: 12px;
+  padding-top: 10px;
+}
+.person-card.expanded .person-card-detail { display: block; }
+
+.person-card-bio {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--black);
+  line-height: 16px;
+  margin-bottom: 10px;
+}
+
+.person-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+.person-card-profile-link {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  cursor: pointer;
+}
+.person-card-shake-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.person-card-shake-btn {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.person-card-shake-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.person-card-actions .heart-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--black);
+}
+.person-card-actions .heart-btn svg { width: 12px; height: 12px; }
+
+/* ===== BACK NAV ===== */
+.detail-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 20px;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+  cursor: pointer;
+  border-bottom: 1px solid var(--grey-light);
 }
 
 /* ===== DETAIL PAGES ===== */
@@ -667,10 +749,10 @@ button { cursor: pointer; }
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 14px;
   color: var(--black);
   border-radius: 0;
 }
+.cta-fav svg { width: 14px; height: 14px; }
 .cta-fav.active { color: var(--black); }
 
 /* ===== MENU OVERLAY ===== */
@@ -682,19 +764,18 @@ button { cursor: pointer; }
   transform: translateX(-50%);
   width: 100%;
   max-width: 600px;
-  height: calc(100dvh - var(--nav-h));
   background: var(--white);
   z-index: 200;
   flex-direction: column;
-  padding: 20px;
-  overflow-y: auto;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--black);
 }
 .menu-overlay.active { display: flex; }
 
 .menu-items { display: flex; flex-direction: column; }
 
-.menu-section { padding: 0; }
-.menu-section + .menu-section { border-top: none; margin-top: 10px; }
+.menu-section { padding: 0; margin: 0; }
+.menu-section + .menu-section { border-top: none; margin-top: 0; }
 
 .menu-section-label {
   font-family: var(--font);
@@ -710,7 +791,7 @@ button { cursor: pointer; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0;
+  padding: 0 20px;
   height: 44px;
   cursor: pointer;
   font-family: var(--font);
@@ -718,9 +799,12 @@ button { cursor: pointer; }
   font-weight: 400;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  border-bottom: 1px solid var(--grey-light);
+  color: var(--black);
+  border-bottom: 1px solid var(--black);
+  margin: 0 -20px;
+  width: calc(100% + 40px);
 }
-.menu-item span:last-child { color: var(--grey); font-size: 11px; }
+.menu-item span:last-child { color: var(--black); font-size: 11px; }
 
 .menu-item-global {
   font-size: 11px;
@@ -823,48 +907,191 @@ button { cursor: pointer; }
 }
 
 /* ===== HOME PAGE ===== */
-.home-welcome {
-  padding: 30px 20px 20px;
-  position: relative;
-  z-index: 2;
-}
-.home-title {
-  font-family: var(--font);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  line-height: 15px;
-  color: var(--grey);
-  margin-bottom: 15px;
-}
-.home-welcome p {
-  font-family: var(--font);
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 15px;
-  color: var(--black);
-}
-
-#page-home { display: none; flex-direction: column; min-height: calc(100dvh - var(--nav-h)); }
+#page-home { display: none; flex-direction: column; height: calc(100dvh - var(--nav-h)); overflow: hidden; }
 #page-home.active { display: flex; }
 
-.home-hero {
-  width: 100%;
-  position: relative;
-  overflow: hidden;
+.home-scroll {
   flex: 1;
-  min-height: 300px;
-  margin-top: -20px;
+  overflow-y: auto;
+  padding-bottom: 16px;
 }
-.home-hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
+
+/* Notification module */
+.home-notif {
+  margin: 12px 16px 0;
+  border: 1px solid var(--black);
+}
+.home-notif-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--black);
+  cursor: pointer;
+}
+.home-notif-list { display: none; }
+.home-notif-list.open { display: block; }
+.home-notif-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  gap: 10px;
+  border-top: 1px solid var(--grey-light);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.home-notif-item.accepted { opacity: 0.3; }
+.home-notif-item.removing { opacity: 0; transform: translateX(-100%); }
+.home-notif-dot { width: 8px; height: 8px; flex-shrink: 0; }
+.home-notif-info { flex: 1; min-width: 0; }
+.home-notif-name { font-size: 11px; font-weight: 400; letter-spacing: 0.02em; }
+.home-notif-role { font-size: 11px; color: var(--grey); }
+.home-notif-btn {
+  font-family: var(--font);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 5px 12px; border: 1px solid var(--black);
+  background: none; color: var(--black); cursor: pointer;
+}
+.home-notif-btn:disabled { opacity: 0.3; border-color: var(--grey); cursor: default; }
+
+/* Search module */
+.home-search {
+  margin: 12px 16px 0;
+}
+.home-search-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--grey-light);
+}
+.home-search-bar svg { width: 11px; height: 11px; flex-shrink: 0; color: var(--grey); }
+.home-search-bar input {
+  border: none; outline: none; background: transparent;
+  font-family: var(--font); font-size: 11px; width: 100%;
+  letter-spacing: 0.02em;
+}
+.home-search-bar input::placeholder { color: var(--grey); }
+#homeSearchResults { margin-top: 8px; }
+
+/* Tabs */
+.home-tabs {
+  display: flex; gap: 0;
+  margin: 16px 16px 0;
+}
+.home-tab {
+  flex: 1; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font);
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--grey); cursor: pointer;
+  background: none; border: none;
+  border-bottom: 2px solid transparent;
+}
+.home-tab.active { color: var(--black); font-weight: 500; border-bottom-color: var(--black); }
+
+.home-tab-content { display: none; margin: 0 16px; }
+.home-tab-content.active { display: block; }
+
+/* Schedule cards */
+.home-sched-card {
+  padding: 14px;
+  border: 1px solid var(--grey-light);
+  margin-top: 10px;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  transition: background 0.15s;
+}
+.home-sched-card:active { background: var(--grey-bg); }
+.home-sched-accent {
+  width: 3px; flex-shrink: 0;
+}
+.home-sched-body { flex: 1; min-width: 0; }
+.home-sched-title {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.02em;
+  text-transform: uppercase; line-height: 15px; color: var(--black);
+}
+.home-sched-meta {
+  font-size: 11px; color: var(--grey); margin-top: 3px;
+  letter-spacing: 0.02em;
+}
+
+/* Connection cards */
+.home-conn-card {
+  padding: 12px 14px;
+  border: 1px solid var(--grey-light);
+  margin-top: 10px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  transition: background 0.15s;
+}
+.home-conn-card:active { background: var(--grey-bg); }
+.home-conn-photo {
+  width: 34px; height: 34px; flex-shrink: 0;
+}
+.home-conn-info { flex: 1; }
+.home-conn-name { font-size: 11px; font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; }
+.home-conn-role { font-size: 11px; color: var(--grey); margin-top: 1px; }
+.home-conn-tag {
+  font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--grey); margin-top: 3px;
+}
+
+.home-section-empty {
+  padding: 20px 0;
+  font-size: 11px; color: var(--grey); line-height: 16px;
+  text-align: center;
+}
+
+/* Fixed recommendation bar */
+.home-reco-fixed {
+  border-top: 1px solid var(--black);
+  background: var(--white);
+  flex-shrink: 0;
+}
+.home-reco-inner {
+  margin: 12px 16px;
+  border: 1px solid var(--grey-light);
+  overflow: hidden;
+}
+.home-reco-btn {
+  font-family: var(--font);
+  width: 100%; height: 40px;
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  display: flex; align-items: center; justify-content: center;
+  border: none; cursor: pointer;
+  color: var(--black);
+}
+.home-reco-btn:active { opacity: 0.7; }
+.home-reco-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* Roulette spin state */
+.home-reco-result {
+  padding: 12px 14px;
+  border-top: 1px solid var(--grey-light);
+  min-height: 90px;
+}
+.home-reco-result-label {
+  font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--grey); margin-bottom: 4px;
+}
+.home-reco-result-title {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.02em;
+  text-transform: uppercase; line-height: 15px; cursor: pointer;
+  color: var(--black);
+}
+.home-reco-result-meta {
+  font-size: 11px; color: var(--grey); margin-top: 2px;
+}
+.home-reco-reason {
+  font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase;
+  margin-top: 6px; padding: 4px 8px;
+  display: inline-block;
 }
 
 /* ===== MARQUEE ===== */
@@ -1126,6 +1353,76 @@ button { cursor: pointer; }
 }
 
 /* ===== VENUE ===== */
+#page-venue { height: calc(100dvh - var(--nav-h)); overflow: hidden; }
+#page-venue.active { display: flex; flex-direction: column; }
+#page-venue > div:first-child { flex: 1; overflow-y: auto; }
+#page-venue > div:last-child { flex-shrink: 0; border-top: 1px solid var(--black); background: var(--white); }
+
+.venue-floor {
+  border-top: 1px solid var(--black);
+}
+.venue-floor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+.venue-floor-name {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.venue-floor-toggle {
+  font-size: 12px; font-weight: 300; color: var(--grey);
+}
+.venue-floor-body {
+  display: none;
+  padding: 0 20px 14px;
+}
+.venue-floor.open .venue-floor-body { display: block; }
+.venue-floor-desc {
+  font-size: 11px; color: var(--grey); line-height: 16px;
+  margin-bottom: 10px;
+}
+.venue-stage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--grey-light);
+  cursor: pointer;
+}
+.venue-stage:active { opacity: 0.6; }
+.venue-stage-dot {
+  width: 10px; height: 10px; flex-shrink: 0;
+}
+.venue-stage-info { flex: 1; }
+.venue-stage-name {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.venue-stage-desc {
+  font-size: 11px; color: var(--grey); margin-top: 1px;
+}
+.venue-stage-arrow {
+  font-size: 11px; color: var(--grey);
+}
+.venue-practical {
+  padding: 14px 20px;
+}
+.venue-practical-title {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.05em;
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.venue-practical-item {
+  font-size: 11px; line-height: 16px; padding: 3px 0;
+}
+.venue-practical-item strong { font-weight: 500; }
+
 .venue-body { padding: 20px; }
 .venue-body h2 {
   font-family: var(--font);
@@ -1215,7 +1512,7 @@ button { cursor: pointer; }
   display: flex;
   align-items: center;
   height: 36px;
-  padding: 0 20px;
+  padding: 0;
   gap: 0;
   border-top: 1px solid var(--black);
   border-bottom: 1px solid var(--black);
@@ -1224,8 +1521,9 @@ button { cursor: pointer; }
 .toolbar-search {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
+  padding: 0 20px;
 }
 .toolbar-search svg { width: 12px; height: 12px; flex-shrink: 0; color: var(--black); }
 .toolbar-search input {
@@ -1330,67 +1628,68 @@ button { cursor: pointer; }
 /* Event feed cards */
 .event-feed-card {
   display: grid;
-  grid-template-columns: 100px 1fr auto;
-  gap: 0 12px;
-  padding: 15px 20px;
+  grid-template-columns: 90px 1fr auto;
+  gap: 0 14px;
+  padding: 10px 20px;
   border-bottom: 1px solid var(--black);
   cursor: pointer;
-  align-items: start;
+  position: relative;
 }
 .event-feed-card.past { opacity: 0.45; }
 .event-feed-img {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 56px;
   object-fit: cover;
-  grid-row: 1;
+  grid-row: 1 / 3;
   grid-column: 1;
-  border-radius: 0;
+  align-self: center;
 }
 .event-feed-info {
-  grid-row: 1;
-  grid-column: 2;
-  min-width: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   gap: 0;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
 }
 .event-feed-dateinfo { display: none; }
+.event-feed-name {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 15px;
+}
+.event-feed-meta {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--grey);
+  letter-spacing: 0.02em;
+  margin-top: 3px;
+}
+.event-feed-house {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--grey);
+  letter-spacing: 0.02em;
+}
 .event-feed-readmore {
   font-family: var(--font);
   font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--grey);
-  margin-top: 6px;
-}
-.event-feed-name {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 17px;
-  margin-bottom: 4px;
-}
-.event-feed-meta {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--charcoal);
-  letter-spacing: normal;
-  text-transform: none;
-}
-.event-feed-house {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--charcoal);
-  letter-spacing: normal;
-  text-transform: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--black);
+  margin-top: 8px;
 }
 .event-feed-status {
   font-family: var(--font);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.04em;
   color: var(--grey);
   margin-top: 4px;
@@ -1401,12 +1700,28 @@ button { cursor: pointer; }
   border: none;
   cursor: pointer;
   padding: 4px;
-  flex-shrink: 0;
-  grid-row: 1;
-  grid-column: 3;
-  align-self: start;
+  position: absolute;
+  top: 16px;
+  right: 20px;
 }
-.event-feed-heart svg { width: 8px; height: 8px; color: var(--black); }
+.event-feed-heart svg { width: 10px; height: 10px; color: var(--black); }
+.event-feed-detail {
+  display: none;
+  margin-top: 10px;
+  grid-column: 2 / 4;
+  grid-row: 2;
+}
+.event-feed-card.expanded .event-feed-detail { display: block; }
+.event-feed-card > .agenda-slot-expand {
+  grid-column: 3;
+  grid-row: 1;
+  align-self: start;
+  justify-self: end;
+  font-size: 14px;
+  color: var(--black);
+  position: static;
+}
+.event-feed-card.expanded > .agenda-slot-expand { transform: none; }
 
 /* Hero card variant — same as regular */
 .event-hero-card { }
@@ -1465,7 +1780,7 @@ button { cursor: pointer; }
 <nav class="nav" id="mainNav">
   <button class="nav-burger" onclick="toggleMenu()"><span></span><span></span></button>
   <span class="nav-title" id="navTitle" onclick="navigateHome()"><span class="nav-title-text">NORRSKEN EVENTS</span></span>
-  <button class="nav-profile" onclick="navigate('profile')">
+  <button class="nav-profile" onclick="state.currentPage === 'profile' ? goBack() : navigate('profile')">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1"><circle cx="8" cy="6" r="3"/><path d="M2.5 14.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/></svg>
     <span class="notif-dot" id="notifDot"></span>
   </button>
@@ -1481,6 +1796,7 @@ button { cursor: pointer; }
   <button class="event-bar-item" id="ebHome" onclick="ensureEvent(); navigate('home')">Home</button>
   <button class="event-bar-item" id="ebAgenda" onclick="ensureEvent(); navigate('agenda')">Agenda</button>
   <button class="event-bar-item" id="ebAttendees" onclick="ensureEvent(); navigate('attendees')">Attendees</button>
+  <button class="event-bar-item" id="ebVenue" onclick="ensureEvent(); navigate('venue')">Venue</button>
   <button class="event-bar-item" id="ebFaq" onclick="ensureEvent(); navigate('faq')">FAQ</button>
 </div>
 
@@ -1542,12 +1858,6 @@ button { cursor: pointer; }
   <div class="login-hero">
     <img src="../site/img/hero_gif.gif" alt="Impact Week" onerror="this.style.display='none'">
   </div>
-  <div class="marquee">
-    <div class="marquee-inner">
-      <span>Impact Week 2026</span><span>Brussels</span><span>1,200 founders, funders & enablers</span><span>Seven days of impact</span>
-      <span>Impact Week 2026</span><span>Brussels</span><span>1,200 founders, funders & enablers</span><span>Seven days of impact</span>
-    </div>
-  </div>
 </div>
 
 <!-- ===== PAGE: HOME (My Week Dashboard) ===== -->
@@ -1575,28 +1885,28 @@ button { cursor: pointer; }
     <div class="filter-group" data-filter="stage">
       <div class="filter-header" onclick="toggleFilter(this)">
         <span>STAGE</span>
-        <span class="filter-chevron">&gt;</span>
+        <span class="filter-chevron">+</span>
       </div>
       <div class="filter-options" id="filterStage"></div>
     </div>
     <div class="filter-group" data-filter="theme">
       <div class="filter-header" onclick="toggleFilter(this)">
         <span>THEME</span>
-        <span class="filter-chevron">&gt;</span>
+        <span class="filter-chevron">+</span>
       </div>
       <div class="filter-options" id="filterTheme"></div>
     </div>
     <div class="filter-group" data-filter="speaker">
       <div class="filter-header" onclick="toggleFilter(this)">
         <span>HOST / SPEAKER</span>
-        <span class="filter-chevron">&gt;</span>
+        <span class="filter-chevron">+</span>
       </div>
       <div class="filter-options" id="filterSpeaker"></div>
     </div>
     <div class="filter-group" data-filter="day">
       <div class="filter-header" onclick="toggleFilter(this)">
         <span>DAY</span>
-        <span class="filter-chevron">&gt;</span>
+        <span class="filter-chevron">+</span>
       </div>
       <div class="filter-options" id="filterDay"></div>
     </div>
@@ -1629,21 +1939,21 @@ button { cursor: pointer; }
     <div class="filter-group" data-filter="role">
       <div class="filter-header" onclick="toggleFilter(this)">
         <span>PROFILE TYPE</span>
-        <span class="filter-chevron">&gt;</span>
+        <span class="filter-chevron">+</span>
       </div>
       <div class="filter-options" id="filterRole"></div>
     </div>
     <div class="filter-group" data-filter="location">
       <div class="filter-header" onclick="toggleFilter(this)">
         <span>LOCATION</span>
-        <span class="filter-chevron">&gt;</span>
+        <span class="filter-chevron">+</span>
       </div>
       <div class="filter-options" id="filterLocation"></div>
     </div>
     <div class="filter-group" data-filter="industry">
       <div class="filter-header" onclick="toggleFilter(this)">
         <span>INDUSTRY</span>
-        <span class="filter-chevron">&gt;</span>
+        <span class="filter-chevron">+</span>
       </div>
       <div class="filter-options" id="filterIndustry"></div>
     </div>
@@ -1693,42 +2003,14 @@ button { cursor: pointer; }
 
 <!-- ===== PAGE: VENUE ===== -->
 <div class="page" id="page-venue">
-  <div class="page-title">VENUE</div>
-  <div class="venue-body">
-    <p>Norrsken House Brussels</p>
-    <p style="margin-top: 4px;">Rue du Commerce 72, 1000 Brussels, Belgium</p>
-    <p style="margin-top: 4px;"><a href="https://maps.google.com/?q=Norrsken+House+Brussels" target="_blank" rel="noopener">View on map</a></p>
-
-    <h2 style="margin-top: 32px;">STAGES</h2>
-    <div class="venue-room">
-      <div class="venue-room-name">RED ROOM</div>
-      <div class="venue-room-desc">Main stage. Keynotes, panels, and flagship sessions. Capacity 400.</div>
+  <div style="flex:1; overflow-y:auto;">
+    <div class="page-header">
+      <div class="page-title">Venue</div>
+      <p class="page-intro">Norrsken House Brussels. Rue du Commerce 72, 1000 Brussels.</p>
     </div>
-    <div class="venue-room">
-      <div class="venue-room-name">BEACH LIVING ROOM</div>
-      <div class="venue-room-desc">Intimate conversations and fireside chats. Capacity 80.</div>
-    </div>
-    <div class="venue-room">
-      <div class="venue-room-name">MARE NOSTRUM</div>
-      <div class="venue-room-desc">Workshops and interactive sessions. Capacity 60.</div>
-    </div>
-    <div class="venue-room">
-      <div class="venue-room-name">TOWN HALL</div>
-      <div class="venue-room-desc">Community sessions and open discussions. Capacity 120.</div>
-    </div>
-
-    <h2 style="margin-top: 32px;">PRACTICAL INFO</h2>
-    <ul>
-      <li><strong>WiFi:</strong> NorrskenGuest / impact2026</li>
-      <li><strong>Parking:</strong> Underground parking at Rue du Commerce. EUR 12/day.</li>
-      <li><strong>Accessibility:</strong> All stages are wheelchair accessible. Elevators available.</li>
-      <li><strong>Cloakroom:</strong> Ground floor, open 08:00 -- 21:00 daily.</li>
-      <li><strong>Emergency:</strong> Contact any Norrsken team member or call reception.</li>
-    </ul>
-    <div class="content-gif">
-      <img src="easter/egg_2.gif" alt="">
-    </div>
+    <div id="venueFloors"></div>
   </div>
+  <div id="venuePractical" style="border-top:1px solid var(--black); background:var(--white); flex-shrink:0;"></div>
 </div>
 
 <script>
@@ -1761,14 +2043,14 @@ const EVENTS = {
 };
 
 const EVENTS_FEED = [
-  { slug: 'impactweek2026', name: 'Impact/Week 2026', location: 'Brussels', dates: 'June 1–7, 2026', tagline: '1,200 founders, funders & enablers', heroImage: '../site/img/hero_gif.gif', house: 'Norrsken House Brussels', status: 'upcoming', category: 'flagship' },
-  { slug: 'founders-sthlm-2026', name: 'Founders Meetup Stockholm', location: 'Stockholm', dates: 'April 15, 2026', tagline: 'Monthly founder gathering at Norrsken House', heroImage: '../site/img/gallery/gallery-03.jpg', house: 'Norrsken House Stockholm', status: 'upcoming', category: 'meetup' },
-  { slug: 'climate-nairobi-2026', name: 'Climate Action Nairobi', location: 'Nairobi', dates: 'May 20–22, 2026', tagline: 'East Africa\'s largest climate tech convening', heroImage: '../site/img/gallery/gallery-05.jpg', house: 'Norrsken House Kigali', status: 'upcoming', category: 'conference' },
-  { slug: 'bcn-demo-day-2026', name: 'Demo Day Barcelona', location: 'Barcelona', dates: 'March 28, 2026', tagline: '12 startups. 200 investors. One afternoon.', heroImage: '../site/img/gallery/gallery-07.jpg', house: 'Norrsken House Barcelona', status: 'past', category: 'demo_day' },
-  { slug: 'ams-investor-2026', name: 'Investor Summit Amsterdam', location: 'Amsterdam', dates: 'July 10–11, 2026', tagline: 'Two days of impact investing deep-dives', heroImage: '', house: 'Norrsken House Amsterdam', status: 'upcoming', category: 'conference' },
-  { slug: 'kigali-founders-2026', name: 'Founders Forum Kigali', location: 'Kigali', dates: 'August 5, 2026', tagline: 'Building the next generation of African startups', heroImage: '', house: 'Norrsken House Kigali', status: 'upcoming', category: 'meetup' },
-  { slug: 'sthlm-policy-2026', name: 'Policy & Impact Stockholm', location: 'Stockholm', dates: 'September 18, 2026', tagline: 'Where policy meets entrepreneurship', heroImage: '', house: 'Norrsken House Stockholm', status: 'upcoming', category: 'conference' },
-  { slug: 'bcn-circular-2026', name: 'Circular Economy Week', location: 'Barcelona', dates: 'October 2–4, 2026', tagline: 'Rethinking production and consumption', heroImage: '', house: 'Norrsken House Barcelona', status: 'upcoming', category: 'conference' }
+  { slug: 'impactweek2026', name: 'Impact/Week 2026', location: 'Brussels', dates: 'June 1–7, 2026', tagline: '1,200 founders, funders & enablers', description: '1,200 founders, funders and enablers convene for seven days of programming across four stages.', house: 'Norrsken House Brussels', status: 'upcoming', category: 'flagship' },
+  { slug: 'founders-sthlm-2026', name: 'Founders Meetup Stockholm', location: 'Stockholm', dates: 'April 15, 2026', tagline: 'Monthly founder gathering at Norrsken House', description: 'Monthly founder gathering. Pitch practice, peer feedback, and open networking.', house: 'Norrsken House Stockholm', status: 'upcoming', category: 'meetup' },
+  { slug: 'climate-nairobi-2026', name: 'Climate Action Nairobi', location: 'Nairobi', dates: 'May 20–22, 2026', tagline: 'East Africa\'s largest climate tech convening', description: 'East Africa\'s largest climate tech convening. Three days of panels, demos and deal-making.', house: 'Norrsken House Kigali', status: 'upcoming', category: 'conference' },
+  { slug: 'bcn-demo-day-2026', name: 'Demo Day Barcelona', location: 'Barcelona', dates: 'March 28, 2026', tagline: '12 startups. 200 investors. One afternoon.', description: '12 startups. 200 investors. One afternoon of pitches and structured introductions.', house: 'Norrsken House Barcelona', status: 'past', category: 'demo_day' },
+  { slug: 'ams-investor-2026', name: 'Investor Summit Amsterdam', location: 'Amsterdam', dates: 'July 10–11, 2026', tagline: 'Two days of impact investing deep-dives', description: 'Two days of impact investing deep-dives. LP/GP matchmaking and portfolio workshops.', house: 'Norrsken House Amsterdam', status: 'upcoming', category: 'conference' },
+  { slug: 'kigali-founders-2026', name: 'Founders Forum Kigali', location: 'Kigali', dates: 'August 5, 2026', tagline: 'Building the next generation of African startups', description: 'Building the next generation of African startups. Open to all Norrsken portfolio founders.', house: 'Norrsken House Kigali', status: 'upcoming', category: 'meetup' },
+  { slug: 'sthlm-policy-2026', name: 'Policy & Impact Stockholm', location: 'Stockholm', dates: 'September 18, 2026', tagline: 'Where policy meets entrepreneurship', description: 'Where policy meets entrepreneurship. A full day of roundtables with EU policymakers.', house: 'Norrsken House Stockholm', status: 'upcoming', category: 'conference' },
+  { slug: 'bcn-circular-2026', name: 'Circular Economy Week', location: 'Barcelona', dates: 'October 2–4, 2026', tagline: 'Rethinking production and consumption', description: 'Rethinking production and consumption. Workshops, site visits, and startup showcases.', house: 'Norrsken House Barcelona', status: 'upcoming', category: 'conference' }
 ];
 
 // Helpers
@@ -2010,7 +2292,7 @@ function updateNav(page, data) {
   stopNavAnimation();
 
   const inEvent = !!state.currentEventSlug;
-  const eventPages = ['home', 'agenda', 'attendees', 'faq', 'session', 'attendee', 'favorites'];
+  const eventPages = ['home', 'agenda', 'attendees', 'venue', 'faq', 'session', 'attendee', 'favorites'];
 
   // Nav title — Norrsken logo on global, event name on event pages
   const titles = {
@@ -2041,8 +2323,10 @@ function updateNav(page, data) {
   const dot = document.getElementById('notifDot');
   if (dot) dot.classList.toggle('active', pendingCount > 0);
 
-  // Show/hide nav on login
-  document.getElementById('mainNav').style.display = page === 'login' ? 'none' : 'flex';
+  // Always show nav, but hide profile icon on login
+  document.getElementById('mainNav').style.display = 'flex';
+  const profBtn = document.querySelector('.nav-profile');
+  if (profBtn) profBtn.style.visibility = page === 'login' ? 'hidden' : 'visible';
 
   // Show/hide bottom tab bar — always visible when logged in
   const eventBar = document.getElementById('eventBar');
@@ -2050,7 +2334,7 @@ function updateNav(page, data) {
     eventBar.classList.toggle('visible', page !== 'login');
     // Active states
     eventBar.querySelectorAll('.event-bar-item').forEach(b => b.classList.remove('active'));
-    const barMap = { home: '#ebHome', events: '#ebHome', agenda: '#ebAgenda', session: '#ebAgenda', attendees: '#ebAttendees', attendee: '#ebAttendees', faq: '#ebFaq' };
+    const barMap = { home: '#ebHome', events: '#ebHome', agenda: '#ebAgenda', session: '#ebAgenda', attendees: '#ebAttendees', attendee: '#ebAttendees', venue: '#ebVenue', faq: '#ebFaq' };
     const activeBtn = barMap[page];
     if (activeBtn) eventBar.querySelector(activeBtn)?.classList.add('active');
   }
@@ -2089,10 +2373,9 @@ function updateMenuItems() {
   if (!menuItems) return;
 
   let html = '<div class="menu-section">';
-  html += `<div class="menu-item" onclick="menuNav('events')"><span>All Norrsken Events</span></div>`;
-  html += `<div class="menu-item" onclick="menuNav('search')"><span>Search</span></div>`;
-  html += `<div class="menu-item" onclick="menuNav('profile')"><span>Profile</span></div>`;
-  html += `<div class="menu-item" onclick="signOut()"><span>Sign Out</span></div>`;
+  html += `<div class="menu-item" onclick="menuNav('events')"><span>All Norrsken Events</span><span>&gt;</span></div>`;
+  html += `<div class="menu-item" onclick="menuNav('search')"><span>Search</span><span>&gt;</span></div>`;
+  html += `<div class="menu-item" onclick="window.open('https://norrsken.org','_blank')"><span>Norrsken.org</span><span>&gt;</span></div>`;
   html += '</div>';
 
   menuItems.innerHTML = html;
@@ -2157,6 +2440,7 @@ function renderPage(page, data) {
     case 'attendee': renderAttendee(data); break;
     case 'favorites': renderFavorites(); break;
     case 'profile': renderProfile(); break;
+    case 'venue': renderVenue(); break;
     case 'faq': renderFAQ(); break;
   }
 }
@@ -2177,89 +2461,297 @@ function renderHome() {
   const { sessions, attendees: allAttendees } = getEventData();
   const es = getEventState();
 
-  // Schedule = favorited sessions
   const savedSessionIds = es.favorites?.sessions || [];
   const scheduleSessions = sessions.filter(s => savedSessionIds.includes(s.id));
 
-  // Pending handshakes
   const pending = (es.handshakesReceived || []).filter(h => h.status === 'pending');
   const pendingAtts = pending.map(h => {
     const att = allAttendees.find(a => a.id === h.from);
     return att ? { ...h, att } : null;
   }).filter(Boolean);
 
-  // Community = accepted handshakes
   const accepted = (es.handshakesReceived || []).filter(h => h.status === 'accepted');
-  const communityAtts = accepted.map(h => {
-    const att = allAttendees.find(a => a.id === h.from);
-    return att ? att : null;
-  }).filter(Boolean);
+  const connAtts = accepted.map(h => allAttendees.find(a => a.id === h.from)).filter(Boolean);
+
+  // Stage colors for accents
+  const stageColors = { 'Red Room': '#F9532F', 'Beach Living Room': '#03FFC7', 'Town Hall': '#C26CFF', 'Mare Nostrum': '#BED8EE', 'Off-site': '#FDD97C' };
 
   let html = '';
 
+  // ── SCROLLABLE AREA ──
+  html += `<div class="home-scroll">`;
+
   // Header
-  html += `<div style="padding: 24px 20px 16px;">
-    <div style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; color:var(--grey); margin-bottom:6px;">${config.shortName} / ${config.dates}</div>
-    <div style="font-size:22px; font-weight:400; letter-spacing:-0.5px; line-height:1.2;">My Week</div>
+  html += `<div class="page-header">
+    <div class="page-title">Impact Week</div>
+    <p class="page-intro">Your schedule, your people, your week.</p>
   </div>`;
 
-  // Handshakes
+  // Notifications
   if (pendingAtts.length > 0) {
-    html += `<div style="border-top:1px solid var(--black); padding:16px 20px 8px;">
-      <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:12px;">New Handshakes</div>
-    </div>`;
+    html += `<div class="home-notif">
+      <div class="home-notif-bar" onclick="homeToggleNotif(this)">
+        <span>${pendingAtts.length} new handshake${pendingAtts.length > 1 ? 's' : ''}</span>
+        <span>+</span>
+      </div>
+      <div class="home-notif-list" id="homeNotifList">`;
     pendingAtts.forEach(h => {
-      html += `<div class="notif-item">
-        <div class="notif-photo" style="background:${avatarColor(h.att.id)}"></div>
-        <div class="notif-info">
-          <div class="notif-name">${h.att.name}</div>
-          <div class="notif-title">${h.att.title}, ${h.att.company}</div>
+      html += `<div class="home-notif-item" id="notif-${h.att.id}">
+        <div class="home-notif-dot" style="background:${avatarColor(h.att.id)}"></div>
+        <div class="home-notif-info">
+          <div class="home-notif-name">${h.att.name}</div>
+          <div class="home-notif-role">${h.att.title}, ${h.att.company}</div>
         </div>
-        <button class="notif-action" onclick="acceptHandshake(${h.att.id}, this)">Shake</button>
+        <button class="home-notif-btn" onclick="event.stopPropagation(); homeAcceptShake(${h.att.id}, this)">Shake</button>
       </div>`;
     });
+    html += `</div></div>`;
   }
 
-  // My Schedule
-  html += `<div style="border-top:1px solid var(--black); padding:16px 20px 8px;">
-    <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:4px;">My Schedule</div>
-    <div style="font-size:11px; color:var(--grey);">Sessions you've saved appear here as your personal agenda.</div>
+  // Search
+  html += `<div class="home-search">
+    <div class="home-search-bar">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="5" cy="5" r="4"/><line x1="8" y1="8" x2="11" y2="11"/></svg>
+      <input type="text" id="homeSearch" placeholder="Search sessions, people, questions..." oninput="homeSearchHandler()">
+    </div>
+    <div id="homeSearchResults"></div>
   </div>`;
 
+  // Tabs
+  html += `<div class="home-tabs">
+    <button class="home-tab active" onclick="homeToggleTab('schedule', this)">Schedule</button>
+    <button class="home-tab" onclick="homeToggleTab('connections', this)">Connections</button>
+  </div>`;
+
+  // Schedule tab
+  html += `<div class="home-tab-content active" id="homeTabSchedule">`;
   if (scheduleSessions.length > 0) {
     scheduleSessions.forEach(s => {
-      html += `<div class="agenda-slot" onclick="navigate('session', {id:${s.id}})">
-        <div class="agenda-slot-title">${s.title}</div>
-        <div class="agenda-slot-speaker">${s.speakers.map(sp => sp.name).join(', ')}</div>
-        <div class="agenda-slot-time">${s.time}</div>
-      </div>`;
-    });
-  } else {
-    html += `<div style="padding:20px; color:var(--grey); font-size:11px;">No sessions saved yet. Browse the agenda and tap the heart to add sessions to your schedule.</div>`;
-  }
-
-  // Community
-  html += `<div style="border-top:1px solid var(--black); padding:16px 20px 8px;">
-    <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:4px;">Your Community</div>
-    <div style="font-size:11px; color:var(--grey);">People you've connected with.</div>
-  </div>`;
-
-  if (communityAtts.length > 0) {
-    communityAtts.forEach(a => {
-      html += `<div class="person-card" onclick="navigate('attendee', {id:${a.id}})">
-        <div class="person-card-photo" style="background:${avatarColor(a.id)}"></div>
-        <div class="person-card-info">
-          <div class="person-card-name">${a.name}</div>
-          <div class="person-card-title">${a.title}</div>
-          <div class="person-card-company">${a.company}</div>
+      const speakerNames = s.speakers.map(spId => {
+        const a = allAttendees.find(at => at.id === spId);
+        return a ? a.name : '';
+      }).filter(Boolean).join(', ');
+      const accent = stageColors[s.stage] || '#888';
+      html += `<div class="home-sched-card" onclick="navigate('session', {id:${s.id}})">
+        <div class="home-sched-accent" style="background:${accent}"></div>
+        <div class="home-sched-body">
+          <div class="home-sched-title">${s.title}</div>
+          ${speakerNames ? `<div class="home-sched-meta" style="margin-top:4px;">${speakerNames}</div>` : ''}
+          <div class="home-sched-meta" style="margin-top:4px;">${s.start}–${s.end}</div>
         </div>
       </div>`;
     });
   } else {
-    html += `<div style="padding:20px; color:var(--grey); font-size:11px;">No connections yet. Shake someone's hand from the attendees page to connect.</div>`;
+    html += `<div class="home-section-empty">No sessions saved yet.<br><span style="text-decoration:underline;cursor:pointer;" onclick="navigate('agenda')">Browse the agenda</span></div>`;
   }
+  html += `</div>`;
+
+  // Connections tab
+  html += `<div class="home-tab-content" id="homeTabConnections">`;
+  if (connAtts.length > 0) {
+    connAtts.forEach(a => {
+      const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
+      html += `<div class="home-conn-card" onclick="navigate('attendee', {id:${a.id}})">
+        <div class="home-conn-photo" style="background:${avatarColor(a.id)}"></div>
+        <div class="home-conn-info">
+          <div class="home-conn-name">${a.name}</div>
+          <div class="home-conn-role">${a.title}, ${a.company}</div>
+          <div class="home-conn-tag">${roleLabel}</div>
+        </div>
+      </div>`;
+    });
+  } else {
+    html += `<div class="home-section-empty">No connections yet.<br><span style="text-decoration:underline;cursor:pointer;" onclick="navigate('attendees')">Meet attendees</span></div>`;
+  }
+  html += `</div>`;
+
+  html += `</div>`; // end .home-scroll
+
+  // ── FIXED RECOMMENDATION ──
+  html += `<div class="home-reco-fixed">
+    <div class="home-reco-inner">
+      <button class="home-reco-btn" id="homeRecoBtn" onclick="homeGetRecommendation()" style="background:var(--grey-bg)">Get a recommendation</button>
+      <div class="home-reco-result" id="homeRecoResult">
+        <div class="home-reco-result-label" id="homeRecoLabel">&mdash;</div>
+        <div class="home-reco-result-title" id="homeRecoTitle">&mdash;</div>
+        <div class="home-reco-result-meta" id="homeRecoMeta">&mdash;</div>
+        <div class="home-reco-reason" id="homeRecoReason" style="background:transparent">&nbsp;</div>
+      </div>
+    </div>
+  </div>`;
 
   container.innerHTML = html;
+}
+
+function homeToggleNotif(bar) {
+  const list = document.getElementById('homeNotifList');
+  list.classList.toggle('open');
+  bar.querySelector('span:last-child').textContent = list.classList.contains('open') ? '−' : '+';
+}
+
+function homeToggleTab(tab, btn) {
+  document.querySelectorAll('.home-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.home-tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tab === 'schedule' ? 'homeTabSchedule' : 'homeTabConnections').classList.add('active');
+}
+
+function homeAcceptShake(attendeeId, btn) {
+  const es = getEventState();
+  const h = es.handshakesReceived.find(x => x.from === attendeeId && x.status === 'pending');
+  if (!h) return;
+
+  h.status = 'accepted';
+  saveState();
+  btn.textContent = 'SHAKEN';
+  btn.disabled = true;
+
+  const item = document.getElementById('notif-' + attendeeId);
+  if (item) item.classList.add('accepted');
+
+  // After 2s, animate out and re-render
+  setTimeout(() => {
+    if (item) item.classList.add('removing');
+    setTimeout(() => renderHome(), 400);
+  }, 2000);
+
+  showToast('Handshake accepted');
+}
+
+function homeSearchHandler() {
+  const query = (document.getElementById('homeSearch')?.value || '').toLowerCase().trim();
+  const container = document.getElementById('homeSearchResults');
+  if (!container) return;
+  if (!query) { container.innerHTML = ''; return; }
+
+  const { sessions, attendees, faqs } = getEventData();
+  let results = '';
+
+  const matchedSessions = sessions.filter(s =>
+    s.title.toLowerCase().includes(query) || s.description.toLowerCase().includes(query) ||
+    s.themes.some(t => t.toLowerCase().includes(query))
+  ).slice(0, 3);
+
+  const matchedAtts = attendees.filter(a =>
+    a.name.toLowerCase().includes(query) || a.title.toLowerCase().includes(query) ||
+    a.company.toLowerCase().includes(query) || a.industry.some(i => i.toLowerCase().includes(query))
+  ).slice(0, 3);
+
+  const matchedFaqs = faqs.filter(f =>
+    f.q.toLowerCase().includes(query) || f.a.toLowerCase().includes(query)
+  ).slice(0, 2);
+
+  if (matchedSessions.length) {
+    results += '<div style="padding:8px 0 4px; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:var(--grey);">Sessions</div>';
+    matchedSessions.forEach(s => {
+      results += `<div class="home-sched-card" onclick="navigate('session', {id:${s.id}})" style="margin-top:6px;">
+        <div class="home-sched-body"><div class="home-sched-title">${s.title}</div>
+        <div class="home-sched-meta">${s.day} · ${s.start}–${s.end} · ${s.stage}</div></div></div>`;
+    });
+  }
+  if (matchedAtts.length) {
+    results += '<div style="padding:8px 0 4px; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:var(--grey);">People</div>';
+    matchedAtts.forEach(a => {
+      results += `<div class="home-conn-card" onclick="navigate('attendee', {id:${a.id}})" style="margin-top:6px;">
+        <div class="home-conn-dot" style="background:${avatarColor(a.id)}"></div>
+        <div class="home-conn-info"><div class="home-conn-name">${a.name}</div>
+        <div class="home-conn-role">${a.title}, ${a.company}</div></div></div>`;
+    });
+  }
+  if (matchedFaqs.length) {
+    results += '<div style="padding:8px 0 4px; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:var(--grey);">Questions</div>';
+    matchedFaqs.forEach(f => {
+      results += `<div style="padding:8px 0; font-size:11px; cursor:pointer; border-bottom:1px solid var(--grey-light);" onclick="navigate('faq')">${f.q}</div>`;
+    });
+  }
+
+  if (!results) results = '<div style="padding:12px 0; font-size:11px; color:var(--grey);">No results.</div>';
+  container.innerHTML = results;
+}
+
+function getMatchReasons(pick) {
+  const reasons = [];
+  if (pick.type === 'person') {
+    const d = pick.data;
+    if (d.location.includes('Sweden')) reasons.push('Both based in Sweden');
+    if (d.location.includes('Belgium')) reasons.push('Both in Brussels');
+    if (d.industry.includes('Climatetech')) reasons.push('Climatetech');
+    if (d.industry.includes('Fintech')) reasons.push('Fintech');
+    if (d.industry.includes('Policy')) reasons.push('Policy');
+    if (d.industry.includes('Education')) reasons.push('Education');
+    if (d.role === 'investor') reasons.push('Investor');
+    if (d.role === 'speaker') reasons.push('Speaker this week');
+    if (d.role === 'enabler') reasons.push('Enabler');
+  } else {
+    const d = pick.data;
+    if (d.themes.includes('Climatetech')) reasons.push('Climatetech');
+    if (d.themes.includes('Regeneration')) reasons.push('Regeneration');
+    if (d.themes.includes('Fintech')) reasons.push('Fintech');
+    if (d.themes.includes('Policy')) reasons.push('Policy');
+    if (d.themes.includes('Gender')) reasons.push('Gender lens');
+    if (d.stage === 'Red Room') reasons.push('Main stage');
+  }
+  return reasons;
+}
+
+function homeGetRecommendation() {
+  const { sessions, attendees } = getEventData();
+  const all = [
+    ...sessions.map(s => ({ type: 'session', data: s })),
+    ...attendees.map(a => ({ type: 'person', data: a }))
+  ];
+
+  const btn = document.getElementById('homeRecoBtn');
+  const titleEl = document.getElementById('homeRecoTitle');
+  const labelEl = document.getElementById('homeRecoLabel');
+  const metaEl = document.getElementById('homeRecoMeta');
+  const reasonEl = document.getElementById('homeRecoReason');
+
+  btn.disabled = true;
+  reasonEl.style.background = 'transparent';
+  reasonEl.textContent = '\u00A0';
+
+  // Roulette — cycle through names/titles in the title slot
+  const spinInterval = setInterval(() => {
+    const rand = all[Math.floor(Math.random() * all.length)];
+    labelEl.textContent = rand.type === 'session' ? 'Attend' : 'Meet';
+    titleEl.textContent = rand.type === 'session' ? rand.data.title : rand.data.name;
+    metaEl.textContent = rand.type === 'session'
+      ? rand.data.day + ' \u00B7 ' + rand.data.start + '\u2013' + rand.data.end
+      : rand.data.title + ', ' + rand.data.company;
+  }, 100);
+
+  setTimeout(() => {
+    clearInterval(spinInterval);
+    btn.disabled = false;
+
+    // Pick with at least 2 reasons for people, retry up to 10 times
+    let pick, reasons;
+    for (let attempt = 0; attempt < 10; attempt++) {
+      pick = all[Math.floor(Math.random() * all.length)];
+      reasons = getMatchReasons(pick);
+      if (pick.type === 'session' || reasons.length >= 2) break;
+    }
+
+    if (pick.type === 'person') {
+      const d = pick.data;
+      labelEl.textContent = 'Meet';
+      titleEl.textContent = d.name;
+      titleEl.onclick = () => navigate('attendee', {id: d.id});
+      metaEl.textContent = d.title + ', ' + d.company;
+      reasonEl.style.background = avatarColor(d.id);
+    } else {
+      const d = pick.data;
+      labelEl.textContent = 'Attend';
+      titleEl.textContent = d.title;
+      titleEl.onclick = () => navigate('session', {id: d.id});
+      metaEl.textContent = d.day + ' \u00B7 ' + d.start + '\u2013' + d.end;
+      const stageColors = { 'Red Room': '#F9532F', 'Beach Living Room': '#03FFC7', 'Town Hall': '#C26CFF', 'Mare Nostrum': '#BED8EE', 'Off-site': '#FDD97C' };
+      reasonEl.style.background = stageColors[d.stage] || '#EBA0E4';
+    }
+
+    reasonEl.textContent = reasons.slice(0, 2).join(' + ') || 'Picked for you';
+  }, 1500);
 }
 
 // ============================================================
@@ -2274,21 +2766,39 @@ function renderEventsFeed() {
     const isSaved = state.savedEvents.includes(ev.slug);
     const isPast = ev.status === 'past';
     const hasAccess = !!EVENTS[ev.slug];
+    const expandId = 'evtcard-' + idx;
 
-    return `<div class="event-feed-card ${isPast ? 'past' : ''}" onclick="${hasAccess ? `enterEvent('${ev.slug}')` : `showToast('Coming soon')`}">
-      <div class="event-feed-img" style="background:${avatarColor(idx + 1)}"></div>
+    const imgSrc = ev.heroImage || '';
+    const imgStyle = imgSrc ? `background-image:url('${imgSrc}');background-size:cover;background-position:center;` : `background:${avatarColor(idx + 1)};`;
+    return `<div class="event-feed-card ${isPast ? 'past' : ''}" id="${expandId}" onclick="toggleEventCard('${expandId}', event)">
+      <div class="event-feed-img" style="${imgStyle}"></div>
       <div class="event-feed-info">
         <div class="event-feed-name">${ev.name}</div>
         <div class="event-feed-meta">${ev.dates}</div>
         <div class="event-feed-house">${ev.house}</div>
-        ${isPast ? '<div class="event-feed-status">PAST</div>' : ''}
-        <div class="event-feed-readmore">+ Read more</div>
+        ${isPast ? '<div class="event-feed-status">Past</div>' : ''}
       </div>
-      <button class="event-feed-heart ${isSaved ? 'active' : ''}" onclick="event.stopPropagation(); toggleSavedEvent('${ev.slug}', this)">
-        <svg viewBox="0 0 90 90" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
-      </button>
+      <span class="agenda-slot-expand">+</span>
+      <div class="event-feed-detail">
+        ${ev.description ? `<div class="agenda-slot-desc">${ev.description}</div>` : ''}
+        <div class="agenda-slot-actions">
+          <button class="heart-btn ${isSaved ? 'active' : ''}" onclick="event.stopPropagation(); toggleSavedEvent('${ev.slug}', this)">
+            <svg viewBox="0 0 90 90" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
+          </button>
+          ${hasAccess ? `<button onclick="event.stopPropagation(); enterEvent('${ev.slug}')">Learn more</button>` : `<button onclick="event.stopPropagation(); showToast('Registration opening soon')">RSVP</button>`}
+        </div>
+      </div>
     </div>`;
   }).join('');
+}
+
+function toggleEventCard(id, e) {
+  if (e.target.closest('.heart-btn') || e.target.closest('button:not(.event-feed-card)')) return;
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.toggle('expanded');
+  const chevron = card.querySelector('.agenda-slot-expand');
+  if (chevron) chevron.textContent = card.classList.contains('expanded') ? '–' : '+';
 }
 
 function toggleSavedEvent(slug, btn) {
@@ -2433,7 +2943,10 @@ function renderFilterOptions(containerId, filterKey, options) {
 }
 
 function toggleFilter(el) {
-  el.closest('.filter-group').classList.toggle('open');
+  const group = el.closest('.filter-group');
+  group.classList.toggle('open');
+  const chevron = el.querySelector('.filter-chevron');
+  if (chevron) chevron.textContent = group.classList.contains('open') ? '−' : '+';
 }
 
 function toggleFilterOption(filterKey, value, el) {
@@ -2523,23 +3036,22 @@ function filterAgenda() {
 
       const desc120 = s.description ? s.description.substring(0, 120) + (s.description.length > 120 ? '...' : '') : '';
       const isFav = es.favorites.sessions.includes(s.id);
-      const hostedBy = s.hostedBy || s.stage || '—';
+      const hostedBy = s.hostedBy || 'Norrsken VC';
 
       html += `<div class="agenda-slot" id="slot-${s.id}" onclick="toggleAgendaSlot(${s.id}, event)">
         <div class="agenda-slot-title">${s.title}</div>
         ${speakerNames ? `<div class="agenda-slot-speaker">${speakerNames}</div>` : ''}
-        <div class="agenda-slot-time" style="margin-top:8px;">${s.start}–${s.end}</div>
+        <div class="agenda-slot-time">${s.start}–${s.end}</div>
         <span class="agenda-slot-expand">+</span>
         <div class="agenda-slot-detail">
           <div class="agenda-slot-meta">
-            <strong>Hosted by:</strong> ${hostedBy}<br>
-            <strong>Stage:</strong> ${s.stage}
+            <span class="agenda-slot-meta-label">Hosted by:</span> ${hostedBy}<br>
+            <span class="agenda-slot-meta-label">Stage:</span> ${s.stage}
           </div>
-          ${desc120 ? `<div class="agenda-slot-desc"><strong>Session:</strong> ${desc120} <a class="inline-readmore" onclick="event.stopPropagation(); navigate('session', {id:${s.id}})" style="cursor:pointer;">Read more</a></div>` : ''}
+          ${desc120 ? `<div class="agenda-slot-desc">${desc120} <a class="inline-readmore" onclick="event.stopPropagation(); navigate('session', {id:${s.id}})" style="cursor:pointer;">Read more</a></div>` : ''}
           <div class="agenda-slot-actions">
-            <button class="heart-btn" onclick="event.stopPropagation(); toggleFavoriteSession(${s.id}, this)">
+            <button class="heart-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavSession(${s.id}, this)">
               <svg viewBox="0 0 90 90" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
-              ${isFav ? 'Saved' : 'Save'}
             </button>
             <button onclick="event.stopPropagation(); addToCalendar(${s.id})">Add to calendar</button>
           </div>
@@ -2624,7 +3136,9 @@ function renderSession(data) {
       <button class="cta-primary" onclick="${isSideEvent ? `window.open('${s.externalUrl}','_blank')` : `addToCalendar(${s.id})`}">
         ${isSideEvent ? 'GO TO EVENT' : 'ADD TO CALENDAR'}
       </button>
-      <button class="cta-fav ${isFav ? 'active' : ''}" onclick="toggleFavSession(${s.id}, this)">&#9825;</button>
+      <button class="cta-fav ${isFav ? 'active' : ''}" onclick="toggleFavSession(${s.id}, this)">
+        <svg viewBox="0 0 90 90" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
+      </button>
     </div>
   `;
 }
@@ -2707,20 +3221,57 @@ function renderPersonList(container, people) {
     return;
   }
 
+  const es = getEventState();
   container.innerHTML = people.map(a => {
     const roleClass = 'role-' + a.role;
     const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
-    return `<div class="person-card" onclick="navigate('attendee', {id:${a.id}})">
-      <div class="person-card-photo" style="background:${avatarColor(a.id)}"></div>
-      <div class="person-card-info">
-        <div class="person-card-name">${a.name}</div>
-        <div class="person-card-title">${a.title}</div>
-        <div class="person-card-company">${a.company}</div>
-        <div class="person-card-role"><span class="role-tag ${roleClass}">${roleLabel}</span></div>
+    const isFav = es.favorites.attendees.includes(a.id);
+    const handshakeSent = es.handshakesSent.includes(a.id);
+    const color = avatarColor(a.id);
+    return `<div class="person-card" id="person-${a.id}" onclick="togglePersonCard(${a.id}, event)">
+      <div class="person-card-header">
+        <div class="person-card-photo" style="background:${color}"></div>
+        <div class="person-card-info">
+          <div class="person-card-name">${a.name}</div>
+          <div class="person-card-title">${a.title}</div>
+          <div class="person-card-company">${a.company}</div>
+        </div>
       </div>
-      <button class="person-card-expand" onclick="event.stopPropagation(); navigate('attendee', {id:${a.id}})">+</button>
+      <span class="person-card-expand">+</span>
+      <div class="person-card-detail">
+        ${a.bio ? `<div class="person-card-bio">${a.bio}</div>` : ''}
+        <div class="person-card-actions">
+          <a class="person-card-profile-link" onclick="event.stopPropagation(); navigate('attendee', {id:${a.id}})">Go to profile</a>
+          <div class="person-card-shake-row">
+            <button class="person-card-shake-btn" style="background:${color}" onclick="event.stopPropagation(); shakeHands(${a.id})" ${handshakeSent ? 'disabled' : ''}>${handshakeSent ? 'Hand shaken' : 'Shake hands'}</button>
+            <button class="heart-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavAttendee(${a.id}, this)">
+              <svg viewBox="0 0 90 90" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>`;
   }).join('');
+}
+
+function togglePersonCard(id, event) {
+  if (event.target.closest('.person-card-actions')) return;
+  const card = document.getElementById('person-' + id);
+  if (!card) return;
+
+  const wasExpanded = card.classList.contains('expanded');
+
+  document.querySelectorAll('.person-card.expanded').forEach(c => {
+    c.classList.remove('expanded');
+    const icon = c.querySelector('.person-card-expand');
+    if (icon) icon.textContent = '+';
+  });
+
+  if (!wasExpanded) {
+    card.classList.add('expanded');
+    const icon = card.querySelector('.person-card-expand');
+    if (icon) icon.textContent = '–';
+  }
 }
 
 // ============================================================
@@ -2741,6 +3292,9 @@ function renderAttendee(data) {
   const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
 
   document.getElementById('attendeeContent').innerHTML = `
+    <div class="detail-back" onclick="navigate('attendees')">
+      <span>&larr;</span> <span>Attendees</span>
+    </div>
     <div class="detail-hero" style="background:${avatarColor(a.id)}"></div>
     <div class="detail-body">
       <div class="detail-meta-row" style="font-size:13px; font-weight:500; letter-spacing:0.06em; line-height:18px; margin-bottom: 2px;"><strong>${a.name.toUpperCase()}</strong></div>
@@ -2755,7 +3309,9 @@ function renderAttendee(data) {
       <button class="cta-primary ${handshakeSent ? 'success' : ''}" id="shakeBtn" onclick="shakeHands(${a.id})" ${handshakeSent ? 'disabled' : ''}>
         ${handshakeSent ? 'HAND SHAKEN' : 'SHAKE HANDS'}
       </button>
-      <button class="cta-fav ${isFav ? 'active' : ''}" onclick="toggleFavAttendee(${a.id}, this)">&#9825;</button>
+      <button class="cta-fav ${isFav ? 'active' : ''}" onclick="toggleFavAttendee(${a.id}, this)">
+        <svg viewBox="0 0 90 90" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
+      </button>
     </div>
   `;
 }
@@ -2769,10 +3325,18 @@ function toggleFavSession(id, btn) {
   const idx = es.favorites.sessions.indexOf(id);
   if (idx > -1) {
     es.favorites.sessions.splice(idx, 1);
-    if (btn) btn.classList.remove('active');
+    if (btn) {
+      btn.classList.remove('active');
+      const svg = btn.querySelector('svg');
+      if (svg) svg.setAttribute('fill', 'none');
+    }
   } else {
     es.favorites.sessions.push(id);
-    if (btn) btn.classList.add('active');
+    if (btn) {
+      btn.classList.add('active');
+      const svg = btn.querySelector('svg');
+      if (svg) svg.setAttribute('fill', 'currentColor');
+    }
   }
   saveState();
 }
@@ -2782,10 +3346,18 @@ function toggleFavAttendee(id, btn) {
   const idx = es.favorites.attendees.indexOf(id);
   if (idx > -1) {
     es.favorites.attendees.splice(idx, 1);
-    if (btn) btn.classList.remove('active');
+    if (btn) {
+      btn.classList.remove('active');
+      const svg = btn.querySelector('svg');
+      if (svg) svg.setAttribute('fill', 'none');
+    }
   } else {
     es.favorites.attendees.push(id);
-    if (btn) btn.classList.add('active');
+    if (btn) {
+      btn.classList.add('active');
+      const svg = btn.querySelector('svg');
+      if (svg) svg.setAttribute('fill', 'currentColor');
+    }
   }
   saveState();
 }
@@ -2930,9 +3502,18 @@ function acceptHandshake(attendeeId, btn) {
 // ============================================================
 
 function renderProfile() {
-  const a = state.currentUser || ATTENDEES[0];
+  // Merge currentUser with first attendee as fallback for missing fields
+  const base = ATTENDEES && ATTENDEES.length > 0 ? ATTENDEES[0] : {};
+  const a = { ...base, ...(state.currentUser || {}) };
   const savedPhoto = localStorage.getItem('iw_profile_photo');
   if (savedPhoto) a.photo = savedPhoto;
+  a.role = a.role || 'enabler';
+  a.title = a.title || '';
+  a.company = a.company || '';
+  a.location = a.location || '';
+  a.tags = a.tags || [];
+  a.industry = a.industry || [];
+  a.bio = a.bio || '';
   const roleClass = 'role-' + a.role;
   const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
 
@@ -3035,6 +3616,101 @@ function handleProfilePhoto(input) {
 // ============================================================
 // FAQ
 // ============================================================
+
+function renderVenue() {
+  const floorsContainer = document.getElementById('venueFloors');
+  const practicalContainer = document.getElementById('venuePractical');
+  if (!floorsContainer) return;
+
+  const stageColors = { 'Red Room': '#F9532F', 'Beach Living Room': '#03FFC7', 'Town Hall': '#C26CFF', 'Mare Nostrum': '#BED8EE', 'Speakeasy': '#EBA0E4' };
+
+  const floors = [
+    {
+      name: 'Lobby',
+      desc: 'Registration, cantina, patio.',
+      stages: []
+    },
+    {
+      name: 'Floor 3',
+      desc: 'Networking area, first-come-first-serve meeting rooms.',
+      stages: []
+    },
+    {
+      name: 'Floor 4',
+      desc: '4 stages, networking area, headphones and streaming.',
+      stages: [
+        { name: 'Town Hall', desc: 'Community sessions and open discussions. Capacity 120.' },
+        { name: 'Red Room', desc: 'Main stage. Keynotes, panels, and flagship sessions. Capacity 400.' },
+        { name: 'Beach Living Room', desc: 'Intimate conversations and fireside chats. Capacity 80.' },
+        { name: 'Speakeasy', desc: 'Curated conversations. Invite-only.' },
+        { name: 'Mare Nostrum', desc: 'Workshops and interactive sessions. Capacity 60.' }
+      ]
+    },
+    {
+      name: 'Rooftop',
+      desc: 'Networking, headphones and streaming, coffee, fika.',
+      stages: []
+    }
+  ];
+
+  let html = '';
+
+  floors.forEach((floor, i) => {
+    html += `<div class="venue-floor ${i === 0 ? 'open' : ''}" id="venueFloor${i}">
+      <div class="venue-floor-header" onclick="document.getElementById('venueFloor${i}').classList.toggle('open'); this.querySelector('.venue-floor-toggle').textContent = document.getElementById('venueFloor${i}').classList.contains('open') ? String.fromCharCode(8722) : '+'">
+        <span class="venue-floor-name">${floor.name}</span>
+        <span class="venue-floor-toggle">${i === 0 ? '\u2212' : '+'}</span>
+      </div>
+      <div class="venue-floor-body">
+        <div class="venue-floor-desc">${floor.desc}</div>`;
+
+    floor.stages.forEach(stage => {
+      const color = stageColors[stage.name] || '#888';
+      html += `<div class="venue-stage" onclick="venueFilterByStage('${stage.name}')">
+        <div class="venue-stage-dot" style="background:${color}"></div>
+        <div class="venue-stage-info">
+          <div class="venue-stage-name">${stage.name}</div>
+          <div class="venue-stage-desc">${stage.desc}</div>
+        </div>
+        <span class="venue-stage-arrow">&rarr;</span>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  floorsContainer.innerHTML = html;
+
+  if (practicalContainer) {
+    practicalContainer.innerHTML = `<div class="venue-practical">
+      <div class="venue-practical-title">Practical Info</div>
+      <div class="venue-practical-item"><strong>WiFi:</strong> NorrskenGuest / impact2026</div>
+      <div class="venue-practical-item"><strong>Parking:</strong> Underground at Rue du Commerce. EUR 12/day.</div>
+      <div class="venue-practical-item"><strong>Accessibility:</strong> All stages wheelchair accessible. Elevators available.</div>
+      <div class="venue-practical-item"><strong>Cloakroom:</strong> Ground floor, 08:00–21:00 daily.</div>
+      <div class="venue-practical-item"><strong>Address:</strong> <a href="https://maps.google.com/?q=Norrsken+House+Brussels" target="_blank" rel="noopener">View on map</a></div>
+    </div>`;
+  }
+}
+
+function venueFilterByStage(stageName) {
+  navigate('agenda');
+  // Set the stage filter and re-render
+  setTimeout(() => {
+    const es = getEventState();
+    es.activeFilters.stage = [stageName];
+    filterAgenda();
+    // Open filter panel to show active filter
+    const panel = document.getElementById('agendaFilterPanel');
+    if (panel && !panel.classList.contains('open')) {
+      panel.classList.add('open');
+      document.getElementById('agendaFilterToggle')?.classList.add('open');
+    }
+    // Update filter clear button
+    document.querySelectorAll('.filter-clear').forEach(el => el.classList.add('visible'));
+    showToast('Showing ' + stageName + ' sessions');
+  }, 100);
+}
 
 function renderFAQ() {
   const query = (document.getElementById('faqSearch')?.value || '').toLowerCase();

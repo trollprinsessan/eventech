@@ -25,6 +25,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["/tmp/norrsken-media/serve.py"],
       "port": 8095
+    },
+    {
+      "name": "iw-update",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/tmp/iw-update/serve.py"],
+      "port": 8093
     }
   ]
 }
