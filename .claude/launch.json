@@ -1,0 +1,30 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "app",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/tmp/iw2026-app/serve.py"],
+      "port": 8091,
+      "env": { "PORT": "8091" }
+    },
+    {
+      "name": "site",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["-run", "-e", "httpd", "/private/tmp/impact-week-site", "-p", "8092"],
+      "port": 8092
+    },
+    {
+      "name": "winningwords",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/tmp/winningwords/serve.py"],
+      "port": 8094
+    },
+    {
+      "name": "norrsken-media",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/tmp/norrsken-media/serve.py"],
+      "port": 8095
+    }
+  ]
+}

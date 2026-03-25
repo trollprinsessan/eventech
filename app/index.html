@@ -1,0 +1,3150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>Norrsken Events</title>
+<link rel="manifest" href="manifest.json">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #000;
+  --charcoal: #333;
+  --white: #fff;
+  --grey: #888;
+  --grey-light: #d8d8d8;
+  --font: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-display: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --nav-h: 50px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --blue: #000;
+  --green: #000;
+  --red: #000;
+  --yellow: #888;
+  --grey-bg: #f5f5f5;
+  --grey-border: #000;
+  --grey-muted: #888;
+  --grey-tag: #888;
+  --grey-label: #888;
+  --blue-link: #000;
+}
+
+html { font-size: 11px; }
+
+body {
+  font-family: var(--font);
+  color: var(--black);
+  background: var(--white);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100dvh;
+}
+
+a { color: var(--black); text-decoration: underline; text-underline-offset: 2px; }
+::selection { background: var(--black); color: var(--white); }
+input, button { font-family: var(--font); border: none; outline: none; background: none; font-size: 11px; }
+button { cursor: pointer; }
+
+/* Hide scrollbars */
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+
+/* ===== NAV BAR ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  height: var(--nav-h);
+  background: var(--white);
+  z-index: 100;
+  border-bottom: 1px solid var(--black);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.nav-burger {
+  background: none;
+  border: none;
+  padding: 0 20px 0 0;
+  height: var(--nav-h);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.nav-burger span { display: block; width: 18px; height: 1px; background: var(--black); }
+
+.nav-title {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--black);
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 16px;
+  text-align: center;
+}
+
+.nav-title-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 16px;
+}
+
+.nav-title-text svg {
+  height: 10px;
+  width: auto;
+  display: block;
+}
+
+.nav-title-text.fade-out {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.nav-title-text.fade-in {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.nav-profile {
+  background: none;
+  border: none;
+  padding: 0 0 0 20px;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+.nav-profile svg { width: 16px; height: 16px; }
+
+.notif-dot {
+  position: absolute;
+  top: 12px;
+  right: -2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: red;
+  display: none;
+}
+.notif-dot.active { display: block; }
+
+/* ===== BOTTOM TAB BAR (SSENSE-style) ===== */
+.event-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  height: 44px;
+  background: var(--white);
+  z-index: 100;
+  border-top: 1px solid var(--black);
+  align-items: center;
+  justify-content: stretch;
+  padding: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.event-bar.visible { display: flex; }
+.event-bar-item {
+  flex: 1;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey);
+  cursor: pointer;
+  border: none;
+  background: none;
+  position: relative;
+}
+.event-bar-item.active { color: var(--black); }
+.event-bar-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--black);
+}
+
+/* Legacy stubs */
+.tab-bar { display: none !important; }
+.tab-bar.visible { display: none !important; }
+.tab-btn, .tab-btn svg, .tab-btn.active svg, .tab-btn .tab-dot, .tab-burger { display: none; }
+.nav-icon, .nav-icons, .nav-back, .nav-close, .nav-event-burger, .burger { display: none; }
+
+/* ===== PAGE CONTAINER ===== */
+.page {
+  display: none;
+  padding-top: var(--nav-h);
+  padding-bottom: 44px;
+  min-height: 100dvh;
+  position: relative;
+  flex-direction: column;
+}
+.page.active { display: flex; }
+
+/* ===== SEARCH BAR (uses .page-toolbar styling) ===== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  gap: 10px;
+  padding: 0 20px;
+  border-top: 1px solid var(--black);
+  border-bottom: 1px solid var(--black);
+}
+.search-bar svg { width: 12px; height: 12px; flex-shrink: 0; color: var(--grey); }
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 15px;
+  color: var(--black);
+}
+.search-bar input::placeholder { color: var(--grey); }
+
+/* ===== FILTER PANEL ===== */
+.filter-toggle-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 40px;
+  border-bottom: 1px solid var(--black);
+  cursor: pointer;
+  user-select: none;
+}
+.filter-toggle-label { display: flex; align-items: center; color: var(--grey); }
+.filter-toggle-label svg { display: block; }
+.filter-toggle-icon { font-size: 11px; color: var(--grey); transition: transform 0.25s; display: none; }
+.filter-toggle-bar.open .filter-toggle-icon { transform: rotate(180deg); }
+
+.filter-panel { display: none; border-bottom: 1px solid var(--grey-light); }
+.filter-panel.open { display: block; }
+
+.filter-group { border-bottom: 1px solid var(--grey-light); }
+.filter-group:last-child { border-bottom: none; }
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+.filter-header span {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+.filter-chevron { font-size: 11px; color: var(--grey); transition: transform 0.2s; }
+.filter-group.open .filter-chevron { transform: rotate(90deg); }
+
+.filter-options { display: none; }
+.filter-group.open .filter-options { display: block; }
+
+.filter-option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 10px 30px;
+  border-bottom: 1px solid var(--grey-light);
+  cursor: pointer;
+  user-select: none;
+  font-size: 11px;
+}
+.filter-option-item:last-child { border-bottom: none; }
+.filter-option-item.active { font-weight: 500; }
+
+.filter-option-label {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+.filter-check {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--grey);
+  flex-shrink: 0;
+}
+.filter-option-item.active .filter-check {
+  background: var(--black);
+  border-color: var(--black);
+}
+
+.filter-clear {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  display: none;
+}
+.filter-clear.visible { display: block; }
+
+/* ===== AGENDA SLOTS ===== */
+/* Day headers — black break */
+.agenda-time-cell {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--white);
+  padding: 12px 20px;
+  background: var(--black);
+}
+
+.agenda-slot {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--grey-light);
+  position: relative;
+  cursor: pointer;
+}
+.agenda-slot.expanded { border-bottom: 1px solid var(--black); }
+
+.agenda-slot-title {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 15px;
+  text-transform: uppercase;
+  color: var(--black);
+  padding-right: 24px;
+}
+
+.agenda-slot-speaker {
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--grey);
+  letter-spacing: 0.02em;
+  margin-top: 3px;
+}
+
+.agenda-slot-time {
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--grey);
+  letter-spacing: 0.02em;
+  margin-top: 1px;
+}
+
+.agenda-slot-expand {
+  display: block;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--black);
+  line-height: 1;
+  transition: transform 0.2s;
+  width: 16px;
+  text-align: center;
+}
+.agenda-slot.expanded .agenda-slot-expand { transform: none; }
+
+.agenda-slot-detail {
+  display: none;
+  margin-top: 12px;
+  padding-top: 10px;
+}
+.agenda-slot.expanded .agenda-slot-detail { display: block; }
+
+.agenda-slot-desc {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--black);
+  line-height: 16px;
+  margin-bottom: 10px;
+}
+.inline-readmore {
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.agenda-slot-meta {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--grey);
+  line-height: 18px;
+}
+.agenda-slot-meta strong { font-weight: 500; color: var(--black); }
+
+.agenda-slot-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 12px;
+}
+.agenda-slot-actions button {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--black);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0;
+}
+.agenda-slot-actions .heart-btn {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.agenda-slot-actions .heart-btn svg { width: 10px; height: 10px; }
+
+.agenda-slot-readmore {
+  display: inline-block;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+  margin-top: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--black);
+  padding: 0 0 2px;
+}
+
+/* ===== PERSON CARDS ===== */
+.card-list {}
+
+.person-card {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--grey-light);
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.person-card-photo {
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--grey-light);
+}
+
+.person-card-info { flex: 1; min-width: 0; }
+
+.person-card-name {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+}
+
+.person-card-role { margin-top: 2px; }
+.person-card-role .role-tag {
+  font-family: var(--font);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--grey);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.role-tag::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+}
+.role-enabler::before { background: var(--black); }
+.role-investor::before { background: var(--grey); }
+.role-speaker::before { background: var(--grey-light); }
+.role-enabler, .role-investor, .role-speaker { color: var(--grey); }
+
+.person-card-title {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  margin-top: 2px;
+  color: var(--grey);
+}
+
+.person-card-company {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  color: var(--grey);
+}
+
+.person-card-expand {
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--grey);
+  line-height: 1;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+  width: 24px;
+  text-align: center;
+}
+
+/* ===== DETAIL PAGES ===== */
+.detail-hero {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+.detail-hero-small {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.detail-body { padding: 20px; }
+
+.detail-title {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 15px;
+  margin-bottom: 12px;
+}
+
+.detail-desc {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  margin-bottom: 16px;
+}
+
+.detail-meta { margin-bottom: 8px; }
+.detail-meta-row {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  color: var(--grey);
+}
+.detail-meta-row a { color: var(--black); }
+
+.detail-tags {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  color: var(--grey);
+  margin-top: 12px;
+}
+
+.detail-bio {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  margin-top: 20px;
+}
+
+/* ===== CTA BAR ===== */
+.cta-bar {
+  display: flex;
+  gap: 0;
+  padding: 20px;
+  position: sticky;
+  bottom: 0;
+  background: var(--white);
+}
+
+.cta-primary {
+  font-family: var(--font);
+  flex: 1;
+  height: 40px;
+  background: var(--black);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+.cta-primary:active:not(:disabled) { opacity: 0.8; }
+.cta-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.cta-primary.success { background: var(--black); }
+
+.cta-fav {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--black);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--black);
+  border-radius: 0;
+}
+.cta-fav.active { color: var(--black); }
+
+/* ===== MENU OVERLAY ===== */
+.menu-overlay {
+  display: none;
+  position: fixed;
+  top: var(--nav-h);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  height: calc(100dvh - var(--nav-h));
+  background: var(--white);
+  z-index: 200;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+}
+.menu-overlay.active { display: flex; }
+
+.menu-items { display: flex; flex-direction: column; }
+
+.menu-section { padding: 0; }
+.menu-section + .menu-section { border-top: none; margin-top: 10px; }
+
+.menu-section-label {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding: 30px 0 10px;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  height: 44px;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--grey-light);
+}
+.menu-item span:last-child { color: var(--grey); font-size: 11px; }
+
+.menu-item-global {
+  font-size: 11px;
+  height: 44px;
+  color: var(--grey);
+  letter-spacing: 0.05em;
+}
+
+.menu-footer-bar { display: none; }
+.menu-footer { display: none; }
+.menu-footer-logo { display: none; }
+.menu-footer-title { display: none; }
+.menu-footer-sub { display: none; }
+.menu-footer-link { display: none; }
+.menu-divider { display: none; }
+
+/* ===== LOGIN PAGE ===== */
+.login-title {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 15px;
+  padding: 30px 20px 0;
+  color: var(--grey);
+}
+
+.login-desc {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  padding: 0 20px;
+  margin-top: 12px;
+  color: var(--black);
+}
+
+.login-form { margin: 20px 20px 0; }
+
+.login-input-wrap {
+  position: relative;
+  background: none;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--black);
+  border-radius: 0;
+}
+.login-input-wrap input {
+  flex: 1;
+  height: 100%;
+  padding: 0 12px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  background: transparent;
+  color: var(--black);
+}
+.login-input-wrap input::placeholder { color: var(--grey); }
+
+.login-submit {
+  font-family: var(--font);
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--black);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.login-submit:disabled { opacity: 0.3; }
+
+.login-error {
+  font-size: 11px;
+  color: red;
+  margin-top: 8px;
+  padding: 0 4px;
+  display: none;
+}
+.login-error.visible { display: block; }
+
+.login-hero {
+  width: 100%;
+  margin-top: 30px;
+  position: relative;
+  overflow: hidden;
+  height: 400px;
+}
+.login-hero img {
+  position: absolute;
+  left: -60%;
+  top: -10%;
+  width: 220%;
+  height: auto;
+}
+
+/* ===== HOME PAGE ===== */
+.home-welcome {
+  padding: 30px 20px 20px;
+  position: relative;
+  z-index: 2;
+}
+.home-title {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 15px;
+  color: var(--grey);
+  margin-bottom: 15px;
+}
+.home-welcome p {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  color: var(--black);
+}
+
+#page-home { display: none; flex-direction: column; min-height: calc(100dvh - var(--nav-h)); }
+#page-home.active { display: flex; }
+
+.home-hero {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  min-height: 300px;
+  margin-top: -20px;
+}
+.home-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* ===== MARQUEE ===== */
+.marquee {
+  background: var(--grey-light);
+  height: 30px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+.marquee-inner {
+  display: flex;
+  white-space: nowrap;
+  animation: marqueeScroll 18s linear infinite;
+}
+.marquee-inner span {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 30px;
+  padding-right: 40px;
+  color: var(--black);
+}
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.page-footer-banner { margin-top: auto; flex-shrink: 0; }
+
+/* ===== FAQ ===== */
+.faq-item { border-bottom: 1px solid var(--grey-light); }
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  min-height: 44px;
+  cursor: pointer;
+  user-select: none;
+}
+.faq-question span:first-child {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex: 1;
+  padding: 12px 12px 12px 0;
+  line-height: 15px;
+}
+.faq-question .faq-toggle {
+  font-size: 11px;
+  width: 20px;
+  text-align: right;
+  color: var(--grey);
+}
+.faq-answer {
+  display: none;
+  padding: 0 20px 15px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  color: var(--grey);
+}
+.faq-item.open .faq-answer { display: block; }
+
+/* ===== NOTIFICATIONS ===== */
+.notif-section-title {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding: 20px 20px 0;
+}
+
+.notif-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--grey-light);
+  gap: 12px;
+}
+
+.notif-photo {
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  flex-shrink: 0;
+}
+
+.notif-info { flex: 1; min-width: 0; }
+
+.notif-name {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  color: var(--black);
+}
+
+.notif-title {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--grey);
+  line-height: 15px;
+  margin-top: 1px;
+}
+
+.notif-action {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--black);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--black);
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 4px 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.notif-action:disabled {
+  color: var(--grey);
+  border-bottom-color: transparent;
+  cursor: default;
+}
+
+.notif-explainer {
+  padding: 20px;
+  border-top: 1px solid var(--grey-light);
+}
+.notif-explainer-title {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 15px;
+  color: var(--grey);
+  margin-bottom: 6px;
+}
+.notif-explainer-text {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  color: var(--grey);
+}
+
+/* ===== PROFILE ===== */
+.profile-hero {
+  padding: 20px;
+  border-bottom: 1px solid var(--grey-light);
+}
+.profile-hero-name {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+  line-height: 15px;
+}
+.profile-hero-role {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--grey);
+  margin-top: 4px;
+  line-height: 15px;
+}
+
+.profile-section-block { border-bottom: 1px solid var(--grey-light); }
+.profile-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+.profile-section-toggle { font-size: 11px; font-weight: 300; line-height: 1; }
+.profile-section-body { padding: 0 20px 15px; }
+.profile-section-body#section-handshakes { padding: 0; }
+
+.profile-account-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--grey-light);
+}
+.profile-account-label {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey);
+  flex-shrink: 0;
+  width: 90px;
+}
+.profile-account-value {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--black);
+  text-align: right;
+}
+.profile-edit-btn {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  display: inline-block;
+}
+.profile-photo-small {
+  width: 60px;
+  height: 60px;
+  border-radius: 0;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+.profile-edit-link {
+  font-family: var(--font);
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--black);
+  text-transform: uppercase;
+  margin-top: 20px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ===== VENUE ===== */
+.venue-body { padding: 20px; }
+.venue-body h2 {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 12px;
+}
+.venue-body p, .venue-body li { font-size: 11px; font-weight: 400; line-height: 15px; }
+.venue-body ul { list-style: none; margin: 8px 0 20px; }
+.venue-body li { padding: 4px 0; }
+.venue-room { padding: 12px 0; border-bottom: 1px solid var(--grey-light); }
+.venue-room-name {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.venue-room-desc { font-size: 11px; font-weight: 400; line-height: 15px; color: var(--grey); }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  z-index: 300;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  border-radius: 0;
+}
+.toast.visible { opacity: 1; }
+
+/* ===== CONTENT GIFS ===== */
+.content-gif {
+  width: 100%;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.content-gif img { width: 100%; max-width: 300px; height: auto; display: block; }
+
+/* ===== PAGE HEADER + TOOLBAR ===== */
+.page-header { padding: 30px 20px 20px; }
+.page-label {
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--charcoal);
+  margin-bottom: 8px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.page-title {
+  font-family: var(--font);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  color: var(--charcoal);
+  margin-bottom: 12px;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+.page-intro {
+  font-size: 11px;
+  line-height: 15px;
+  color: var(--grey);
+}
+
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 20px;
+  gap: 0;
+  border-top: 1px solid var(--black);
+  border-bottom: 1px solid var(--black);
+}
+
+.toolbar-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.toolbar-search svg { width: 12px; height: 12px; flex-shrink: 0; color: var(--black); }
+.toolbar-search input {
+  border: none;
+  outline: none;
+  font-family: var(--font);
+  font-size: 11px;
+  width: 100%;
+  background: transparent;
+}
+.toolbar-search input::placeholder { color: var(--grey); }
+
+.toolbar-filter {
+  background: none;
+  border: none;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--black);
+  order: -1;
+  margin-right: 0;
+  padding: 0;
+  border-right: 1px solid var(--black);
+}
+
+/* ===== EVENT HOME ===== */
+.event-home-hero {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+.event-home-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.event-home-header { padding: 20px; }
+.event-home-name {
+  font-family: var(--font);
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  color: var(--charcoal);
+  margin-bottom: 6px;
+}
+.event-home-meta {
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--charcoal);
+  letter-spacing: normal;
+  text-transform: none;
+  margin-bottom: 12px;
+}
+.event-home-desc { font-size: 11px; line-height: 15px; color: var(--black); }
+.event-home-nav { border-top: 1px solid var(--black); margin-top: 8px; }
+.event-home-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 44px;
+  border-bottom: 1px solid var(--grey-light);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.event-home-link-meta {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--grey);
+  text-transform: none;
+}
+.event-home-notif {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--grey-light);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ===== EVENTS HUB ===== */
+.events-hub-header {
+  padding: 15px 20px 8px;
+  font-size: 11px;
+  color: var(--grey);
+  line-height: 15px;
+}
+
+/* Event feed cards */
+.event-feed-card {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 0 12px;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--black);
+  cursor: pointer;
+  align-items: start;
+}
+.event-feed-card.past { opacity: 0.45; }
+.event-feed-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  grid-row: 1;
+  grid-column: 1;
+  border-radius: 0;
+}
+.event-feed-info {
+  grid-row: 1;
+  grid-column: 2;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0;
+}
+.event-feed-dateinfo { display: none; }
+.event-feed-readmore {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-top: 6px;
+}
+.event-feed-name {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 17px;
+  margin-bottom: 4px;
+}
+.event-feed-meta {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--charcoal);
+  letter-spacing: normal;
+  text-transform: none;
+}
+.event-feed-house {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--charcoal);
+  letter-spacing: normal;
+  text-transform: none;
+}
+.event-feed-status {
+  font-family: var(--font);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--grey);
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.event-feed-heart {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+  grid-row: 1;
+  grid-column: 3;
+  align-self: start;
+}
+.event-feed-heart svg { width: 8px; height: 8px; color: var(--black); }
+
+/* Hero card variant — same as regular */
+.event-hero-card { }
+.event-hero-img { width: 100%; display: block; }
+.event-hero-info { padding: 15px 20px; }
+
+/* ===== TICKETS ===== */
+.ticket-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--grey-light);
+  cursor: pointer;
+}
+.ticket-info { flex: 1; }
+.ticket-name {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.ticket-meta {
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--grey);
+  letter-spacing: 0.04em;
+}
+.ticket-status {
+  font-family: var(--font);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.ticket-arrow { color: var(--grey); font-size: 11px; }
+
+/* ===== UTILITIES ===== */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--grey);
+  line-height: 15px;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV BAR ===== -->
+<nav class="nav" id="mainNav">
+  <button class="nav-burger" onclick="toggleMenu()"><span></span><span></span></button>
+  <span class="nav-title" id="navTitle" onclick="navigateHome()"><span class="nav-title-text">NORRSKEN EVENTS</span></span>
+  <button class="nav-profile" onclick="navigate('profile')">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1"><circle cx="8" cy="6" r="3"/><path d="M2.5 14.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/></svg>
+    <span class="notif-dot" id="notifDot"></span>
+  </button>
+</nav>
+
+<!-- ===== MENU ===== -->
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-items"></div>
+</div>
+
+<!-- ===== BOTTOM TAB BAR ===== -->
+<div class="event-bar" id="eventBar">
+  <button class="event-bar-item" id="ebHome" onclick="ensureEvent(); navigate('home')">Home</button>
+  <button class="event-bar-item" id="ebAgenda" onclick="ensureEvent(); navigate('agenda')">Agenda</button>
+  <button class="event-bar-item" id="ebAttendees" onclick="ensureEvent(); navigate('attendees')">Attendees</button>
+  <button class="event-bar-item" id="ebFaq" onclick="ensureEvent(); navigate('faq')">FAQ</button>
+</div>
+
+<!-- ===== TAB BAR (hidden, stubs for JS) ===== -->
+<div class="tab-bar" id="tabBar" style="display:none!important">
+  <span class="tab-dot" id="tabProfileDot"></span>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== PAGE: EVENTS HUB ===== -->
+<div class="page" id="page-events">
+  <div class="page-header">
+    <div class="page-title">Events</div>
+    <p class="page-intro">Discover events from across the Norrsken ecosystem.</p>
+  </div>
+  <div id="eventsFeedList"></div>
+</div>
+
+<!-- ===== PAGE: TICKETS ===== -->
+<div class="page" id="page-tickets">
+  <div style="padding: 16px;">
+    <div style="font-family:var(--font-display); font-size:10px; letter-spacing:0.10em; text-transform:uppercase; color:var(--grey-label); margin-bottom:16px;">YOUR EVENTS</div>
+  </div>
+  <div id="ticketsList"></div>
+</div>
+
+<!-- ===== PAGE: SEARCH ===== -->
+<div class="page" id="page-search">
+  <div class="page-header">
+    <div class="page-title">Search</div>
+    <p class="page-intro">Search across all events, people, and content.</p>
+  </div>
+  <div class="search-bar">
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="5" cy="5" r="4"/><line x1="8" y1="8" x2="11" y2="11"/></svg>
+    <input type="text" id="globalSearch" placeholder="Search events, people, content..." oninput="handleGlobalSearch()">
+  </div>
+  <div id="searchResults">
+    <div class="empty-state" style="padding:40px 16px; color:var(--grey-label);">Search across all Norrsken events. Try a name, topic, or location.</div>
+  </div>
+</div>
+
+<!-- ===== PAGE: LOGIN ===== -->
+<div class="page active" id="page-login">
+  <div class="login-title">NORRSKEN EVENTS</div>
+  <div class="login-desc">
+    <p>Your gateway to events across the Norrsken ecosystem. Sign in with your email to access event programs, connect with attendees, and stay in the loop.</p>
+    <br>
+    <p>Enter your email to sign in. Your email must be registered to at least one Norrsken event.</p>
+  </div>
+  <form class="login-form" onsubmit="handleLogin(event)">
+    <div class="login-input-wrap">
+      <input type="email" id="loginEmail" placeholder="EMAIL" required autocomplete="email" autocapitalize="none">
+      <button type="submit" class="login-submit" id="loginBtn">SUBMIT</button>
+    </div>
+    <div class="login-error" id="loginError">Email not found. This event is invite-only.</div>
+  </form>
+  <div class="login-hero">
+    <img src="../site/img/hero_gif.gif" alt="Impact Week" onerror="this.style.display='none'">
+  </div>
+  <div class="marquee">
+    <div class="marquee-inner">
+      <span>Impact Week 2026</span><span>Brussels</span><span>1,200 founders, funders & enablers</span><span>Seven days of impact</span>
+      <span>Impact Week 2026</span><span>Brussels</span><span>1,200 founders, funders & enablers</span><span>Seven days of impact</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: HOME (My Week Dashboard) ===== -->
+<div class="page" id="page-home">
+  <div id="homeContent"></div>
+</div>
+
+<!-- ===== PAGE: AGENDA ===== -->
+<div class="page" id="page-agenda">
+  <div class="page-header">
+    <div class="page-title">Agenda</div>
+    <p class="page-intro">Browse sessions, side events, and workshops across all stages.</p>
+  </div>
+  <div class="page-toolbar">
+    <div class="toolbar-search">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="5" cy="5" r="4"/><line x1="8" y1="8" x2="11" y2="11"/></svg>
+      <input type="text" id="agendaSearch" placeholder="Search sessions..." oninput="filterAgenda()">
+    </div>
+    <button class="toolbar-filter" id="agendaFilterToggle" onclick="toggleFilterPanel('agendaFilterPanel', this)">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 5h12M2 11h12"/><path d="M5 3v4M11 9v4"/></svg>
+    </button>
+    <span class="filter-clear" onclick="event.stopPropagation(); clearAllFilters();">Clear</span>
+  </div>
+  <div class="filter-panel" id="agendaFilterPanel">
+    <div class="filter-group" data-filter="stage">
+      <div class="filter-header" onclick="toggleFilter(this)">
+        <span>STAGE</span>
+        <span class="filter-chevron">&gt;</span>
+      </div>
+      <div class="filter-options" id="filterStage"></div>
+    </div>
+    <div class="filter-group" data-filter="theme">
+      <div class="filter-header" onclick="toggleFilter(this)">
+        <span>THEME</span>
+        <span class="filter-chevron">&gt;</span>
+      </div>
+      <div class="filter-options" id="filterTheme"></div>
+    </div>
+    <div class="filter-group" data-filter="speaker">
+      <div class="filter-header" onclick="toggleFilter(this)">
+        <span>HOST / SPEAKER</span>
+        <span class="filter-chevron">&gt;</span>
+      </div>
+      <div class="filter-options" id="filterSpeaker"></div>
+    </div>
+    <div class="filter-group" data-filter="day">
+      <div class="filter-header" onclick="toggleFilter(this)">
+        <span>DAY</span>
+        <span class="filter-chevron">&gt;</span>
+      </div>
+      <div class="filter-options" id="filterDay"></div>
+    </div>
+  </div>
+  <div id="agendaList"></div>
+</div>
+
+<!-- ===== PAGE: SESSION DETAIL ===== -->
+<div class="page" id="page-session">
+  <div id="sessionContent"></div>
+</div>
+
+<!-- ===== PAGE: ATTENDEES ===== -->
+<div class="page" id="page-attendees">
+  <div class="page-header">
+    <div class="page-title">Attendees</div>
+    <p class="page-intro">Connect with fellow attendees. Tap someone's profile to learn more or shake their hand.</p>
+  </div>
+  <div class="page-toolbar">
+    <div class="toolbar-search">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="5" cy="5" r="4"/><line x1="8" y1="8" x2="11" y2="11"/></svg>
+      <input type="text" id="attendeeSearch" placeholder="Search attendees..." oninput="filterAttendees()">
+    </div>
+    <button class="toolbar-filter" id="attendeeFilterToggle" onclick="toggleFilterPanel('attendeeFilterPanel', this)">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 5h12M2 11h12"/><path d="M5 3v4M11 9v4"/></svg>
+    </button>
+    <span class="filter-clear" onclick="event.stopPropagation(); clearAllFilters();">Clear</span>
+  </div>
+  <div class="filter-panel" id="attendeeFilterPanel">
+    <div class="filter-group" data-filter="role">
+      <div class="filter-header" onclick="toggleFilter(this)">
+        <span>PROFILE TYPE</span>
+        <span class="filter-chevron">&gt;</span>
+      </div>
+      <div class="filter-options" id="filterRole"></div>
+    </div>
+    <div class="filter-group" data-filter="location">
+      <div class="filter-header" onclick="toggleFilter(this)">
+        <span>LOCATION</span>
+        <span class="filter-chevron">&gt;</span>
+      </div>
+      <div class="filter-options" id="filterLocation"></div>
+    </div>
+    <div class="filter-group" data-filter="industry">
+      <div class="filter-header" onclick="toggleFilter(this)">
+        <span>INDUSTRY</span>
+        <span class="filter-chevron">&gt;</span>
+      </div>
+      <div class="filter-options" id="filterIndustry"></div>
+    </div>
+  </div>
+  <div id="attendeeList"></div>
+</div>
+
+<!-- ===== PAGE: ATTENDEE DETAIL ===== -->
+<div class="page" id="page-attendee">
+  <div id="attendeeContent"></div>
+</div>
+
+<!-- ===== PAGE: FAVORITES ===== -->
+<div class="page" id="page-favorites">
+  <div class="page-header">
+    <div class="page-title">Favorites</div>
+    <p class="page-intro">Sessions and people you've saved.</p>
+  </div>
+  <div class="page-toolbar">
+    <div class="toolbar-search">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="5" cy="5" r="4"/><line x1="8" y1="8" x2="11" y2="11"/></svg>
+      <input type="text" id="favSearch" placeholder="Search favorites..." oninput="filterFavorites()">
+    </div>
+  </div>
+  <div id="favList"></div>
+</div>
+
+<!-- ===== PAGE: PROFILE ===== -->
+<div class="page" id="page-profile">
+  <div id="profileContent"></div>
+</div>
+
+<!-- ===== PAGE: FAQ ===== -->
+<div class="page" id="page-faq">
+  <div class="page-header">
+    <div class="page-title">FAQ</div>
+    <p class="page-intro">Common questions about the event, venue, and how things work.</p>
+  </div>
+  <div class="page-toolbar">
+    <div class="toolbar-search">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="5" cy="5" r="4"/><line x1="8" y1="8" x2="11" y2="11"/></svg>
+      <input type="text" id="faqSearch" placeholder="Search questions..." oninput="filterFAQ()">
+    </div>
+  </div>
+  <div id="faqList"></div>
+</div>
+
+<!-- ===== PAGE: VENUE ===== -->
+<div class="page" id="page-venue">
+  <div class="page-title">VENUE</div>
+  <div class="venue-body">
+    <p>Norrsken House Brussels</p>
+    <p style="margin-top: 4px;">Rue du Commerce 72, 1000 Brussels, Belgium</p>
+    <p style="margin-top: 4px;"><a href="https://maps.google.com/?q=Norrsken+House+Brussels" target="_blank" rel="noopener">View on map</a></p>
+
+    <h2 style="margin-top: 32px;">STAGES</h2>
+    <div class="venue-room">
+      <div class="venue-room-name">RED ROOM</div>
+      <div class="venue-room-desc">Main stage. Keynotes, panels, and flagship sessions. Capacity 400.</div>
+    </div>
+    <div class="venue-room">
+      <div class="venue-room-name">BEACH LIVING ROOM</div>
+      <div class="venue-room-desc">Intimate conversations and fireside chats. Capacity 80.</div>
+    </div>
+    <div class="venue-room">
+      <div class="venue-room-name">MARE NOSTRUM</div>
+      <div class="venue-room-desc">Workshops and interactive sessions. Capacity 60.</div>
+    </div>
+    <div class="venue-room">
+      <div class="venue-room-name">TOWN HALL</div>
+      <div class="venue-room-desc">Community sessions and open discussions. Capacity 120.</div>
+    </div>
+
+    <h2 style="margin-top: 32px;">PRACTICAL INFO</h2>
+    <ul>
+      <li><strong>WiFi:</strong> NorrskenGuest / impact2026</li>
+      <li><strong>Parking:</strong> Underground parking at Rue du Commerce. EUR 12/day.</li>
+      <li><strong>Accessibility:</strong> All stages are wheelchair accessible. Elevators available.</li>
+      <li><strong>Cloakroom:</strong> Ground floor, open 08:00 -- 21:00 daily.</li>
+      <li><strong>Emergency:</strong> Contact any Norrsken team member or call reception.</li>
+    </ul>
+    <div class="content-gif">
+      <img src="easter/egg_2.gif" alt="">
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// NORRSKEN SVG LOGO
+// ============================================================
+const NORRSKEN_SVG = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1535.2 214.5"><g fill="currentColor"><path d="M149.1,207.9v2.8l-10.3-4.5c-44.7-19.8-89.3-39.6-134-59.3c-1.6-0.4-2.5-2-2.3-3.6c0.1-5.4,0.1-10.9,0-16.3c-0.2-1.2,0.5-2.3,1.6-2.7C52.1,103,99.9,81.8,147.8,60.6c0.4-0.2,0.9-0.3,1.4-0.4c0,9.5,0.1,18.8-0.1,28.1c0,0.7-1.1,1.7-2,2.1c-15.7,6.7-31.4,13.4-47.1,20.1l-55.8,23.7c-0.7,0.3-1.4,0.6-2.5,1.1c1.1,0.5,1.9,0.9,2.6,1.2c34.1,14.5,68.2,29,102.3,43.4c2,0.9,2.7,1.9,2.7,4.1C149,192,149.1,200,149.1,207.9z"/><path d="M330.8,205.8v2.4h-39.9v-3.2c0-34.5,0-69.1-0.1-103.6c0-3.8-0.5-7.6-1.3-11.3c-1.2-5.7-5-9.2-10.7-9.9c-4-0.5-8.1-0.3-12.1,0.5c-6.8,1.5-10.8,6.4-12.4,13c-1,4.1-1.5,8.2-1.5,12.4c-0.1,33-0.1,66-0.1,99v3.2h-39.8v-155h38v18.4c0.7-0.9,1-1.2,1.1-1.5C261.1,54.9,275,49,292,49.1c5.8-0.1,11.6,0.9,17,2.9c11.6,4.5,18,13.4,20.1,25.3c1,5.2,1.5,10.4,1.6,15.7C330.8,130.6,330.8,168.2,330.8,205.8z"/><path d="M607.8,86.8c-0.1,0.3-0.2,0.6-0.3,0.8c-3.4-0.2-6.8-0.4-10.2-0.5c-5.5-0.3-11.1,0.7-16.2,2.9c-9.2,4.2-14,11.5-15,21.5c-0.1,1.3-0.1,2.6-0.1,3.8v92.8h-39.6V53.3h37.9v20.3l0.5,0.1c0.4-0.7,0.8-1.4,1.3-2c2.6-3.5,5-7.1,7.8-10.4c8.4-9.8,19.2-13.3,31.8-11.9c1.3,0.1,2.2,0.3,2.2,2C607.8,63.2,607.8,75,607.8,86.8z"/><path d="M720.4,87.7c-2.2-0.1-4.2-0.3-6.2-0.3c-4.5,0.1-9.1-0.2-13.4,0.7c-14.2,2.6-22.2,12.4-22.2,26.9c0,30,0,60,0,90.1v3.3h-39.7V53.3h37.9v20.2l0.5,0.2c0.4-0.5,0.8-1.1,1.1-1.6c3.2-5.6,7.3-10.7,12.2-14.9c8.1-7.2,17.8-8.8,28.1-7.6c0.6,0.1,1.5,0.9,1.5,1.5C720.4,63.1,720.4,75.2,720.4,87.7z"/><path d="M860.5,179.3c-5.5,17.2-17.8,26.8-35.2,30.2c-4.5,0.9-9,1.4-13.6,2.1h-14.3c-5-0.7-10.1-1.2-15.1-2.1c-2.8-0.5-5.6-1.2-8.4-2.2c-14.6-4.9-22.8-15.3-25-30.4c-0.9-6.3-1.1-12.8-1.6-19.4h36.2c0,1-0.1,2,0,3c0,3,0.3,5.9,0.7,8.9c2.5,11.7,12.1,17.6,24.8,15.4c12-2,18.2-12,14.6-23.6c-0.7-2.3-2.1-4.4-3.9-6c-3.3-2.6-7-4.8-10.9-6.4c-9.2-3.7-18.7-6.8-28-10.3c-3-1.1-6-2.4-8.8-3.9c-17.4-9.2-24.5-23.6-22.8-43.3c1.9-21.2,13.6-34.4,35-39.8c14.7-3.7,30.1-3.7,44.7,0.2c18.7,4.9,29.3,18.5,30.1,37.9c0.1,3.1,0,6.3,0,9.7h-35.4c-0.2-2.1-0.4-4.3-0.6-6.4c-1.2-12.2-7.1-19-22.9-16c-7.4,1.4-12,6.5-12.8,13.1c-1,7.6,2,13.9,8.8,17.4c4.1,1.9,8.4,3.6,12.8,5c7.5,2.6,15,5,22.4,7.7c4.2,1.6,8.3,3.5,12.2,5.8c9.5,5.1,16.2,14.3,18,25C863.2,160.5,863.4,170.1,860.5,179.3z"/><path d="M1026.8,208.4c-12.8,0-25.5,0-38.3,0.1c-1.7,0.2-3.3-0.8-3.9-2.4c-10.1-19.6-20.2-39.1-30.4-58.6c-0.4-0.8-0.9-1.6-1.5-2.7c-3,3.9-5.5,7.9-8.7,11.2c-4.4,4.7-5.8,9.8-5.5,16.2c0.5,11,0.1,22.1,0.1,33.2v2.9H899V2.5h39.6v108.2l0.5,0.2c0.5-0.7,1.1-1.4,1.6-2.1c12.3-17.9,24.6-35.7,36.9-53.5c0.8-1.5,2.4-2.4,4.1-2.2c12.7,0.1,25.3,0,38,0h3.3c-0.9,1.3-1.4,2-2,2.7c-13.7,18.8-27.5,37.6-41.3,56.4c-1.1,1.2-1.2,3-0.3,4.3c16.2,29.6,32.4,59.2,48.5,88.8c0.5,0.9,0.9,1.8,1.5,2.9C1028.4,208.3,1027.6,208.4,1026.8,208.4z"/><path d="M1320.1,205.6v2.7h-39.7c-0.1-1.1-0.1-2.1-0.1-3.2c0-34.5,0-69.1-0.1-103.6c-0.1-3.8-0.5-7.6-1.3-11.4c-1.2-5.7-5-9.2-10.7-9.8c-4.1-0.6-8.3-0.3-12.3,0.6c-8.9,2.3-12.1,9.5-13.2,17.8c-0.3,2.7-0.5,5.4-0.5,8.1c0,32.8,0,65.5,0,98.2v3.2h-39.7v-155h38.1v18.2c0.3-0.3,0.7-0.7,0.9-1.1c9-15.7,23.2-21.8,40.7-21.2c5.4,0.2,10.8,1.1,16,2.9c12,4.1,18.3,13.4,20.4,25.5c0.9,5,1.4,10.1,1.5,15.2C1320.2,130.4,1320.1,168,1320.1,205.6z"/><path d="M1532.7,143.6c0.2,1.4-0.6,2.7-1.9,3.1c-47.7,21.1-95.3,42.1-142.9,63.3c-0.4,0.2-0.9,0.3-1.7,0.6c0-9.6-0.1-18.8,0.1-28c0-0.8,1.2-1.9,2.1-2.3c19-8.2,38-16.3,57-24.3l45.8-19.5c0.8-0.3,1.5-0.7,2.7-1.2c-1.6-0.7-2.9-1.3-4.2-1.8c-33.6-14.3-67.3-28.6-100.9-42.9c-1.9-0.8-2.6-1.7-2.6-3.9c0.1-8.8,0.1-17.5,0.1-26.6c1,0.4,1.8,0.7,2.5,1c47.2,20.9,94.5,41.9,141.8,62.8c1.6,0.7,2.3,1.5,2.3,3.3C1532.6,132.7,1532.6,138.1,1532.7,143.6z"/><path d="M489.3,117.7c-0.6-11.4-1.8-22.7-5.3-33.7c-5.9-18.3-17.8-30-37-33.5c-10.2-1.8-20.5-2-30.8-0.6c-18.5,2.4-32.5,11.5-40.3,28.9c-2.3,5.1-4,10.5-5.2,16c-3.8,17.2-4.1,34.8-2.9,52.3c0.7,10,1.9,20,4.9,29.6c5.5,17.8,16.7,29.6,35.4,33.2c3.8,0.7,7.7,1.2,11.5,1.8H435c1.1-0.2,2.1-0.4,3.2-0.5c22-1.9,37.6-12.4,45-33.7c0.9-2.5,1.7-5,2.3-7.6C489.6,152.7,490.2,135.2,489.3,117.7z M448,166.9c-0.7,3.5-1.9,6.9-3.7,10c-6.1,10.7-21.2,11.4-28.5,1.5c-4-5.3-5.4-11.6-6-17.9c-0.9-9.9-1.2-19.8-2-32.3c0.8-9.2,1.7-20.9,2.9-32.5c0.5-4.9,2.4-9.5,5.5-13.3c7.2-9,21.8-8.4,27.6,1.7c2.4,4.3,4,9,4.7,13.9C452.1,120.9,452.3,144,448,166.9z"/><path d="M1087.9,136.8h77.6c0-8.2,0.3-16.2-0.1-24.2c-0.5-9.8-1.5-19.5-4.5-28.9c-5.4-17.1-16.3-28.7-34.1-32.8c-12.3-2.7-25-2.7-37.2,0.1c-13.7,3-24.4,10.5-31.5,22.8c-3.9,6.7-6.6,14.1-7.9,21.7c-3.1,17.4-3.2,34.9-2.3,52.4c0.5,8.6,1,17.1,3.3,25.5c5.4,19.4,17.2,32.3,37.4,36.4c4,0.8,8,1.2,12.1,1.8h12.8l7.5-1c20.2-2.8,33.4-13.6,39.2-33.3c0.6-2,1.2-4.1,1.5-6.2c0.8-4.9,1.3-9.8,2-14.9h-36c-0.2,1.3-0.4,2.5-0.6,3.7c-1,6.1-2.3,12.2-5.6,17.6c-5.5,9.1-18.9,10.4-26.2,2.7c-3.1-3.3-4.8-7.4-6-11.7c-2.9-10.2-2.3-20.7-2.1-31.2C1087.3,137.3,1087.6,137.1,1087.9,136.8z M1092.6,81.7c4.2-6.7,10.5-8.9,18-7.9c6.9,0.9,11.3,4.8,13.7,11.4c2.9,8.1,2.8,16.5,3.5,25.2h-40.6C1087,100.3,1087.1,90.5,1092.6,81.7L1092.6,81.7z"/></g></svg>';
+
+const AVATAR_COLORS = ['#03FFC7','#EBA0E4','#88DB6D','#FDFCB9','#C26CFF','#BED8EE','#F9532F','#FDD97C'];
+function avatarColor(id) { return AVATAR_COLORS[(id - 1) % AVATAR_COLORS.length]; }
+
+// ============================================================
+// EVENTS CONFIG
+// ============================================================
+
+const EVENTS = {
+  impactweek2026: {
+    slug: 'impactweek2026',
+    name: 'Impact/Week 2026',
+    shortName: 'IMPACT/WEEK',
+    tagline: '1,200 founders, funders & enablers',
+    location: 'Brussels',
+    house: 'Norrsken House Brussels',
+    dates: 'June 1–7, 2026',
+    description: 'Join 1,200 founders, funders, and enablers in Brussels for the week where impact meets action.',
+    heroImage: '../site/img/hero_gif.gif',
+    marqueeItems: ['Impact Week 2026', 'Brussels', '1,200 founders, funders & enablers', 'Seven days of impact'],
+    ticketStatus: 'confirmed'
+  }
+};
+
+const EVENTS_FEED = [
+  { slug: 'impactweek2026', name: 'Impact/Week 2026', location: 'Brussels', dates: 'June 1–7, 2026', tagline: '1,200 founders, funders & enablers', heroImage: '../site/img/hero_gif.gif', house: 'Norrsken House Brussels', status: 'upcoming', category: 'flagship' },
+  { slug: 'founders-sthlm-2026', name: 'Founders Meetup Stockholm', location: 'Stockholm', dates: 'April 15, 2026', tagline: 'Monthly founder gathering at Norrsken House', heroImage: '../site/img/gallery/gallery-03.jpg', house: 'Norrsken House Stockholm', status: 'upcoming', category: 'meetup' },
+  { slug: 'climate-nairobi-2026', name: 'Climate Action Nairobi', location: 'Nairobi', dates: 'May 20–22, 2026', tagline: 'East Africa\'s largest climate tech convening', heroImage: '../site/img/gallery/gallery-05.jpg', house: 'Norrsken House Kigali', status: 'upcoming', category: 'conference' },
+  { slug: 'bcn-demo-day-2026', name: 'Demo Day Barcelona', location: 'Barcelona', dates: 'March 28, 2026', tagline: '12 startups. 200 investors. One afternoon.', heroImage: '../site/img/gallery/gallery-07.jpg', house: 'Norrsken House Barcelona', status: 'past', category: 'demo_day' },
+  { slug: 'ams-investor-2026', name: 'Investor Summit Amsterdam', location: 'Amsterdam', dates: 'July 10–11, 2026', tagline: 'Two days of impact investing deep-dives', heroImage: '', house: 'Norrsken House Amsterdam', status: 'upcoming', category: 'conference' },
+  { slug: 'kigali-founders-2026', name: 'Founders Forum Kigali', location: 'Kigali', dates: 'August 5, 2026', tagline: 'Building the next generation of African startups', heroImage: '', house: 'Norrsken House Kigali', status: 'upcoming', category: 'meetup' },
+  { slug: 'sthlm-policy-2026', name: 'Policy & Impact Stockholm', location: 'Stockholm', dates: 'September 18, 2026', tagline: 'Where policy meets entrepreneurship', heroImage: '', house: 'Norrsken House Stockholm', status: 'upcoming', category: 'conference' },
+  { slug: 'bcn-circular-2026', name: 'Circular Economy Week', location: 'Barcelona', dates: 'October 2–4, 2026', tagline: 'Rethinking production and consumption', heroImage: '', house: 'Norrsken House Barcelona', status: 'upcoming', category: 'conference' }
+];
+
+// Helpers
+function getEventConfig() { return EVENTS[state.currentEventSlug]; }
+function getEventData() {
+  const slug = state.currentEventSlug;
+  if (slug === 'impactweek2026') return { attendees: ATTENDEES, sessions: SESSIONS, faqs: FAQS };
+  return { attendees: [], sessions: [], faqs: [] };
+}
+function getEventState() {
+  if (!state.currentEventSlug) return { favorites: { sessions: [], attendees: [] }, handshakesSent: [], handshakesReceived: [], activeFilters: { stage: [], theme: [], speaker: [], day: [], role: [], location: [], industry: [] } };
+  if (!state.events[state.currentEventSlug]) {
+    state.events[state.currentEventSlug] = { favorites: { sessions: [], attendees: [] }, handshakesSent: [], handshakesReceived: [], activeFilters: { stage: [], theme: [], speaker: [], day: [], role: [], location: [], industry: [] } };
+  }
+  return state.events[state.currentEventSlug];
+}
+
+// ============================================================
+// DATA (Impact Week 2026)
+// ============================================================
+
+const ATTENDEES = [
+  { id: 1, name: "Erik Granholm", title: "Digital Marketing Manager", company: "Norrsken", location: "Stockholm, Sweden", role: "enabler", industry: ["Climatetech"], linkedin: "https://linkedin.com/in/", bio: "Driving digital marketing strategy across Norrsken's portfolio. Previously led growth at three impact startups.", photo: "../site/img/speakers/speaker-03.jpg", tags: ["Enabler", "Climatetech", "Marketing"] },
+  { id: 2, name: "Alex Bakir", title: "General Partner", company: "Norrsken Evolve", location: "Amsterdam, Netherlands", role: "investor", industry: ["Fintech", "Climatetech"], linkedin: "https://linkedin.com/in/", bio: "Investing in category-defining companies tackling the world's most pressing challenges. 15 years in venture capital.", photo: "../site/img/speakers/speaker-04.jpg", tags: ["Investor", "Fintech", "Climatetech"] },
+  { id: 3, name: "Olivia Lazard", title: "Visiting Scholar", company: "Carnegie Europe", location: "Brussels, Belgium", role: "speaker", industry: ["Climatetech", "Policy"], linkedin: "https://linkedin.com/in/", bio: "Researching the intersection of ecological transition, geopolitics, and digital governance. Fellow at Carnegie Europe.", photo: "../site/img/speakers/speaker-05.jpg", tags: ["Speaker", "Climatetech", "Policy"] },
+  { id: 4, name: "Daniel Goldberg", title: "CCO & Deputy CEO", company: "Norrsken", location: "Stockholm, Sweden", role: "enabler", industry: ["Impact"], linkedin: "https://linkedin.com/in/", bio: "Building the narrative for the world's largest impact ecosystem. Former journalist, author of two bestsellers.", photo: "../site/img/speakers/andri-magnason.jpg", tags: ["Enabler", "Impact", "Media"] },
+  { id: 5, name: "Johan Attby", title: "General Partner", company: "Norrsken Evolve", location: "Stockholm, Sweden", role: "investor", industry: ["Deeptech", "Climatetech"], linkedin: "https://linkedin.com/in/", bio: "Serial entrepreneur turned investor. Co-founded two unicorns before joining Norrsken Evolve.", photo: "../site/img/speakers/audrey-tang.jpg", tags: ["Investor", "Deeptech", "Climatetech"] },
+  { id: 6, name: "Nina Wenstrom", title: "Creative Director", company: "Norrsken", location: "Stockholm, Sweden", role: "speaker", industry: ["Design", "Impact"], linkedin: "https://linkedin.com/in/", bio: "Leading creative strategy across Norrsken's ecosystem. Background in editorial design and art direction.", photo: "../site/img/speakers/speaker-03.jpg", tags: ["Speaker", "Design", "Impact"] },
+  { id: 7, name: "Bengt Ekegren", title: "Managing Director", company: "Stockholm Resilience Centre", location: "Stockholm, Sweden", role: "speaker", industry: ["Climatetech", "Regeneration"], linkedin: "https://linkedin.com/in/", bio: "Leading research on planetary boundaries and sustainable business transformation.", photo: "../site/img/speakers/speaker-04.jpg", tags: ["Speaker", "Regeneration", "Climatetech"] },
+  { id: 8, name: "Sara Lindqvist", title: "Managing Partner, Co-founder", company: "Intimate Investments", location: "Berlin, Germany", role: "investor", industry: ["Healthtech", "Femtech"], linkedin: "https://linkedin.com/in/", bio: "Pioneer in femtech investing. Portfolio of 22 companies across health, wellness, and longevity.", photo: "../site/img/speakers/speaker-05.jpg", tags: ["Investor", "Healthtech", "Femtech"] },
+  { id: 9, name: "Marcus Henriksson", title: "CEO", company: "Syre", location: "Gothenburg, Sweden", role: "enabler", industry: ["Climatetech", "Circular Economy"], linkedin: "https://linkedin.com/in/", bio: "Building the world's largest textile-to-textile recycling operation. Former McKinsey partner.", photo: "../site/img/speakers/andri-magnason.jpg", tags: ["Enabler", "Climatetech", "Circular Economy"] },
+  { id: 10, name: "Ebba Forsberg", title: "Policy Director", company: "Norrsken Brussels", location: "Brussels, Belgium", role: "enabler", industry: ["Policy", "Impact"], linkedin: "https://linkedin.com/in/", bio: "Connecting Europe's impact ecosystem with EU policy-making. Former advisor to the European Commission.", photo: "../site/img/speakers/audrey-tang.jpg", tags: ["Enabler", "Policy", "Impact"] }
+];
+
+const SESSIONS = [
+  { id: 1, title: "Doing Business Within the Planetary Boundaries", description: "How can companies operate profitably while respecting Earth's nine planetary boundaries? This session brings together scientists and business leaders to explore practical frameworks for regenerative business models.", start: "10:30", end: "11:30", day: "Monday", stage: "Red Room", speakers: [3, 7], themes: ["Regeneration", "Climatetech"], type: "session", image: "../site/img/gallery/gallery-01.jpg" },
+  { id: 2, title: "The Future of Impact Investing in Europe", description: "European impact capital is entering a new phase. What does the next generation of impact funds look like, and how is regulation shaping the field?", start: "12:00", end: "13:00", day: "Monday", stage: "Red Room", speakers: [2, 5], themes: ["Investing", "Policy"], type: "session", image: "../site/img/gallery/gallery-02.jpg" },
+  { id: 3, title: "Scaling Circular Economy Ventures", description: "From textile recycling to regenerative agriculture -- the founders building circular businesses share what works and what doesn't at scale.", start: "14:00", end: "15:00", day: "Monday", stage: "Beach Living Room", speakers: [9, 4], themes: ["Circular Economy", "Climatetech"], type: "session", image: "../site/img/gallery/gallery-03.jpg" },
+  { id: 4, title: "Policy as a Product: Building for Brussels", description: "How impact startups can engage with EU policy to create systemic change, not just compliance.", start: "15:30", end: "16:30", day: "Monday", stage: "Town Hall", speakers: [10, 3], themes: ["Policy"], type: "session", image: "../site/img/gallery/gallery-04.jpg" },
+  { id: 5, title: "Femtech and the Gender Investment Gap", description: "Women's health is a $1T market -- yet receives 3% of health R&D funding. What will it take to close the gap?", start: "10:00", end: "11:00", day: "Tuesday", stage: "Beach Living Room", speakers: [8], themes: ["Healthtech", "Investing"], type: "session", image: "../site/img/gallery/gallery-05.jpg" },
+  { id: 6, title: "Design as Strategy: Making Impact Visible", description: "How creative direction and design thinking can make the impact ecosystem more compelling, more legible, and more human.", start: "11:30", end: "12:30", day: "Tuesday", stage: "Mare Nostrum", speakers: [6], themes: ["Design", "Impact"], type: "session", image: "../site/img/gallery/gallery-06.jpg" },
+  { id: 7, title: "Norrsken x Riche: Opening Night Dinner", description: "Join us for the official opening dinner at Riche Brussels. Champagne reception, three-course dinner, and the conversations that set the tone for the week.", start: "19:00", end: "23:00", day: "Monday", stage: "Off-site", speakers: [], themes: ["Side Event"], type: "side_event", image: "../site/img/gallery/gallery-07.jpg", externalUrl: "https://norrsken.org/impactweek/dinner", venue: "Riche Brussels, Rue du Tabellion 12, Belgium" },
+  { id: 8, title: "Sunrise Run: Brussels Park", description: "Start your Tuesday with a 5K run through Brussels Park. All levels welcome. Meeting point at the venue lobby.", start: "06:30", end: "07:30", day: "Tuesday", stage: "Off-site", speakers: [], themes: ["Side Event", "Wellbeing"], type: "side_event", image: "../site/img/gallery/gallery-08.jpg", externalUrl: "https://norrsken.org/impactweek/run", venue: "Brussels Park, Rue Royale, Belgium" },
+  { id: 9, title: "Deeptech for Climate: What VCs Are Missing", description: "A candid conversation about the blind spots in climate venture capital and where the next breakthroughs will come from.", start: "14:00", end: "15:00", day: "Tuesday", stage: "Red Room", speakers: [5, 2], themes: ["Deeptech", "Climatetech", "Investing"], type: "session", image: "../site/img/gallery/gallery-09.jpg" },
+  { id: 10, title: "The Regeneration Workshop", description: "Hands-on workshop exploring regenerative design principles. Bring your laptop and an open mind.", start: "16:00", end: "18:00", day: "Tuesday", stage: "Mare Nostrum", speakers: [7], themes: ["Regeneration", "Design"], type: "session", image: "../site/img/gallery/gallery-01.jpg" }
+];
+
+const FAQS = [
+  { id: 1, q: "What is Impact/Week?", a: "Impact/Week is Norrsken's annual gathering of founders, funders, and enablers working on the world's most pressing challenges. It takes place across multiple venues in Brussels over seven days." },
+  { id: 2, q: "Where is the venue?", a: "The main venue is Norrsken House Brussels at Rue du Commerce 72, 1000 Brussels, Belgium. Side events may take place at partner locations across the city." },
+  { id: 3, q: "How do I get to the venue?", a: "Norrsken House Brussels is a 10-minute walk from Brussels-Central station. The nearest metro stops are Troon/Troon (lines 1, 5) and Arts-Loi/Kunst-Wet (lines 2, 6). Underground parking is available." },
+  { id: 4, q: "What should I wear?", a: "Smart casual. Brussels in late spring can be unpredictable -- bring layers. There's no dress code for sessions, but the opening dinner is business casual." },
+  { id: 5, q: "Is there WiFi?", a: "Yes. Network: NorrskenGuest, Password: impact2026. Available across all floors." },
+  { id: 6, q: "Can I bring a guest?", a: "Impact/Week is invite-only. Each attendee has a personal invitation. If you'd like to recommend someone, contact our team at events@norrsken.org." },
+  { id: 7, q: "What is the Shake Hands feature?", a: "Shake Hands is our way of facilitating warm introductions. When you find someone you'd like to connect with, tap 'Shake Hands' on their profile. If they shake back, you're matched and can see each other's contact details." },
+  { id: 8, q: "How do I add sessions to my calendar?", a: "On any session detail page, tap 'Add to Calendar' to download an .ics file that you can add to your calendar app." },
+  { id: 9, q: "Is the venue accessible?", a: "Yes. All stages and common areas are wheelchair accessible. Elevators are available. If you have specific accessibility needs, please contact us in advance." },
+  { id: 10, q: "Where is the bar?", a: "The main bar is on the ground floor of Norrsken House, open from 17:00 to 22:00 daily. Coffee and refreshments are available on every floor throughout the day." }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+
+let state = {
+  loggedIn: false,
+  currentUser: null,
+  currentPage: 'login',
+  previousPage: null,
+  currentEventSlug: null,
+  savedEvents: [],
+  scrollPositions: {},
+  events: {
+    impactweek2026: {
+      favorites: { sessions: [], attendees: [] },
+      handshakesSent: [],
+      handshakesReceived: [
+        { from: 10, status: 'pending' },
+        { from: 8, status: 'pending' },
+        { from: 2, status: 'pending' },
+        { from: 4, status: 'pending' }
+      ],
+      activeFilters: { stage: [], theme: [], speaker: [], day: [], role: [], location: [], industry: [] }
+    }
+  }
+};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('iw2026_state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Migration: old flat state → new nested state
+      if (parsed.favorites && !parsed.events) {
+        const migrated = {
+          loggedIn: parsed.loggedIn,
+          currentUser: parsed.currentUser,
+          currentPage: 'login',
+          previousPage: null,
+          currentEventSlug: null,
+          savedEvents: [],
+          scrollPositions: {},
+          events: {
+            impactweek2026: {
+              favorites: parsed.favorites || { sessions: [], attendees: [] },
+              handshakesSent: parsed.handshakesSent || [],
+              handshakesReceived: parsed.handshakesReceived || [],
+              activeFilters: parsed.activeFilters || { stage: [], theme: [], speaker: [], day: [], role: [], location: [], industry: [] }
+            }
+          }
+        };
+        Object.assign(state, migrated);
+      } else {
+        Object.assign(state, parsed);
+      }
+    }
+  } catch(e) {}
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('iw2026_state', JSON.stringify(state));
+  } catch(e) {}
+}
+
+loadState();
+
+// ============================================================
+// NAV TITLE ANIMATION
+// ============================================================
+
+let navAnimInterval = null;
+let navShowingImpact = true;
+
+function startNavAnimation() {
+  if (navAnimInterval) clearInterval(navAnimInterval);
+  navAnimInterval = setInterval(() => {
+    const title = document.getElementById('navTitle');
+    if (!title || !title.querySelector) return;
+    const textEl = title.querySelector('.nav-title-text');
+    if (!textEl) return;
+
+    textEl.classList.add('fade-out');
+    setTimeout(() => {
+      navShowingImpact = !navShowingImpact;
+      const config = getEventConfig();
+      const titleText = config ? config.shortName : 'NORRSKEN EVENTS';
+      textEl.innerHTML = navShowingImpact ? titleText : NORRSKEN_SVG;
+      textEl.classList.remove('fade-out');
+      textEl.classList.add('fade-in');
+      // Force reflow
+      textEl.offsetHeight;
+      textEl.classList.remove('fade-in');
+    }, 400);
+  }, 4000);
+}
+
+function stopNavAnimation() {
+  if (navAnimInterval) {
+    clearInterval(navAnimInterval);
+    navAnimInterval = null;
+  }
+}
+
+// ============================================================
+// ROUTING
+// ============================================================
+
+const GLOBAL_PAGES = ['events', 'profile', 'tickets', 'search', 'login'];
+const EVENT_PAGES = ['event-home', 'home', 'agenda', 'session', 'attendees', 'attendee', 'favorites', 'faq', 'venue'];
+
+function navigateHome() {
+  if (state.loggedIn) {
+    if (state.currentEventSlug) {
+      navigate('home');
+    } else {
+      navigate('events');
+    }
+  }
+}
+
+function enterEvent(slug) {
+  state.currentEventSlug = slug;
+  saveState();
+  navigate('home');
+}
+
+function ensureEvent() {
+  if (!state.currentEventSlug) {
+    state.currentEventSlug = 'impactweek2026';
+    saveState();
+  }
+}
+
+function exitEvent() {
+  state.currentEventSlug = null;
+  saveState();
+  navigate('events');
+}
+
+function navigate(page, data) {
+  if (!state.loggedIn && page !== 'login') return;
+
+  state.scrollPositions[state.currentPage] = window.scrollY;
+  state.previousPage = state.currentPage;
+  state.currentPage = page;
+  saveState();
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  updateNav(page, data);
+
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+
+  renderPage(page, data);
+
+  if (state.scrollPositions[page] && !data) {
+    window.scrollTo(0, state.scrollPositions[page]);
+  } else {
+    window.scrollTo(0, 0);
+  }
+
+  // Build hash URL
+  let hash;
+  if (GLOBAL_PAGES.includes(page)) {
+    hash = '#/' + page;
+  } else if (state.currentEventSlug) {
+    hash = '#/events/' + state.currentEventSlug + '/' + page;
+    if (data && data.id) hash += '/' + data.id;
+  } else {
+    hash = '#/' + page;
+    if (data && data.id) hash += '/' + data.id;
+  }
+  history.pushState(null, '', hash);
+}
+
+function updateNav(page, data) {
+  document.getElementById('menuOverlay').classList.remove('active');
+  stopNavAnimation();
+
+  const inEvent = !!state.currentEventSlug;
+  const eventPages = ['home', 'agenda', 'attendees', 'faq', 'session', 'attendee', 'favorites'];
+
+  // Nav title — Norrsken logo on global, event name on event pages
+  const titles = {
+    login: '',
+    events: NORRSKEN_SVG,
+    profile: 'MY PROFILE',
+    tickets: 'MY TICKETS',
+    search: 'SEARCH',
+    home: NORRSKEN_SVG,
+    agenda: NORRSKEN_SVG,
+    attendees: NORRSKEN_SVG,
+    favorites: NORRSKEN_SVG,
+    faq: NORRSKEN_SVG,
+    session: NORRSKEN_SVG,
+    attendee: NORRSKEN_SVG
+  };
+
+  const titleContent = titles[page] || NORRSKEN_SVG;
+  const textEl = document.querySelector('.nav-title-text');
+  if (textEl) textEl.innerHTML = titleContent;
+
+  // Update notif dot
+  const savedSlug = state.currentEventSlug;
+  if (!state.currentEventSlug) state.currentEventSlug = 'impactweek2026';
+  const es = getEventState();
+  const pendingCount = es.handshakesReceived ? es.handshakesReceived.filter(h => h.status === 'pending').length : 0;
+  state.currentEventSlug = savedSlug;
+  const dot = document.getElementById('notifDot');
+  if (dot) dot.classList.toggle('active', pendingCount > 0);
+
+  // Show/hide nav on login
+  document.getElementById('mainNav').style.display = page === 'login' ? 'none' : 'flex';
+
+  // Show/hide bottom tab bar — always visible when logged in
+  const eventBar = document.getElementById('eventBar');
+  if (eventBar) {
+    eventBar.classList.toggle('visible', page !== 'login');
+    // Active states
+    eventBar.querySelectorAll('.event-bar-item').forEach(b => b.classList.remove('active'));
+    const barMap = { home: '#ebHome', events: '#ebHome', agenda: '#ebAgenda', session: '#ebAgenda', attendees: '#ebAttendees', attendee: '#ebAttendees', faq: '#ebFaq' };
+    const activeBtn = barMap[page];
+    if (activeBtn) eventBar.querySelector(activeBtn)?.classList.add('active');
+  }
+
+  // Start logo animation on hub and event home
+  if (page === 'events' || (inEvent && eventPages.includes(page))) {
+    navShowingImpact = true;
+    startNavAnimation();
+  }
+
+  updateMenuItems();
+}
+
+function tabNav(page) {
+  // Stub — tab bar removed, but keeping function to avoid JS errors
+  navigate(page);
+}
+
+function updateTabBar(page) {
+  // Stub — tab bar removed
+}
+
+function goBack() {
+  const page = state.currentPage;
+  if (page === 'session') { navigate('agenda'); return; }
+  if (page === 'attendee') { navigate('attendees'); return; }
+  if (page === 'profile') { navigate(state.currentEventSlug ? 'home' : 'events'); return; }
+  if (page === 'home') { state.currentEventSlug = null; saveState(); navigate('events'); return; }
+  // Any other event page → event home
+  if (state.currentEventSlug) { navigate('home'); return; }
+  navigate('events');
+}
+
+function updateMenuItems() {
+  const menuItems = document.querySelector('#menuOverlay .menu-items');
+  if (!menuItems) return;
+
+  let html = '<div class="menu-section">';
+  html += `<div class="menu-item" onclick="menuNav('events')"><span>All Norrsken Events</span></div>`;
+  html += `<div class="menu-item" onclick="menuNav('search')"><span>Search</span></div>`;
+  html += `<div class="menu-item" onclick="menuNav('profile')"><span>Profile</span></div>`;
+  html += `<div class="menu-item" onclick="signOut()"><span>Sign Out</span></div>`;
+  html += '</div>';
+
+  menuItems.innerHTML = html;
+}
+
+function signOut() {
+  state.loggedIn = false;
+  state.currentUser = null;
+  state.currentEventSlug = null;
+  saveState();
+  toggleMenu();
+  navigate('login');
+}
+
+// ============================================================
+// MENU
+// ============================================================
+
+function toggleMenu() {
+  updateMenuItems();
+  document.getElementById('menuOverlay').classList.toggle('active');
+}
+
+function menuNav(page) {
+  toggleMenu();
+  if (GLOBAL_PAGES.includes(page)) {
+    state.currentEventSlug = null;
+    saveState();
+  }
+  navigate(page);
+}
+
+function closeMenuAndNav(page) {
+  const menu = document.getElementById('menuOverlay');
+  if (menu.classList.contains('active')) menu.classList.remove('active');
+  navigate(page);
+}
+
+// ============================================================
+// FILTER TOGGLE
+// ============================================================
+
+function toggleFilterPanel(panelId, toggleBar) {
+  const panel = document.getElementById(panelId);
+  panel.classList.toggle('open');
+  toggleBar.classList.toggle('open');
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+
+function renderPage(page, data) {
+  switch(page) {
+    case 'events': renderEventsFeed(); break;
+    case 'home': renderHome(); break;
+    case 'tickets': renderTickets(); break;
+    case 'search': renderSearch(); break;
+    case 'agenda': renderAgenda(); setTimeout(initScrollReveal, 50); break;
+    case 'session': renderSession(data); break;
+    case 'attendees': renderAttendees(); setTimeout(initScrollReveal, 50); break;
+    case 'attendee': renderAttendee(data); break;
+    case 'favorites': renderFavorites(); break;
+    case 'profile': renderProfile(); break;
+    case 'faq': renderFAQ(); break;
+  }
+}
+
+// ============================================================
+// EVENT HOME (Table of Contents)
+// ============================================================
+
+function renderEventHome() { renderHome(); }
+
+function renderHome() {
+  const container = document.getElementById('homeContent');
+  if (!container) return;
+
+  const config = getEventConfig();
+  if (!config) { navigate('events'); return; }
+
+  const { sessions, attendees: allAttendees } = getEventData();
+  const es = getEventState();
+
+  // Schedule = favorited sessions
+  const savedSessionIds = es.favorites?.sessions || [];
+  const scheduleSessions = sessions.filter(s => savedSessionIds.includes(s.id));
+
+  // Pending handshakes
+  const pending = (es.handshakesReceived || []).filter(h => h.status === 'pending');
+  const pendingAtts = pending.map(h => {
+    const att = allAttendees.find(a => a.id === h.from);
+    return att ? { ...h, att } : null;
+  }).filter(Boolean);
+
+  // Community = accepted handshakes
+  const accepted = (es.handshakesReceived || []).filter(h => h.status === 'accepted');
+  const communityAtts = accepted.map(h => {
+    const att = allAttendees.find(a => a.id === h.from);
+    return att ? att : null;
+  }).filter(Boolean);
+
+  let html = '';
+
+  // Header
+  html += `<div style="padding: 24px 20px 16px;">
+    <div style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; color:var(--grey); margin-bottom:6px;">${config.shortName} / ${config.dates}</div>
+    <div style="font-size:22px; font-weight:400; letter-spacing:-0.5px; line-height:1.2;">My Week</div>
+  </div>`;
+
+  // Handshakes
+  if (pendingAtts.length > 0) {
+    html += `<div style="border-top:1px solid var(--black); padding:16px 20px 8px;">
+      <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:12px;">New Handshakes</div>
+    </div>`;
+    pendingAtts.forEach(h => {
+      html += `<div class="notif-item">
+        <div class="notif-photo" style="background:${avatarColor(h.att.id)}"></div>
+        <div class="notif-info">
+          <div class="notif-name">${h.att.name}</div>
+          <div class="notif-title">${h.att.title}, ${h.att.company}</div>
+        </div>
+        <button class="notif-action" onclick="acceptHandshake(${h.att.id}, this)">Shake</button>
+      </div>`;
+    });
+  }
+
+  // My Schedule
+  html += `<div style="border-top:1px solid var(--black); padding:16px 20px 8px;">
+    <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:4px;">My Schedule</div>
+    <div style="font-size:11px; color:var(--grey);">Sessions you've saved appear here as your personal agenda.</div>
+  </div>`;
+
+  if (scheduleSessions.length > 0) {
+    scheduleSessions.forEach(s => {
+      html += `<div class="agenda-slot" onclick="navigate('session', {id:${s.id}})">
+        <div class="agenda-slot-title">${s.title}</div>
+        <div class="agenda-slot-speaker">${s.speakers.map(sp => sp.name).join(', ')}</div>
+        <div class="agenda-slot-time">${s.time}</div>
+      </div>`;
+    });
+  } else {
+    html += `<div style="padding:20px; color:var(--grey); font-size:11px;">No sessions saved yet. Browse the agenda and tap the heart to add sessions to your schedule.</div>`;
+  }
+
+  // Community
+  html += `<div style="border-top:1px solid var(--black); padding:16px 20px 8px;">
+    <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:4px;">Your Community</div>
+    <div style="font-size:11px; color:var(--grey);">People you've connected with.</div>
+  </div>`;
+
+  if (communityAtts.length > 0) {
+    communityAtts.forEach(a => {
+      html += `<div class="person-card" onclick="navigate('attendee', {id:${a.id}})">
+        <div class="person-card-photo" style="background:${avatarColor(a.id)}"></div>
+        <div class="person-card-info">
+          <div class="person-card-name">${a.name}</div>
+          <div class="person-card-title">${a.title}</div>
+          <div class="person-card-company">${a.company}</div>
+        </div>
+      </div>`;
+    });
+  } else {
+    html += `<div style="padding:20px; color:var(--grey); font-size:11px;">No connections yet. Shake someone's hand from the attendees page to connect.</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+// ============================================================
+// EVENTS FEED (Global Hub)
+// ============================================================
+
+function renderEventsFeed() {
+  const container = document.getElementById('eventsFeedList');
+  if (!container) return;
+
+  container.innerHTML = EVENTS_FEED.map((ev, idx) => {
+    const isSaved = state.savedEvents.includes(ev.slug);
+    const isPast = ev.status === 'past';
+    const hasAccess = !!EVENTS[ev.slug];
+
+    return `<div class="event-feed-card ${isPast ? 'past' : ''}" onclick="${hasAccess ? `enterEvent('${ev.slug}')` : `showToast('Coming soon')`}">
+      <div class="event-feed-img" style="background:${avatarColor(idx + 1)}"></div>
+      <div class="event-feed-info">
+        <div class="event-feed-name">${ev.name}</div>
+        <div class="event-feed-meta">${ev.dates}</div>
+        <div class="event-feed-house">${ev.house}</div>
+        ${isPast ? '<div class="event-feed-status">PAST</div>' : ''}
+        <div class="event-feed-readmore">+ Read more</div>
+      </div>
+      <button class="event-feed-heart ${isSaved ? 'active' : ''}" onclick="event.stopPropagation(); toggleSavedEvent('${ev.slug}', this)">
+        <svg viewBox="0 0 90 90" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function toggleSavedEvent(slug, btn) {
+  const idx = state.savedEvents.indexOf(slug);
+  if (idx > -1) {
+    state.savedEvents.splice(idx, 1);
+    if (btn) { btn.classList.remove('active'); btn.querySelector('svg').setAttribute('fill', 'none'); }
+  } else {
+    state.savedEvents.push(slug);
+    if (btn) { btn.classList.add('active'); btn.querySelector('svg').setAttribute('fill', 'currentColor'); }
+  }
+  saveState();
+}
+
+// ============================================================
+// TICKETS (Global)
+// ============================================================
+
+function renderTickets() {
+  const container = document.getElementById('ticketsList');
+  if (!container) return;
+
+  const myEvents = Object.entries(EVENTS).filter(([slug, ev]) => ev.ticketStatus);
+  if (myEvents.length === 0) {
+    container.innerHTML = '<div class="empty-state">No tickets yet. Browse events to find your next gathering.</div>';
+    return;
+  }
+
+  container.innerHTML = myEvents.map(([slug, ev]) => `
+    <div class="ticket-card" onclick="enterEvent('${slug}')">
+      <div class="ticket-info">
+        <div class="ticket-name">${ev.name}</div>
+        <div class="ticket-meta">${ev.location} / ${ev.dates}</div>
+        <div class="ticket-status">${ev.ticketStatus.toUpperCase()}</div>
+      </div>
+      <span class="ticket-arrow">&gt;</span>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// SEARCH (Global placeholder)
+// ============================================================
+
+function renderSearch() {
+  // Placeholder — search input is already in HTML
+}
+
+function handleGlobalSearch() {
+  const query = (document.getElementById('globalSearch')?.value || '').toLowerCase().trim();
+  const container = document.getElementById('searchResults');
+  if (!query) {
+    container.innerHTML = '<div class="empty-state" style="padding:40px 16px; color:var(--grey-label);">Search across all Norrsken events. Try a name, topic, or location.</div>';
+    return;
+  }
+
+  let results = '';
+
+  // Search events
+  const matchedEvents = EVENTS_FEED.filter(ev => (ev.name + ' ' + ev.location + ' ' + ev.house + ' ' + ev.tagline).toLowerCase().includes(query));
+  matchedEvents.forEach(ev => {
+    results += `<div class="person-card" onclick="${EVENTS[ev.slug] ? `enterEvent('${ev.slug}')` : `showToast('Coming soon')`}" style="cursor:pointer;">
+      <img class="person-card-photo" src="${ev.heroImage}" alt="" style="object-fit:cover;" onerror="this.style.display='none'">
+      <div class="person-card-info">
+        <div class="person-card-name">${ev.name}</div>
+        <div class="person-card-title">${ev.location} / ${ev.dates}</div>
+        <div class="person-card-company">${ev.house}</div>
+      </div>
+    </div>`;
+  });
+
+  // Search people (across all events)
+  const matchedPeople = ATTENDEES.filter(a => (a.name + ' ' + a.title + ' ' + a.company).toLowerCase().includes(query));
+  matchedPeople.forEach(a => {
+    results += `<div class="person-card" onclick="state.currentEventSlug='impactweek2026'; navigate('attendee', {id:${a.id}})" style="cursor:pointer;">
+      <div class="person-card-photo" style="background:${avatarColor(a.id)}"></div>
+      <div class="person-card-info">
+        <div class="person-card-name">${a.name}</div>
+        <div class="person-card-title">${a.title}</div>
+        <div class="person-card-company">${a.company}</div>
+      </div>
+    </div>`;
+  });
+
+  container.innerHTML = results || '<div class="empty-state">No results found.</div>';
+}
+
+// ============================================================
+// LOGIN
+// ============================================================
+
+function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+
+  err.classList.remove('visible');
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    if (email && email.includes('@')) {
+      state.loggedIn = true;
+      state.currentUser = ATTENDEES[0];
+      state.currentEventSlug = 'impactweek2026';
+      saveState();
+      navigate('home');
+    } else {
+      err.classList.add('visible');
+    }
+    btn.textContent = 'SUBMIT';
+    btn.disabled = false;
+  }, 800);
+}
+
+// ============================================================
+// AGENDA (website-style with expandable slots)
+// ============================================================
+
+function renderAgenda() {
+  const { sessions, attendees } = getEventData();
+  const stages = [...new Set(sessions.map(s => s.stage))];
+  const themes = [...new Set(sessions.flatMap(s => s.themes))];
+  const speakers = attendees.filter(a => sessions.some(s => s.speakers.includes(a.id)));
+  const days = [...new Set(sessions.map(s => s.day))];
+
+  renderFilterOptions('filterStage', 'stage', stages);
+  renderFilterOptions('filterTheme', 'theme', themes);
+  renderFilterOptions('filterSpeaker', 'speaker', speakers.map(s => s.name));
+  renderFilterOptions('filterDay', 'day', days);
+
+  filterAgenda();
+}
+
+function renderFilterOptions(containerId, filterKey, options) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = options.map(opt => {
+    const active = getEventState().activeFilters[filterKey]?.includes(opt);
+    return `<div class="filter-option-item ${active ? 'active' : ''}" onclick="toggleFilterOption('${filterKey}', '${opt.replace(/'/g, "\\'")}', this)"><span class="filter-option-label">${opt}</span><span class="filter-check"></span></div>`;
+  }).join('');
+}
+
+function toggleFilter(el) {
+  el.closest('.filter-group').classList.toggle('open');
+}
+
+function toggleFilterOption(filterKey, value, el) {
+  const arr = getEventState().activeFilters[filterKey];
+  const idx = arr.indexOf(value);
+  if (idx > -1) arr.splice(idx, 1);
+  else arr.push(value);
+
+  el.classList.toggle('active');
+  updateClearButtons();
+
+  saveState();
+  if (['stage','theme','speaker','day'].includes(filterKey)) filterAgenda();
+  else filterAttendees();
+}
+
+function clearAllFilters() {
+  const es = getEventState();
+  Object.keys(es.activeFilters).forEach(key => { es.activeFilters[key] = []; });
+  document.querySelectorAll('.filter-option-item.active').forEach(el => el.classList.remove('active'));
+  updateClearButtons();
+  saveState();
+  filterAgenda();
+  filterAttendees();
+}
+
+function updateClearButtons() {
+  const hasFilters = Object.values(getEventState().activeFilters).some(arr => arr.length > 0);
+  document.querySelectorAll('.filter-clear').forEach(el => {
+    el.classList.toggle('visible', hasFilters);
+  });
+}
+
+function filterAgenda() {
+  const query = (document.getElementById('agendaSearch')?.value || '').toLowerCase();
+  const { sessions, attendees } = getEventData();
+  const f = getEventState().activeFilters;
+
+  let filtered = sessions.filter(s => {
+    if (query) {
+      const haystack = (s.title + ' ' + s.description + ' ' + s.speakers.map(id => attendees.find(a => a.id === id)?.name || '').join(' ')).toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+    if (f.stage.length && !f.stage.includes(s.stage)) return false;
+    if (f.theme.length && !s.themes.some(t => f.theme.includes(t))) return false;
+    if (f.speaker.length) {
+      const sNames = s.speakers.map(id => attendees.find(a => a.id === id)?.name || '');
+      if (!sNames.some(n => f.speaker.includes(n))) return false;
+    }
+    if (f.day.length && !f.day.includes(s.day)) return false;
+    return true;
+  });
+
+  const container = document.getElementById('agendaList');
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty-state">No sessions match your filters.</div>';
+    return;
+  }
+
+  // Group by day and sort by time
+  const grouped = {};
+  filtered.forEach(s => {
+    const key = s.day;
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(s);
+  });
+
+  // Sort each group by start time
+  Object.values(grouped).forEach(arr => {
+    arr.sort((a, b) => a.start.localeCompare(b.start));
+  });
+
+  let html = '';
+  const es = getEventState();
+  const contentGifs = { 'Tuesday': 'easter/egg_1.gif', 'Thursday': 'easter/egg_3.gif' };
+  const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  dayOrder.forEach(day => {
+    if (!grouped[day]) return;
+    if (contentGifs[day]) html += `<div class="content-gif"><img src="${contentGifs[day]}" alt=""></div>`;
+    html += `<div class="agenda-time-cell">${day}</div>`;
+    grouped[day].forEach(s => {
+      const speakerNames = s.speakers.map(id => attendees.find(a => a.id === id)?.name || '').join(', ');
+      const allSpeakers = s.speakers.map(id => {
+        const a = attendees.find(x => x.id === id);
+        return a ? `${a.name}, ${a.title}` : '';
+      }).filter(Boolean).join('<br>');
+
+      const desc120 = s.description ? s.description.substring(0, 120) + (s.description.length > 120 ? '...' : '') : '';
+      const isFav = es.favorites.sessions.includes(s.id);
+      const hostedBy = s.hostedBy || s.stage || '—';
+
+      html += `<div class="agenda-slot" id="slot-${s.id}" onclick="toggleAgendaSlot(${s.id}, event)">
+        <div class="agenda-slot-title">${s.title}</div>
+        ${speakerNames ? `<div class="agenda-slot-speaker">${speakerNames}</div>` : ''}
+        <div class="agenda-slot-time" style="margin-top:8px;">${s.start}–${s.end}</div>
+        <span class="agenda-slot-expand">+</span>
+        <div class="agenda-slot-detail">
+          <div class="agenda-slot-meta">
+            <strong>Hosted by:</strong> ${hostedBy}<br>
+            <strong>Stage:</strong> ${s.stage}
+          </div>
+          ${desc120 ? `<div class="agenda-slot-desc"><strong>Session:</strong> ${desc120} <a class="inline-readmore" onclick="event.stopPropagation(); navigate('session', {id:${s.id}})" style="cursor:pointer;">Read more</a></div>` : ''}
+          <div class="agenda-slot-actions">
+            <button class="heart-btn" onclick="event.stopPropagation(); toggleFavoriteSession(${s.id}, this)">
+              <svg viewBox="0 0 90 90" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
+              ${isFav ? 'Saved' : 'Save'}
+            </button>
+            <button onclick="event.stopPropagation(); addToCalendar(${s.id})">Add to calendar</button>
+          </div>
+        </div>
+      </div>`;
+    });
+  });
+
+  container.innerHTML = html;
+}
+
+function toggleAgendaSlot(id, event) {
+  const slot = document.getElementById('slot-' + id);
+  if (!slot) return;
+
+  // If clicking action buttons, don't toggle
+  if (event.target.closest('.agenda-slot-actions')) return;
+
+  const wasExpanded = slot.classList.contains('expanded');
+
+  // Close all other expanded slots and reset their icons
+  document.querySelectorAll('.agenda-slot.expanded').forEach(s => {
+    s.classList.remove('expanded');
+    const icon = s.querySelector('.agenda-slot-expand');
+    if (icon) icon.textContent = '+';
+  });
+
+  if (!wasExpanded) {
+    slot.classList.add('expanded');
+    const icon = slot.querySelector('.agenda-slot-expand');
+    if (icon) icon.textContent = '–';
+  }
+}
+
+function addToCalendar(sessionId) {
+  const { sessions } = getEventData();
+  const s = sessions.find(x => x.id === sessionId);
+  if (!s) return;
+  const config = getEventConfig();
+  // Google Calendar URL
+  const title = encodeURIComponent(s.title);
+  const details = encodeURIComponent((s.description || '') + '\n\nStage: ' + s.stage);
+  const location = encodeURIComponent(config?.house || 'Norrsken House');
+  // Use June 2026 dates as placeholder
+  const dayMap = { Monday: '20260601', Tuesday: '20260602', Wednesday: '20260603', Thursday: '20260604', Friday: '20260605' };
+  const dateStr = dayMap[s.day] || '20260601';
+  const startTime = s.start.replace(':', '') + '00';
+  const endTime = s.end.replace(':', '') + '00';
+  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}T${startTime}/${dateStr}T${endTime}&details=${details}&location=${location}`;
+  window.open(url, '_blank');
+}
+
+// ============================================================
+// SESSION DETAIL
+// ============================================================
+
+function renderSession(data) {
+  const { sessions, attendees } = getEventData();
+  const hashParts = location.hash.split('/');
+  const idFromHash = parseInt(hashParts[hashParts.length - 1]);
+  const s = sessions.find(x => x.id === (data?.id || idFromHash));
+  if (!s) return;
+
+  const speakerNames = s.speakers.map(id => attendees.find(a => a.id === id)?.name || '').join(', ');
+  const tags = [...s.themes, ...s.speakers.map(id => attendees.find(a => a.id === id)?.name || '')].join(', ');
+  const isFav = getEventState().favorites.sessions.includes(s.id);
+  const isSideEvent = s.type === 'side_event';
+
+  document.getElementById('sessionContent').innerHTML = `
+    <div class="detail-hero" style="background:${avatarColor(s.id)}"></div>
+    <div class="detail-body">
+      <div class="detail-title">${s.title}</div>
+      <div class="detail-desc">${s.description}</div>
+      <div class="detail-meta">
+        ${speakerNames ? `<div class="detail-meta-row">${speakerNames}</div>` : ''}
+        <div class="detail-meta-row">${isSideEvent && s.venue ? s.venue : s.stage}, <a href="https://maps.google.com/?q=${encodeURIComponent(isSideEvent && s.venue ? s.venue : 'Norrsken House Brussels')}" target="_blank" rel="noopener">View on map</a></div>
+        <div class="detail-meta-row">${s.start}–${s.end}</div>
+      </div>
+      <div class="detail-tags">${tags}</div>
+    </div>
+    <div class="cta-bar">
+      <button class="cta-primary" onclick="${isSideEvent ? `window.open('${s.externalUrl}','_blank')` : `addToCalendar(${s.id})`}">
+        ${isSideEvent ? 'GO TO EVENT' : 'ADD TO CALENDAR'}
+      </button>
+      <button class="cta-fav ${isFav ? 'active' : ''}" onclick="toggleFavSession(${s.id}, this)">&#9825;</button>
+    </div>
+  `;
+}
+
+function addToCalendar(sessionId) {
+  const s = getEventData().sessions.find(x => x.id === sessionId);
+  if (!s) return;
+
+  const date = s.day === 'Monday' ? '20260601' : '20260602';
+  const startTime = s.start.replace('.', '').replace(':', '') + '00';
+  const endTime = s.end.replace('.', '').replace(':', '') + '00';
+
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    `PRODID:-//${getEventConfig()?.name || 'Norrsken Events'}//EN`,
+    'BEGIN:VEVENT',
+    `DTSTART:${date}T${startTime}`,
+    `DTEND:${date}T${endTime}`,
+    `SUMMARY:${s.title}`,
+    `DESCRIPTION:${s.description.replace(/\n/g, '\\n')}`,
+    `LOCATION:${s.stage}, Norrsken House Brussels`,
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  const blob = new Blob([ics], { type: 'text/calendar' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = s.title.replace(/[^a-zA-Z0-9]/g, '_') + '.ics';
+  a.click();
+  URL.revokeObjectURL(url);
+
+  showToast('Added to calendar');
+}
+
+// ============================================================
+// ATTENDEES
+// ============================================================
+
+function renderAttendees() {
+  const { attendees } = getEventData();
+  const roles = [...new Set(attendees.map(a => a.role))];
+  const locations = [...new Set(attendees.map(a => a.location.split(', ').pop()))];
+  const industries = [...new Set(attendees.flatMap(a => a.industry))];
+
+  renderFilterOptions('filterRole', 'role', roles.map(r => r.charAt(0).toUpperCase() + r.slice(1)));
+  renderFilterOptions('filterLocation', 'location', locations);
+  renderFilterOptions('filterIndustry', 'industry', industries);
+
+  filterAttendees();
+}
+
+function filterAttendees() {
+  const query = (document.getElementById('attendeeSearch')?.value || '').toLowerCase();
+  const { attendees } = getEventData();
+  const f = getEventState().activeFilters;
+
+  let filtered = attendees.filter(a => {
+    if (query) {
+      const haystack = (a.name + ' ' + a.title + ' ' + a.company).toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+    if (f.role.length && !f.role.map(r => r.toLowerCase()).includes(a.role)) return false;
+    if (f.location.length) {
+      const country = a.location.split(', ').pop();
+      if (!f.location.includes(country)) return false;
+    }
+    if (f.industry.length && !a.industry.some(i => f.industry.includes(i))) return false;
+    return true;
+  });
+
+  renderPersonList(document.getElementById('attendeeList'), filtered);
+}
+
+function renderPersonList(container, people) {
+  if (people.length === 0) {
+    container.innerHTML = '<div class="empty-state">No results found.</div>';
+    return;
+  }
+
+  container.innerHTML = people.map(a => {
+    const roleClass = 'role-' + a.role;
+    const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
+    return `<div class="person-card" onclick="navigate('attendee', {id:${a.id}})">
+      <div class="person-card-photo" style="background:${avatarColor(a.id)}"></div>
+      <div class="person-card-info">
+        <div class="person-card-name">${a.name}</div>
+        <div class="person-card-title">${a.title}</div>
+        <div class="person-card-company">${a.company}</div>
+        <div class="person-card-role"><span class="role-tag ${roleClass}">${roleLabel}</span></div>
+      </div>
+      <button class="person-card-expand" onclick="event.stopPropagation(); navigate('attendee', {id:${a.id}})">+</button>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// ATTENDEE DETAIL
+// ============================================================
+
+function renderAttendee(data) {
+  const { attendees } = getEventData();
+  const hashParts = location.hash.split('/');
+  const idFromHash = parseInt(hashParts[hashParts.length - 1]);
+  const a = attendees.find(x => x.id === (data?.id || idFromHash));
+  if (!a) return;
+
+  const es = getEventState();
+  const isFav = es.favorites.attendees.includes(a.id);
+  const handshakeSent = es.handshakesSent.includes(a.id);
+  const roleClass = 'role-' + a.role;
+  const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
+
+  document.getElementById('attendeeContent').innerHTML = `
+    <div class="detail-hero" style="background:${avatarColor(a.id)}"></div>
+    <div class="detail-body">
+      <div class="detail-meta-row" style="font-size:13px; font-weight:500; letter-spacing:0.06em; line-height:18px; margin-bottom: 2px;"><strong>${a.name.toUpperCase()}</strong></div>
+      <div class="detail-meta-row">${a.title}</div>
+      <div class="detail-meta-row">${a.company}</div>
+      <div class="detail-meta-row">Based in ${a.location}</div>
+      <div class="detail-meta-row"><a href="${a.linkedin}" target="_blank" rel="noopener">Linkedin</a></div>
+      <div class="detail-bio">${a.bio}</div>
+      <div class="detail-tags"><span class="${roleClass}">${roleLabel}</span>, ${a.tags.slice(1).join(', ')}</div>
+    </div>
+    <div class="cta-bar">
+      <button class="cta-primary ${handshakeSent ? 'success' : ''}" id="shakeBtn" onclick="shakeHands(${a.id})" ${handshakeSent ? 'disabled' : ''}>
+        ${handshakeSent ? 'HAND SHAKEN' : 'SHAKE HANDS'}
+      </button>
+      <button class="cta-fav ${isFav ? 'active' : ''}" onclick="toggleFavAttendee(${a.id}, this)">&#9825;</button>
+    </div>
+  `;
+}
+
+// ============================================================
+// FAVORITES
+// ============================================================
+
+function toggleFavSession(id, btn) {
+  const es = getEventState();
+  const idx = es.favorites.sessions.indexOf(id);
+  if (idx > -1) {
+    es.favorites.sessions.splice(idx, 1);
+    if (btn) btn.classList.remove('active');
+  } else {
+    es.favorites.sessions.push(id);
+    if (btn) btn.classList.add('active');
+  }
+  saveState();
+}
+
+function toggleFavAttendee(id, btn) {
+  const es = getEventState();
+  const idx = es.favorites.attendees.indexOf(id);
+  if (idx > -1) {
+    es.favorites.attendees.splice(idx, 1);
+    if (btn) btn.classList.remove('active');
+  } else {
+    es.favorites.attendees.push(id);
+    if (btn) btn.classList.add('active');
+  }
+  saveState();
+}
+
+function renderFavorites() {
+  const query = (document.getElementById('favSearch')?.value || '').toLowerCase();
+  const { attendees, sessions } = getEventData();
+  const es = getEventState();
+
+  const favPeople = attendees.filter(a => es.favorites.attendees.includes(a.id));
+  const favSessions = sessions.filter(s => es.favorites.sessions.includes(s.id));
+
+  let items = [];
+
+  favSessions.forEach(s => {
+    if (query && !(s.title.toLowerCase()).includes(query)) return;
+    const speakerNames = s.speakers.map(id => getEventData().attendees.find(a => a.id === id)?.name || '').join(', ');
+    items.push(`<div class="agenda-slot" id="fav-slot-${s.id}" onclick="toggleAgendaSlot(${s.id}, event)">
+      <div class="agenda-slot-title">${s.title}</div>
+      ${speakerNames ? `<div class="agenda-slot-speaker">${speakerNames}</div>` : ''}
+      <div class="agenda-slot-time">${s.day}, ${s.start}–${s.end}</div>
+      <span class="agenda-slot-expand">+</span>
+      <div class="agenda-slot-detail">
+        <div class="agenda-slot-meta">
+          <strong>Stage:</strong> ${s.stage}<br>
+          <strong>Time:</strong> ${s.day}, ${s.start}–${s.end}
+        </div>
+        <button class="agenda-slot-readmore" onclick="event.stopPropagation(); navigate('session', {id:${s.id}})">Read more &rarr;</button>
+      </div>
+    </div>`);
+  });
+
+  favPeople.forEach(a => {
+    if (query && !(a.name.toLowerCase() + ' ' + a.company.toLowerCase()).includes(query)) return;
+    const roleClass = 'role-' + a.role;
+    const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
+    items.push(`<div class="person-card" onclick="navigate('attendee', {id:${a.id}})">
+      <div class="person-card-photo" style="background:${avatarColor(a.id)}"></div>
+      <div class="person-card-info">
+        <div class="person-card-name">${a.name}</div>
+        <div class="person-card-title">${a.title}</div>
+        <div class="person-card-company">${a.company}</div>
+        <div class="person-card-role"><span class="role-tag ${roleClass}">${roleLabel}</span></div>
+      </div>
+      <button class="person-card-expand" onclick="event.stopPropagation(); navigate('attendee', {id:${a.id}})">+</button>
+    </div>`);
+  });
+
+  const container = document.getElementById('favList');
+  if (items.length === 0) {
+    container.innerHTML = '<div class="empty-state">No favorites yet. Tap the heart icon on sessions or attendees to save them here.</div>';
+  } else {
+    container.innerHTML = items.join('');
+  }
+}
+
+function filterFavorites() { renderFavorites(); }
+
+// ============================================================
+// HANDSHAKES
+// ============================================================
+
+function shakeHands(attendeeId) {
+  const es = getEventState();
+  if (es.handshakesSent.includes(attendeeId)) return;
+
+  es.handshakesSent.push(attendeeId);
+  saveState();
+
+  const btn = document.getElementById('shakeBtn');
+  if (btn) {
+    btn.textContent = 'HAND SHAKEN';
+    btn.classList.add('success');
+    btn.disabled = true;
+  }
+
+  showToast('Handshake sent');
+}
+
+function renderNotifications() {
+  const container = document.getElementById('notifList');
+  const es = getEventState();
+  const { attendees } = getEventData();
+  const pending = es.handshakesReceived ? es.handshakesReceived.filter(h => h.status === 'pending') : [];
+  const accepted = es.handshakesReceived ? es.handshakesReceived.filter(h => h.status === 'accepted') : [];
+
+  let html = '';
+  pending.forEach(h => {
+    const a = attendees.find(x => x.id === h.from);
+    if (!a) return;
+    html += `<div class="notif-item">
+      <div class="notif-photo" style="background:${avatarColor(a.id)}"></div>
+      <div class="notif-info">
+        <div class="notif-name">${a.name}</div>
+        <div class="notif-title">${a.title}, ${a.company}</div>
+      </div>
+      <button class="notif-action" onclick="acceptHandshake(${a.id}, this)">SHAKE</button>
+    </div>`;
+  });
+
+  accepted.forEach(h => {
+    const a = attendees.find(x => x.id === h.from);
+    if (!a) return;
+    html += `<div class="notif-item" style="opacity: 0.5;">
+      <div class="notif-photo" style="background:${avatarColor(a.id)}"></div>
+      <div class="notif-info">
+        <div class="notif-name">${a.name}</div>
+        <div class="notif-title">${a.title}, ${a.company}</div>
+      </div>
+      <button class="notif-action" disabled>SHAKEN</button>
+    </div>`;
+  });
+
+  if (pending.length === 0 && accepted.length === 0) {
+    html = '<div class="empty-state">No handshake requests yet.</div>';
+  }
+
+  return html;
+}
+
+function acceptHandshake(attendeeId, btn) {
+  const es = getEventState();
+  const h = es.handshakesReceived.find(x => x.from === attendeeId && x.status === 'pending');
+  if (h) {
+    h.status = 'accepted';
+    saveState();
+    btn.textContent = 'SHAKEN';
+    btn.disabled = true;
+    btn.closest('.notif-item').style.opacity = '0.5';
+
+    const pending = es.handshakesReceived.filter(x => x.status === 'pending').length;
+    document.querySelectorAll('.notif-dot').forEach(dot => {
+      dot.classList.toggle('active', pending > 0);
+    });
+
+    showToast('Handshake accepted');
+  }
+}
+
+// ============================================================
+// PROFILE (merged with notifications)
+// ============================================================
+
+function renderProfile() {
+  const a = state.currentUser || ATTENDEES[0];
+  const savedPhoto = localStorage.getItem('iw_profile_photo');
+  if (savedPhoto) a.photo = savedPhoto;
+  const roleClass = 'role-' + a.role;
+  const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
+
+  // Always check handshakes from the user's active event (or default to impactweek2026)
+  const eventSlug = state.currentEventSlug || 'impactweek2026';
+  const savedSlug = state.currentEventSlug;
+  if (!state.currentEventSlug) { state.currentEventSlug = eventSlug; }
+  const es = getEventState();
+  const pendingCount = es.handshakesReceived ? es.handshakesReceived.filter(h => h.status === 'pending').length : 0;
+  const hasHandshakes = es.handshakesReceived && es.handshakesReceived.length > 0;
+  const notifHtml = hasHandshakes ? renderNotifications() : '';
+  state.currentEventSlug = savedSlug;
+
+  document.getElementById('profileContent').innerHTML = `
+    <div class="profile-hero">
+      <div class="profile-hero-name">${a.name}</div>
+      <div class="profile-hero-role">${a.title}, ${a.company} / ${a.location}</div>
+    </div>
+    <div class="profile-section-block">
+      <div class="profile-section-header" onclick="toggleProfileSection('account')">
+        <span>Account</span>
+        <span class="profile-section-toggle" id="toggle-account">+</span>
+      </div>
+      <div class="profile-section-body" id="section-account" style="display:none;">
+        <div class="profile-account-row" style="align-items:center;">
+          <div class="profile-account-label">Photo</div>
+          <div class="profile-account-value" style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <img id="profilePhotoPreview" src="${a.photo}" alt="" style="width:36px; height:36px; object-fit:cover;" onerror="this.style.background='var(--grey-bg)'">
+            <label for="profilePhotoInput" style="font-family:var(--font-display); font-size:11px; letter-spacing:0.10em; text-transform:uppercase; text-decoration:underline; text-underline-offset:3px; cursor:pointer;">Change</label>
+            <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;" onchange="handleProfilePhoto(this)">
+          </div>
+        </div>
+        <div class="profile-account-row">
+          <div class="profile-account-label">Name</div>
+          <div class="profile-account-value">${a.name}</div>
+        </div>
+        <div class="profile-account-row">
+          <div class="profile-account-label">Title</div>
+          <div class="profile-account-value">${a.title}</div>
+        </div>
+        <div class="profile-account-row">
+          <div class="profile-account-label">Company</div>
+          <div class="profile-account-value">${a.company}</div>
+        </div>
+        <div class="profile-account-row">
+          <div class="profile-account-label">Location</div>
+          <div class="profile-account-value">${a.location}</div>
+        </div>
+        <div class="profile-account-row">
+          <div class="profile-account-label">Linkedin</div>
+          <div class="profile-account-value"><a href="${a.linkedin}" target="_blank" rel="noopener" style="color:var(--black); text-decoration:underline; text-underline-offset:3px;">${a.linkedin ? a.linkedin.replace('https://linkedin.com/in/','linkedin.com/in/') : '--'}</a></div>
+        </div>
+        <div style="padding-top:16px;">
+          <div class="profile-edit-btn" onclick="showToast('Edit profile coming soon')">Edit Profile</div>
+        </div>
+      </div>
+    </div>
+    <div class="profile-section-block">
+      <div class="profile-section-header" onclick="navigate('tickets')">
+        <span>My Tickets</span>
+        <span>&gt;</span>
+      </div>
+    </div>
+    <div class="profile-section-block">
+      <div class="profile-section-header" onclick="signOut()" style="color:red;">
+        <span>Sign Out</span>
+        <span></span>
+      </div>
+    </div>
+  `;
+}
+
+function toggleProfileSection(id) {
+  const body = document.getElementById('section-' + id);
+  const toggle = document.getElementById('toggle-' + id);
+  if (body.style.display === 'none') {
+    body.style.display = 'block';
+    toggle.textContent = '-';
+  } else {
+    body.style.display = 'none';
+    toggle.textContent = '+';
+  }
+}
+
+function handleProfilePhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    document.getElementById('profilePhotoPreview').src = dataUrl;
+    if (state.currentUser) {
+      state.currentUser.photo = dataUrl;
+      localStorage.setItem('iw_profile_photo', dataUrl);
+    }
+    showToast('Photo updated');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ============================================================
+// FAQ
+// ============================================================
+
+function renderFAQ() {
+  const query = (document.getElementById('faqSearch')?.value || '').toLowerCase();
+  const container = document.getElementById('faqList');
+
+  const { faqs } = getEventData();
+  const filtered = faqs.filter(f => {
+    if (query) return (f.q + ' ' + f.a).toLowerCase().includes(query);
+    return true;
+  });
+
+  container.innerHTML = filtered.map(f => `
+    <div class="faq-item" id="faq-${f.id}">
+      <div class="faq-question" onclick="toggleFAQ(${f.id})">
+        <span>${f.q.toUpperCase()}</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">${f.a}</div>
+    </div>
+  `).join('') + `<div class="content-gif"><img src="easter/egg_2.gif" alt=""></div>`;
+}
+
+function toggleFAQ(id) {
+  const item = document.getElementById('faq-' + id);
+  const isOpen = item.classList.contains('open');
+  item.classList.toggle('open');
+  item.querySelector('.faq-toggle').textContent = isOpen ? '+' : '-';
+}
+
+function filterFAQ() { renderFAQ(); }
+
+// ============================================================
+// TOAST
+// ============================================================
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('visible');
+  setTimeout(() => toast.classList.remove('visible'), 2000);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+
+function init() {
+  // Parse initial hash
+  const hash = location.hash.replace('#/', '');
+  if (hash && state.loggedIn) {
+    parseAndNavigate(hash);
+  } else if (state.loggedIn) {
+    if (state.currentEventSlug) {
+      navigate('home');
+    } else {
+      navigate('events');
+    }
+  } else {
+    navigate('login');
+  }
+
+  window.addEventListener('popstate', () => {
+    const hash = location.hash.replace('#/', '');
+    if (hash) parseAndNavigate(hash);
+  });
+}
+
+function parseAndNavigate(hash) {
+  const parts = hash.split('/');
+
+  // Hash: events/slug/page/id
+  if (parts[0] === 'events' && parts[1] && EVENTS[parts[1]]) {
+    state.currentEventSlug = parts[1];
+    const page = parts[2] || 'home';
+    const id = parts[3] ? parseInt(parts[3]) : undefined;
+    navigate(page, id ? { id } : undefined);
+  } else if (parts[0] === 'events' && !parts[1]) {
+    state.currentEventSlug = null;
+    navigate('events');
+  } else {
+    // Global pages
+    const page = parts[0] || 'events';
+    const id = parts[1] ? parseInt(parts[1]) : undefined;
+    navigate(page, id ? { id } : undefined);
+  }
+}
+
+// Scroll reveal: subtle opacity fade
+function initScrollReveal() {
+  const els = document.querySelectorAll('.agenda-slot, .person-card');
+  if (!els.length) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
+  requestAnimationFrame(() => {
+    els.forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transition = `opacity 0.3s ease ${i * 0.03}s`;
+      observer.observe(el);
+    });
+  });
+}
+const origFilterAttendees = filterAttendees;
+
+init();
+</script>
+</body>
+</html>
