@@ -996,28 +996,64 @@ button { cursor: pointer; }
 .home-tab-content { display: none; margin: 0 16px; }
 .home-tab-content.active { display: block; }
 
-/* Schedule cards */
-.home-sched-card {
-  padding: 14px;
-  border: 1px solid var(--grey-light);
-  margin-top: 10px;
-  cursor: pointer;
-  display: flex;
-  gap: 12px;
-  transition: background 0.15s;
+/* Schedule timeline */
+.sched-day-header {
+  background: var(--black); color: #fff;
+  font-family: var(--font-display); font-size: 11px; font-weight: 400;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 8px 16px; margin-top: 0;
 }
-.home-sched-card:active { background: var(--grey-bg); }
-.home-sched-accent {
-  width: 3px; flex-shrink: 0;
+.sched-day-header:first-child { margin-top: 0; }
+.sched-timeline { padding: 0 0 8px 0; }
+.sched-slot {
+  display: flex; gap: 0; min-height: 44px; cursor: pointer;
+  transition: background 0.15s; position: relative;
+  border-bottom: 1px solid var(--grey-light);
 }
-.home-sched-body { flex: 1; min-width: 0; }
-.home-sched-title {
-  font-size: 11px; font-weight: 400; letter-spacing: 0.02em;
-  text-transform: uppercase; line-height: 15px; color: var(--black);
+.sched-slot:active { background: var(--grey-bg); }
+.sched-time {
+  width: 52px; flex-shrink: 0; padding: 12px 0 12px 16px;
+  font-family: var(--font); font-size: 10px; color: var(--grey);
+  letter-spacing: 0.02em; line-height: 14px;
 }
-.home-sched-meta {
-  font-size: 11px; color: var(--grey); margin-top: 3px;
+.sched-block {
+  flex: 1; padding: 12px 16px 12px 12px;
+}
+.sched-block-title {
+  font-family: var(--font-display); font-size: 11px; font-weight: 400;
+  letter-spacing: 0.02em; text-transform: uppercase; line-height: 15px; color: var(--black);
+}
+.sched-block-meta {
+  font-family: var(--font); font-size: 10px; color: var(--grey);
+  letter-spacing: 0.02em; margin-top: 2px;
+}
+.sched-block-stage {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  margin-right: 4px; vertical-align: middle; position: relative; top: -1px;
+}
+.sched-gap {
+  display: flex; gap: 0; min-height: 20px; border-bottom: 1px solid var(--grey-light);
+  background: #fafafa;
+}
+.sched-gap-time {
+  width: 52px; flex-shrink: 0; padding: 4px 0 4px 16px;
+  font-family: var(--font); font-size: 9px; color: #ccc;
   letter-spacing: 0.02em;
+}
+.sched-gap-line {
+  flex: 1; display: flex; align-items: center; padding: 0 16px 0 12px;
+}
+.sched-gap-label {
+  font-family: var(--font); font-size: 9px; color: #ccc;
+  letter-spacing: 0.03em;
+}
+.sched-overlap {
+  padding: 0 16px 6px 64px;
+}
+.sched-overlap-label {
+  font-family: var(--font); font-size: 9px; letter-spacing: 0.04em;
+  text-transform: uppercase; color: #e74c3c;
+  padding: 2px 6px; background: #fef0ee; display: inline-block;
 }
 
 /* Connection cards */
@@ -1987,6 +2023,14 @@ button { cursor: pointer; }
 </div>
 
 <!-- ===== PAGE: FAQ ===== -->
+<div class="page" id="page-connections">
+  <div class="page-header">
+    <div class="page-title">Connections</div>
+    <p class="page-intro">People you've met across Norrsken events.</p>
+  </div>
+  <div id="connectionsList"></div>
+</div>
+
 <div class="page" id="page-faq">
   <div class="page-header">
     <div class="page-title">FAQ</div>
@@ -2123,6 +2167,7 @@ let state = {
   currentEventSlug: null,
   savedEvents: [],
   scrollPositions: {},
+  connections: [],
   events: {
     impactweek2026: {
       favorites: { sessions: [], attendees: [] },
@@ -2178,6 +2223,27 @@ function saveState() {
 
 loadState();
 
+// Migrate: ensure connections array exists and populate from accepted handshakes
+if (!state.connections) state.connections = [];
+if (state.connections.length === 0 && state.events) {
+  Object.entries(state.events).forEach(([slug, evState]) => {
+    if (!evState.handshakesReceived) return;
+    const evConfig = EVENTS[slug];
+    const evFeed = EVENTS_FEED.find(e => e.slug === slug);
+    const eventName = evFeed ? evFeed.name : slug;
+    evState.handshakesReceived.filter(h => h.status === 'accepted').forEach(h => {
+      const att = ATTENDEES.find(a => a.id === h.from);
+      if (att && !state.connections.find(c => c.attendeeId === att.id)) {
+        state.connections.push({
+          attendeeId: att.id, name: att.name, title: att.title, company: att.company,
+          color: avatarColor(att.id), connectedAt: new Date().toISOString(), eventName
+        });
+      }
+    });
+  });
+  if (state.connections.length > 0) saveState();
+}
+
 // ============================================================
 // NAV TITLE ANIMATION
 // ============================================================
@@ -2219,7 +2285,7 @@ function stopNavAnimation() {
 // ROUTING
 // ============================================================
 
-const GLOBAL_PAGES = ['events', 'profile', 'tickets', 'search', 'login'];
+const GLOBAL_PAGES = ['events', 'profile', 'tickets', 'search', 'login', 'connections'];
 const EVENT_PAGES = ['event-home', 'home', 'agenda', 'session', 'attendees', 'attendee', 'favorites', 'faq', 'venue'];
 
 function navigateHome() {
@@ -2252,7 +2318,7 @@ function exitEvent() {
 }
 
 function navigate(page, data) {
-  if (!state.loggedIn && page !== 'login') return;
+  if (!state.loggedIn && page !== 'login' && page !== 'connections') return;
 
   state.scrollPositions[state.currentPage] = window.scrollY;
   state.previousPage = state.currentPage;
@@ -2361,6 +2427,7 @@ function goBack() {
   const page = state.currentPage;
   if (page === 'session') { navigate('agenda'); return; }
   if (page === 'attendee') { navigate('attendees'); return; }
+  if (page === 'connections') { navigate(state.previousPage || 'events'); return; }
   if (page === 'profile') { navigate(state.currentEventSlug ? 'home' : 'events'); return; }
   if (page === 'home') { state.currentEventSlug = null; saveState(); navigate('events'); return; }
   // Any other event page → event home
@@ -2440,6 +2507,7 @@ function renderPage(page, data) {
     case 'attendee': renderAttendee(data); break;
     case 'favorites': renderFavorites(); break;
     case 'profile': renderProfile(); break;
+    case 'connections': renderConnections(); break;
     case 'venue': renderVenue(); break;
     case 'faq': renderFAQ(); break;
   }
@@ -2523,23 +2591,76 @@ function renderHome() {
     <button class="home-tab" onclick="homeToggleTab('connections', this)">Connections</button>
   </div>`;
 
-  // Schedule tab
+  // Schedule tab — timeline view
   html += `<div class="home-tab-content active" id="homeTabSchedule">`;
   if (scheduleSessions.length > 0) {
+    // Group by day
+    const byDay = {};
     scheduleSessions.forEach(s => {
-      const speakerNames = s.speakers.map(spId => {
-        const a = allAttendees.find(at => at.id === spId);
-        return a ? a.name : '';
-      }).filter(Boolean).join(', ');
-      const accent = stageColors[s.stage] || '#888';
-      html += `<div class="home-sched-card" onclick="navigate('session', {id:${s.id}})">
-        <div class="home-sched-accent" style="background:${accent}"></div>
-        <div class="home-sched-body">
-          <div class="home-sched-title">${s.title}</div>
-          ${speakerNames ? `<div class="home-sched-meta" style="margin-top:4px;">${speakerNames}</div>` : ''}
-          <div class="home-sched-meta" style="margin-top:4px;">${s.start}–${s.end}</div>
-        </div>
-      </div>`;
+      if (!byDay[s.day]) byDay[s.day] = [];
+      byDay[s.day].push(s);
+    });
+    // Sort days
+    const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const sortedDays = Object.keys(byDay).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+
+    sortedDays.forEach(day => {
+      const daySessions = byDay[day].sort((a, b) => {
+        const ta = parseFloat(a.start.replace(':', '.'));
+        const tb = parseFloat(b.start.replace(':', '.'));
+        return ta - tb;
+      });
+
+      html += `<div class="sched-day-header">${day}</div>`;
+      html += `<div class="sched-timeline">`;
+
+      daySessions.forEach((s, i) => {
+        const accent = stageColors[s.stage] || '#888';
+        const speakerNames = s.speakers.map(spId => {
+          const a = allAttendees.find(at => at.id === spId);
+          return a ? a.name : '';
+        }).filter(Boolean).join(', ');
+
+        // Check for overlap with previous session
+        let isOverlap = false;
+        if (i > 0) {
+          const prev = daySessions[i - 1];
+          const prevEndMin = prev.end.split(':').map(Number).reduce((h,m) => h*60+m);
+          const curStartMin = s.start.split(':').map(Number).reduce((h,m) => h*60+m);
+          if (curStartMin < prevEndMin) isOverlap = true;
+        }
+
+        // Gap before this session (only if no overlap)
+        if (i > 0 && !isOverlap) {
+          const prev = daySessions[i - 1];
+          const prevEndMin = prev.end.split(':').map(Number).reduce((h,m) => h*60+m);
+          const curStartMin = s.start.split(':').map(Number).reduce((h,m) => h*60+m);
+          const gapMin = curStartMin - prevEndMin;
+          if (gapMin > 0) {
+            const gapLabel = gapMin >= 60 ? Math.floor(gapMin / 60) + 'h' + (gapMin % 60 > 0 ? gapMin % 60 + 'min' : '') + ' free' : gapMin + 'min free';
+            html += `<div class="sched-gap">
+              <div class="sched-gap-time">${prev.end}</div>
+              <div class="sched-gap-line"><span class="sched-gap-label">${gapLabel}</span></div>
+            </div>`;
+          }
+        }
+
+        // Overlap warning
+        if (isOverlap) {
+          html += `<div class="sched-overlap"><span class="sched-overlap-label">Overlaps with previous session</span></div>`;
+        }
+
+        html += `<div class="sched-slot" onclick="navigate('session', {id:${s.id}})">
+          <div class="sched-time">${s.start}</div>
+          <div class="sched-block">
+            <div class="sched-block-title">${s.title}</div>
+            ${speakerNames ? `<div class="sched-block-meta">${speakerNames}</div>` : ''}
+            <div class="sched-block-meta"><span class="sched-block-stage" style="background:${accent};"></span>${s.start}–${s.end} · ${s.stage}</div>
+          </div>
+        </div>`;
+      });
+
+      html += `</div>`;
     });
   } else {
     html += `<div class="home-section-empty">No sessions saved yet.<br><span style="text-decoration:underline;cursor:pointer;" onclick="navigate('agenda')">Browse the agenda</span></div>`;
@@ -2596,12 +2717,25 @@ function homeToggleTab(tab, btn) {
   document.getElementById(tab === 'schedule' ? 'homeTabSchedule' : 'homeTabConnections').classList.add('active');
 }
 
+function addToGlobalConnections(attendeeId) {
+  if (state.connections.find(c => c.attendeeId === attendeeId)) return;
+  const att = ATTENDEES.find(a => a.id === attendeeId);
+  if (!att) return;
+  const evFeed = EVENTS_FEED.find(e => e.slug === state.currentEventSlug);
+  const eventName = evFeed ? evFeed.name : (state.currentEventSlug || 'Norrsken Event');
+  state.connections.push({
+    attendeeId: att.id, name: att.name, title: att.title, company: att.company,
+    color: avatarColor(att.id), connectedAt: new Date().toISOString(), eventName
+  });
+}
+
 function homeAcceptShake(attendeeId, btn) {
   const es = getEventState();
   const h = es.handshakesReceived.find(x => x.from === attendeeId && x.status === 'pending');
   if (!h) return;
 
   h.status = 'accepted';
+  addToGlobalConnections(attendeeId);
   saveState();
   btn.textContent = 'SHAKEN';
   btn.disabled = true;
@@ -3173,6 +3307,13 @@ function addToCalendar(sessionId) {
   a.click();
   URL.revokeObjectURL(url);
 
+  // Also add to in-app schedule
+  const es = getEventState();
+  if (!es.favorites.sessions.includes(sessionId)) {
+    es.favorites.sessions.push(sessionId);
+    saveState();
+  }
+
   showToast('Added to calendar');
 }
 
@@ -3291,6 +3432,19 @@ function renderAttendee(data) {
   const roleClass = 'role-' + a.role;
   const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
 
+  // Check if this person is a connection
+  const conn = (state.connections || []).find(c => c.attendeeId === a.id);
+  let connHistoryHtml = '';
+  if (conn) {
+    const date = new Date(conn.connectedAt);
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const dateStr = monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+    connHistoryHtml = `<div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--grey-light);">
+      <div style="font-family:var(--font); font-size:10px; font-weight:400; letter-spacing:0.05em; text-transform:uppercase; color:var(--grey); margin-bottom:4px;">Connection history</div>
+      <div style="font-family:var(--font); font-size:11px; color:var(--black); line-height:18px;">Connected at ${conn.eventName} · ${dateStr}</div>
+    </div>`;
+  }
+
   document.getElementById('attendeeContent').innerHTML = `
     <div class="detail-back" onclick="navigate('attendees')">
       <span>&larr;</span> <span>Attendees</span>
@@ -3304,6 +3458,7 @@ function renderAttendee(data) {
       <div class="detail-meta-row"><a href="${a.linkedin}" target="_blank" rel="noopener">Linkedin</a></div>
       <div class="detail-bio">${a.bio}</div>
       <div class="detail-tags"><span class="${roleClass}">${roleLabel}</span>, ${a.tags.slice(1).join(', ')}</div>
+      ${connHistoryHtml}
     </div>
     <div class="cta-bar">
       <button class="cta-primary ${handshakeSent ? 'success' : ''}" id="shakeBtn" onclick="shakeHands(${a.id})" ${handshakeSent ? 'disabled' : ''}>
@@ -3483,6 +3638,7 @@ function acceptHandshake(attendeeId, btn) {
   const h = es.handshakesReceived.find(x => x.from === attendeeId && x.status === 'pending');
   if (h) {
     h.status = 'accepted';
+    addToGlobalConnections(attendeeId);
     saveState();
     btn.textContent = 'SHAKEN';
     btn.disabled = true;
@@ -3495,6 +3651,56 @@ function acceptHandshake(attendeeId, btn) {
 
     showToast('Handshake accepted');
   }
+}
+
+// ============================================================
+// GLOBAL CONNECTIONS
+// ============================================================
+
+function renderConnections() {
+  const container = document.getElementById('connectionsList');
+  if (!container) return;
+
+  const conns = state.connections || [];
+
+  if (conns.length === 0) {
+    container.innerHTML = '<div style="padding:40px 20px;color:var(--grey);font-size:11px;letter-spacing:0.03em;">No connections yet. Shake hands with attendees at events.</div>';
+    return;
+  }
+
+  // Sort by most recent first
+  const sorted = [...conns].sort((a, b) => new Date(b.connectedAt) - new Date(a.connectedAt));
+
+  container.innerHTML = sorted.map((c, i) => {
+    const date = new Date(c.connectedAt);
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const dateStr = monthNames[date.getMonth()] + ' ' + date.getFullYear();
+    const connId = 'conn-' + i;
+
+    return `<div class="person-card" id="${connId}" onclick="toggleConnectionCard('${connId}')">
+      <div class="person-card-header">
+        <div class="person-card-photo" style="background:${c.color || avatarColor(c.attendeeId)}"></div>
+        <div class="person-card-info">
+          <div class="person-card-name">${c.name}</div>
+          <div class="person-card-title">${c.title || ''}${c.company ? ', ' + c.company : ''}</div>
+        </div>
+      </div>
+      <span class="person-card-expand">+</span>
+      <div class="person-card-detail">
+        <div class="agenda-slot-meta" style="margin-bottom:0;">
+          <span class="agenda-slot-meta-label">Connected at:</span> ${c.eventName} · ${dateStr}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleConnectionCard(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.toggle('expanded');
+  const chevron = card.querySelector('.person-card-expand');
+  if (chevron) chevron.textContent = card.classList.contains('expanded') ? '–' : '+';
 }
 
 // ============================================================
@@ -3569,6 +3775,12 @@ function renderProfile() {
         <div style="padding-top:16px;">
           <div class="profile-edit-btn" onclick="showToast('Edit profile coming soon')">Edit Profile</div>
         </div>
+      </div>
+    </div>
+    <div class="profile-section-block">
+      <div class="profile-section-header" onclick="navigate('connections')">
+        <span>My Connections (${state.connections ? state.connections.length : 0})</span>
+        <span>&gt;</span>
       </div>
     </div>
     <div class="profile-section-block">
