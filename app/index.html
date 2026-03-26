@@ -270,7 +270,7 @@ button { cursor: pointer; }
   cursor: pointer;
   user-select: none;
   font-family: var(--font);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -278,7 +278,7 @@ button { cursor: pointer; }
 }
 .filter-header span {
   font-family: var(--font);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -325,7 +325,7 @@ button { cursor: pointer; }
 
 .filter-clear {
   font-family: var(--font);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 400;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -334,8 +334,11 @@ button { cursor: pointer; }
   text-decoration: underline;
   text-underline-offset: 2px;
   display: none;
+  margin-left: auto;
+  padding: 0 20px;
+  white-space: nowrap;
 }
-.filter-clear.visible { display: block; }
+.filter-clear.visible { display: inline-block; }
 
 /* ===== AGENDA SLOTS ===== */
 /* Day headers — black break */
@@ -436,9 +439,9 @@ button { cursor: pointer; }
 
 .agenda-slot-actions {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 12px;
+  gap: 10px;
+  margin-top: 20px;
   padding-top: 0;
 }
 .agenda-slot-actions button {
@@ -497,8 +500,8 @@ button { cursor: pointer; }
 }
 
 .person-card-photo {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border-radius: 0;
   object-fit: cover;
   flex-shrink: 0;
@@ -605,7 +608,8 @@ button { cursor: pointer; }
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--black);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
   cursor: pointer;
 }
 .person-card-shake-row {
@@ -619,22 +623,14 @@ button { cursor: pointer; }
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--black);
+  color: var(--white);
+  background: var(--black);
   border: none;
-  padding: 8px 14px;
+  padding: 10px;
+  width: 100%;
   cursor: pointer;
 }
-.person-card-shake-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.person-card-actions .heart-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  color: var(--black);
-}
-.person-card-actions .heart-btn svg { width: 12px; height: 12px; }
+.person-card-shake-btn:disabled { background: #D0D0D0; color: var(--black); opacity: 1; cursor: not-allowed; }
 
 /* ===== BACK NAV ===== */
 .detail-back {
@@ -764,11 +760,11 @@ button { cursor: pointer; }
   transform: translateX(-50%);
   width: 100%;
   max-width: 600px;
+  bottom: 44px;
   background: var(--white);
   z-index: 200;
   flex-direction: column;
   padding: 0 20px;
-  border-bottom: 1px solid var(--black);
 }
 .menu-overlay.active { display: flex; }
 
@@ -907,14 +903,8 @@ button { cursor: pointer; }
 }
 
 /* ===== HOME PAGE ===== */
-#page-home { display: none; flex-direction: column; height: calc(100dvh - var(--nav-h)); overflow: hidden; }
+#page-home { display: none; flex-direction: column; overflow-y: auto; }
 #page-home.active { display: flex; }
-
-.home-scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding-bottom: 16px;
-}
 
 /* Notification module */
 .home-notif {
@@ -976,105 +966,115 @@ button { cursor: pointer; }
 .home-search-bar input::placeholder { color: var(--grey); }
 #homeSearchResults { margin-top: 8px; }
 
-/* Tabs */
-.home-tabs {
-  display: flex; gap: 0;
-  margin: 16px 16px 0;
+/* Home nav buttons */
+.home-nav-btns {
+  display: flex; gap: 8px;
+  margin: 12px 16px 0;
 }
-.home-tab {
-  flex: 1; height: 34px;
+.home-nav-btn {
+  flex: 1;
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font);
-  font-size: 11px; font-weight: 400;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  color: var(--grey); cursor: pointer;
-  background: none; border: none;
-  border-bottom: 2px solid transparent;
-}
-.home-tab.active { color: var(--black); font-weight: 500; border-bottom-color: var(--black); }
-
-.home-tab-content { display: none; margin: 0 16px; }
-.home-tab-content.active { display: block; }
-
-/* Schedule timeline */
-.sched-day-header {
-  background: var(--black); color: #fff;
-  font-family: var(--font-display); font-size: 11px; font-weight: 400;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 8px 16px; margin-top: 0;
-}
-.sched-day-header:first-child { margin-top: 0; }
-.sched-timeline { padding: 0 0 8px 0; }
-.sched-slot {
-  display: flex; gap: 0; min-height: 44px; cursor: pointer;
-  transition: background 0.15s; position: relative;
-  border-bottom: 1px solid var(--grey-light);
-}
-.sched-slot:active { background: var(--grey-bg); }
-.sched-time {
-  width: 52px; flex-shrink: 0; padding: 12px 0 12px 16px;
-  font-family: var(--font); font-size: 10px; color: var(--grey);
-  letter-spacing: 0.02em; line-height: 14px;
-}
-.sched-block {
-  flex: 1; padding: 12px 16px 12px 12px;
-}
-.sched-block-title {
-  font-family: var(--font-display); font-size: 11px; font-weight: 400;
-  letter-spacing: 0.02em; text-transform: uppercase; line-height: 15px; color: var(--black);
-}
-.sched-block-meta {
-  font-family: var(--font); font-size: 10px; color: var(--grey);
-  letter-spacing: 0.02em; margin-top: 2px;
-}
-.sched-block-stage {
-  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-  margin-right: 4px; vertical-align: middle; position: relative; top: -1px;
-}
-.sched-gap {
-  display: flex; gap: 0; min-height: 20px; border-bottom: 1px solid var(--grey-light);
-  background: #fafafa;
-}
-.sched-gap-time {
-  width: 52px; flex-shrink: 0; padding: 4px 0 4px 16px;
-  font-family: var(--font); font-size: 9px; color: #ccc;
-  letter-spacing: 0.02em;
-}
-.sched-gap-line {
-  flex: 1; display: flex; align-items: center; padding: 0 16px 0 12px;
-}
-.sched-gap-label {
-  font-family: var(--font); font-size: 9px; color: #ccc;
-  letter-spacing: 0.03em;
-}
-.sched-overlap {
-  padding: 0 16px 6px 64px;
-}
-.sched-overlap-label {
-  font-family: var(--font); font-size: 9px; letter-spacing: 0.04em;
-  text-transform: uppercase; color: #e74c3c;
-  padding: 2px 6px; background: #fef0ee; display: inline-block;
-}
-
-/* Connection cards */
-.home-conn-card {
-  padding: 12px 14px;
-  border: 1px solid var(--grey-light);
-  margin-top: 10px;
-  cursor: pointer;
-  display: flex; align-items: center; gap: 12px;
+  padding: 12px 8px;
+  border: 1px solid var(--black);
+  background: none; cursor: pointer;
+  font-family: var(--font); font-size: 11px; font-weight: 400;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--black);
   transition: background 0.15s;
 }
-.home-conn-card:active { background: var(--grey-bg); }
-.home-conn-photo {
-  width: 34px; height: 34px; flex-shrink: 0;
+.home-nav-btn:active { background: var(--black); color: #fff; }
+
+/* Home news — editorial */
+.home-news {
+  padding: 28px 20px 40px;
 }
-.home-conn-info { flex: 1; }
-.home-conn-name { font-size: 11px; font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; }
-.home-conn-role { font-size: 11px; color: var(--grey); margin-top: 1px; }
-.home-conn-tag {
-  font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase;
-  color: var(--grey); margin-top: 3px;
+.home-news-header {
+  font-family: var(--font); font-size: 9px; font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey);
+  margin-bottom: 20px;
+}
+.home-news-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.home-news-item {
+  padding: 14px 12px;
+  border-top: 1px solid var(--grey-light);
+  cursor: default;
+}
+.home-news-item:nth-child(odd) { padding-right: 16px; border-right: 1px solid var(--grey-light); }
+.home-news-item:nth-child(even) { padding-left: 16px; }
+.home-news-item-title {
+  font-family: var(--font-display); font-size: 13px; font-weight: 400;
+  letter-spacing: 0.01em; text-transform: uppercase; line-height: 17px;
+  color: var(--black);
+}
+.home-news-item-preamble {
+  font-family: var(--font); font-size: 11px; color: var(--black);
+  line-height: 15px; margin-top: 6px; font-weight: 400;
+}
+.home-news-item-detail {
+  font-family: var(--font); font-size: 10px; color: var(--grey);
+  letter-spacing: 0.02em; margin-top: 6px;
+}
+.home-news-img {
+  width: 100%;
+}
+/* Feature item — full width, outside grid */
+.home-news-feature {
+  padding: 0 0 20px;
+  border-bottom: 1px solid var(--grey-light);
+  margin-bottom: 0;
+}
+
+/* Schedule page — day toggle + grid */
+.sched-day-tab {
+  font-family: var(--font); font-size: 11px; font-weight: 400;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--grey); background: none; border: none;
+  padding: 10px 16px; cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.sched-grid {
+  display: grid; margin: 0 20px; gap: 0;
+}
+.sched-grid-header {
+  font-family: var(--font); font-size: 9px; font-weight: 400;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--grey); text-align: center; padding: 0 0 8px;
+  border-bottom: 1px solid var(--black);
+}
+.sched-grid-header:first-child { text-align: left; }
+.sched-grid-time {
+  font-family: var(--font); font-size: 9px; color: var(--grey);
+  letter-spacing: 0.02em; padding: 8px 6px 8px 0;
+  border-top: 1px solid var(--grey-light);
+  white-space: nowrap;
+}
+.sched-grid-cell {
+  border-top: 1px solid var(--grey-light);
+  padding: 4px; min-height: 44px;
+}
+.sched-grid-block {
+  padding: 8px 10px; cursor: pointer; height: 100%;
+  border: 1px solid var(--black); transition: background 0.15s;
+}
+.sched-grid-block:active { background: var(--grey-bg); }
+.sched-grid-block-title {
+  font-family: var(--font-display); font-size: 12px; font-weight: 400;
+  letter-spacing: 0.02em; text-transform: uppercase; line-height: 16px;
+  color: var(--black);
+}
+.sched-grid-block-meta {
+  font-family: var(--font); font-size: 11px; color: var(--grey);
+  letter-spacing: 0.02em; margin-top: 3px;
+}
+.sched-grid-split {
+  display: flex; gap: 3px; height: 100%;
+}
+.sched-grid-split .sched-grid-block { flex: 1; min-width: 0; }
+.sched-grid-empty {
+  border-top: 1px solid var(--grey-light); min-height: 44px;
 }
 
 .home-section-empty {
@@ -1366,6 +1366,17 @@ button { cursor: pointer; }
   cursor: pointer;
   display: inline-block;
 }
+.profile-tag {
+  font-family: var(--font); font-size: 10px; font-weight: 400;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 6px 12px; border: 1px solid var(--grey-light);
+  cursor: pointer; transition: all 0.15s;
+  color: var(--grey);
+}
+.profile-tag.active {
+  background: var(--black); color: #fff; border-color: var(--black);
+}
+
 .profile-photo-small {
   width: 60px;
   height: 60px;
@@ -1526,6 +1537,7 @@ button { cursor: pointer; }
   letter-spacing: normal;
   text-transform: none;
 }
+
 .page-title {
   font-family: var(--font);
   font-size: 32px;
@@ -2023,6 +2035,14 @@ button { cursor: pointer; }
 </div>
 
 <!-- ===== PAGE: FAQ ===== -->
+<div class="page" id="page-schedule">
+  <div class="page-header">
+    <div class="page-title">Schedule</div>
+    <p class="page-intro">Your selected sessions for the week.</p>
+  </div>
+  <div id="scheduleContent"></div>
+</div>
+
 <div class="page" id="page-connections">
   <div class="page-header">
     <div class="page-title">Connections</div>
@@ -2064,7 +2084,7 @@ button { cursor: pointer; }
 const NORRSKEN_SVG = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1535.2 214.5"><g fill="currentColor"><path d="M149.1,207.9v2.8l-10.3-4.5c-44.7-19.8-89.3-39.6-134-59.3c-1.6-0.4-2.5-2-2.3-3.6c0.1-5.4,0.1-10.9,0-16.3c-0.2-1.2,0.5-2.3,1.6-2.7C52.1,103,99.9,81.8,147.8,60.6c0.4-0.2,0.9-0.3,1.4-0.4c0,9.5,0.1,18.8-0.1,28.1c0,0.7-1.1,1.7-2,2.1c-15.7,6.7-31.4,13.4-47.1,20.1l-55.8,23.7c-0.7,0.3-1.4,0.6-2.5,1.1c1.1,0.5,1.9,0.9,2.6,1.2c34.1,14.5,68.2,29,102.3,43.4c2,0.9,2.7,1.9,2.7,4.1C149,192,149.1,200,149.1,207.9z"/><path d="M330.8,205.8v2.4h-39.9v-3.2c0-34.5,0-69.1-0.1-103.6c0-3.8-0.5-7.6-1.3-11.3c-1.2-5.7-5-9.2-10.7-9.9c-4-0.5-8.1-0.3-12.1,0.5c-6.8,1.5-10.8,6.4-12.4,13c-1,4.1-1.5,8.2-1.5,12.4c-0.1,33-0.1,66-0.1,99v3.2h-39.8v-155h38v18.4c0.7-0.9,1-1.2,1.1-1.5C261.1,54.9,275,49,292,49.1c5.8-0.1,11.6,0.9,17,2.9c11.6,4.5,18,13.4,20.1,25.3c1,5.2,1.5,10.4,1.6,15.7C330.8,130.6,330.8,168.2,330.8,205.8z"/><path d="M607.8,86.8c-0.1,0.3-0.2,0.6-0.3,0.8c-3.4-0.2-6.8-0.4-10.2-0.5c-5.5-0.3-11.1,0.7-16.2,2.9c-9.2,4.2-14,11.5-15,21.5c-0.1,1.3-0.1,2.6-0.1,3.8v92.8h-39.6V53.3h37.9v20.3l0.5,0.1c0.4-0.7,0.8-1.4,1.3-2c2.6-3.5,5-7.1,7.8-10.4c8.4-9.8,19.2-13.3,31.8-11.9c1.3,0.1,2.2,0.3,2.2,2C607.8,63.2,607.8,75,607.8,86.8z"/><path d="M720.4,87.7c-2.2-0.1-4.2-0.3-6.2-0.3c-4.5,0.1-9.1-0.2-13.4,0.7c-14.2,2.6-22.2,12.4-22.2,26.9c0,30,0,60,0,90.1v3.3h-39.7V53.3h37.9v20.2l0.5,0.2c0.4-0.5,0.8-1.1,1.1-1.6c3.2-5.6,7.3-10.7,12.2-14.9c8.1-7.2,17.8-8.8,28.1-7.6c0.6,0.1,1.5,0.9,1.5,1.5C720.4,63.1,720.4,75.2,720.4,87.7z"/><path d="M860.5,179.3c-5.5,17.2-17.8,26.8-35.2,30.2c-4.5,0.9-9,1.4-13.6,2.1h-14.3c-5-0.7-10.1-1.2-15.1-2.1c-2.8-0.5-5.6-1.2-8.4-2.2c-14.6-4.9-22.8-15.3-25-30.4c-0.9-6.3-1.1-12.8-1.6-19.4h36.2c0,1-0.1,2,0,3c0,3,0.3,5.9,0.7,8.9c2.5,11.7,12.1,17.6,24.8,15.4c12-2,18.2-12,14.6-23.6c-0.7-2.3-2.1-4.4-3.9-6c-3.3-2.6-7-4.8-10.9-6.4c-9.2-3.7-18.7-6.8-28-10.3c-3-1.1-6-2.4-8.8-3.9c-17.4-9.2-24.5-23.6-22.8-43.3c1.9-21.2,13.6-34.4,35-39.8c14.7-3.7,30.1-3.7,44.7,0.2c18.7,4.9,29.3,18.5,30.1,37.9c0.1,3.1,0,6.3,0,9.7h-35.4c-0.2-2.1-0.4-4.3-0.6-6.4c-1.2-12.2-7.1-19-22.9-16c-7.4,1.4-12,6.5-12.8,13.1c-1,7.6,2,13.9,8.8,17.4c4.1,1.9,8.4,3.6,12.8,5c7.5,2.6,15,5,22.4,7.7c4.2,1.6,8.3,3.5,12.2,5.8c9.5,5.1,16.2,14.3,18,25C863.2,160.5,863.4,170.1,860.5,179.3z"/><path d="M1026.8,208.4c-12.8,0-25.5,0-38.3,0.1c-1.7,0.2-3.3-0.8-3.9-2.4c-10.1-19.6-20.2-39.1-30.4-58.6c-0.4-0.8-0.9-1.6-1.5-2.7c-3,3.9-5.5,7.9-8.7,11.2c-4.4,4.7-5.8,9.8-5.5,16.2c0.5,11,0.1,22.1,0.1,33.2v2.9H899V2.5h39.6v108.2l0.5,0.2c0.5-0.7,1.1-1.4,1.6-2.1c12.3-17.9,24.6-35.7,36.9-53.5c0.8-1.5,2.4-2.4,4.1-2.2c12.7,0.1,25.3,0,38,0h3.3c-0.9,1.3-1.4,2-2,2.7c-13.7,18.8-27.5,37.6-41.3,56.4c-1.1,1.2-1.2,3-0.3,4.3c16.2,29.6,32.4,59.2,48.5,88.8c0.5,0.9,0.9,1.8,1.5,2.9C1028.4,208.3,1027.6,208.4,1026.8,208.4z"/><path d="M1320.1,205.6v2.7h-39.7c-0.1-1.1-0.1-2.1-0.1-3.2c0-34.5,0-69.1-0.1-103.6c-0.1-3.8-0.5-7.6-1.3-11.4c-1.2-5.7-5-9.2-10.7-9.8c-4.1-0.6-8.3-0.3-12.3,0.6c-8.9,2.3-12.1,9.5-13.2,17.8c-0.3,2.7-0.5,5.4-0.5,8.1c0,32.8,0,65.5,0,98.2v3.2h-39.7v-155h38.1v18.2c0.3-0.3,0.7-0.7,0.9-1.1c9-15.7,23.2-21.8,40.7-21.2c5.4,0.2,10.8,1.1,16,2.9c12,4.1,18.3,13.4,20.4,25.5c0.9,5,1.4,10.1,1.5,15.2C1320.2,130.4,1320.1,168,1320.1,205.6z"/><path d="M1532.7,143.6c0.2,1.4-0.6,2.7-1.9,3.1c-47.7,21.1-95.3,42.1-142.9,63.3c-0.4,0.2-0.9,0.3-1.7,0.6c0-9.6-0.1-18.8,0.1-28c0-0.8,1.2-1.9,2.1-2.3c19-8.2,38-16.3,57-24.3l45.8-19.5c0.8-0.3,1.5-0.7,2.7-1.2c-1.6-0.7-2.9-1.3-4.2-1.8c-33.6-14.3-67.3-28.6-100.9-42.9c-1.9-0.8-2.6-1.7-2.6-3.9c0.1-8.8,0.1-17.5,0.1-26.6c1,0.4,1.8,0.7,2.5,1c47.2,20.9,94.5,41.9,141.8,62.8c1.6,0.7,2.3,1.5,2.3,3.3C1532.6,132.7,1532.6,138.1,1532.7,143.6z"/><path d="M489.3,117.7c-0.6-11.4-1.8-22.7-5.3-33.7c-5.9-18.3-17.8-30-37-33.5c-10.2-1.8-20.5-2-30.8-0.6c-18.5,2.4-32.5,11.5-40.3,28.9c-2.3,5.1-4,10.5-5.2,16c-3.8,17.2-4.1,34.8-2.9,52.3c0.7,10,1.9,20,4.9,29.6c5.5,17.8,16.7,29.6,35.4,33.2c3.8,0.7,7.7,1.2,11.5,1.8H435c1.1-0.2,2.1-0.4,3.2-0.5c22-1.9,37.6-12.4,45-33.7c0.9-2.5,1.7-5,2.3-7.6C489.6,152.7,490.2,135.2,489.3,117.7z M448,166.9c-0.7,3.5-1.9,6.9-3.7,10c-6.1,10.7-21.2,11.4-28.5,1.5c-4-5.3-5.4-11.6-6-17.9c-0.9-9.9-1.2-19.8-2-32.3c0.8-9.2,1.7-20.9,2.9-32.5c0.5-4.9,2.4-9.5,5.5-13.3c7.2-9,21.8-8.4,27.6,1.7c2.4,4.3,4,9,4.7,13.9C452.1,120.9,452.3,144,448,166.9z"/><path d="M1087.9,136.8h77.6c0-8.2,0.3-16.2-0.1-24.2c-0.5-9.8-1.5-19.5-4.5-28.9c-5.4-17.1-16.3-28.7-34.1-32.8c-12.3-2.7-25-2.7-37.2,0.1c-13.7,3-24.4,10.5-31.5,22.8c-3.9,6.7-6.6,14.1-7.9,21.7c-3.1,17.4-3.2,34.9-2.3,52.4c0.5,8.6,1,17.1,3.3,25.5c5.4,19.4,17.2,32.3,37.4,36.4c4,0.8,8,1.2,12.1,1.8h12.8l7.5-1c20.2-2.8,33.4-13.6,39.2-33.3c0.6-2,1.2-4.1,1.5-6.2c0.8-4.9,1.3-9.8,2-14.9h-36c-0.2,1.3-0.4,2.5-0.6,3.7c-1,6.1-2.3,12.2-5.6,17.6c-5.5,9.1-18.9,10.4-26.2,2.7c-3.1-3.3-4.8-7.4-6-11.7c-2.9-10.2-2.3-20.7-2.1-31.2C1087.3,137.3,1087.6,137.1,1087.9,136.8z M1092.6,81.7c4.2-6.7,10.5-8.9,18-7.9c6.9,0.9,11.3,4.8,13.7,11.4c2.9,8.1,2.8,16.5,3.5,25.2h-40.6C1087,100.3,1087.1,90.5,1092.6,81.7L1092.6,81.7z"/></g></svg>';
 
 const AVATAR_COLORS = ['#03FFC7','#EBA0E4','#88DB6D','#FDFCB9','#C26CFF','#BED8EE','#F9532F','#FDD97C'];
-function avatarColor(id) { return AVATAR_COLORS[(id - 1) % AVATAR_COLORS.length]; }
+function avatarColor(id) { return '#D0D0D0'; }
 
 // ============================================================
 // EVENTS CONFIG
@@ -2135,7 +2155,7 @@ const SESSIONS = [
   { id: 3, title: "Scaling Circular Economy Ventures", description: "From textile recycling to regenerative agriculture -- the founders building circular businesses share what works and what doesn't at scale.", start: "14:00", end: "15:00", day: "Monday", stage: "Beach Living Room", speakers: [9, 4], themes: ["Circular Economy", "Climatetech"], type: "session", image: "../site/img/gallery/gallery-03.jpg" },
   { id: 4, title: "Policy as a Product: Building for Brussels", description: "How impact startups can engage with EU policy to create systemic change, not just compliance.", start: "15:30", end: "16:30", day: "Monday", stage: "Town Hall", speakers: [10, 3], themes: ["Policy"], type: "session", image: "../site/img/gallery/gallery-04.jpg" },
   { id: 5, title: "Femtech and the Gender Investment Gap", description: "Women's health is a $1T market -- yet receives 3% of health R&D funding. What will it take to close the gap?", start: "10:00", end: "11:00", day: "Tuesday", stage: "Beach Living Room", speakers: [8], themes: ["Healthtech", "Investing"], type: "session", image: "../site/img/gallery/gallery-05.jpg" },
-  { id: 6, title: "Design as Strategy: Making Impact Visible", description: "How creative direction and design thinking can make the impact ecosystem more compelling, more legible, and more human.", start: "11:30", end: "12:30", day: "Tuesday", stage: "Mare Nostrum", speakers: [6], themes: ["Design", "Impact"], type: "session", image: "../site/img/gallery/gallery-06.jpg" },
+  { id: 6, title: "Design as Strategy: Making Impact Visible", description: "How creative direction and design thinking can make the impact ecosystem more compelling, more legible, and more human.", start: "10:00", end: "11:00", day: "Tuesday", stage: "Mare Nostrum", speakers: [6], themes: ["Design", "Impact"], type: "session", image: "../site/img/gallery/gallery-06.jpg" },
   { id: 7, title: "Norrsken x Riche: Opening Night Dinner", description: "Join us for the official opening dinner at Riche Brussels. Champagne reception, three-course dinner, and the conversations that set the tone for the week.", start: "19:00", end: "23:00", day: "Monday", stage: "Off-site", speakers: [], themes: ["Side Event"], type: "side_event", image: "../site/img/gallery/gallery-07.jpg", externalUrl: "https://norrsken.org/impactweek/dinner", venue: "Riche Brussels, Rue du Tabellion 12, Belgium" },
   { id: 8, title: "Sunrise Run: Brussels Park", description: "Start your Tuesday with a 5K run through Brussels Park. All levels welcome. Meeting point at the venue lobby.", start: "06:30", end: "07:30", day: "Tuesday", stage: "Off-site", speakers: [], themes: ["Side Event", "Wellbeing"], type: "side_event", image: "../site/img/gallery/gallery-08.jpg", externalUrl: "https://norrsken.org/impactweek/run", venue: "Brussels Park, Rue Royale, Belgium" },
   { id: 9, title: "Deeptech for Climate: What VCs Are Missing", description: "A candid conversation about the blind spots in climate venture capital and where the next breakthroughs will come from.", start: "14:00", end: "15:00", day: "Tuesday", stage: "Red Room", speakers: [5, 2], themes: ["Deeptech", "Climatetech", "Investing"], type: "session", image: "../site/img/gallery/gallery-09.jpg" },
@@ -2318,7 +2338,7 @@ function exitEvent() {
 }
 
 function navigate(page, data) {
-  if (!state.loggedIn && page !== 'login' && page !== 'connections') return;
+  if (!state.loggedIn && page !== 'login' && page !== 'connections' && page !== 'schedule') return;
 
   state.scrollPositions[state.currentPage] = window.scrollY;
   state.previousPage = state.currentPage;
@@ -2427,6 +2447,7 @@ function goBack() {
   const page = state.currentPage;
   if (page === 'session') { navigate('agenda'); return; }
   if (page === 'attendee') { navigate('attendees'); return; }
+  if (page === 'schedule') { navigate('home'); return; }
   if (page === 'connections') { navigate(state.previousPage || 'events'); return; }
   if (page === 'profile') { navigate(state.currentEventSlug ? 'home' : 'events'); return; }
   if (page === 'home') { state.currentEventSlug = null; saveState(); navigate('events'); return; }
@@ -2508,6 +2529,7 @@ function renderPage(page, data) {
     case 'favorites': renderFavorites(); break;
     case 'profile': renderProfile(); break;
     case 'connections': renderConnections(); break;
+    case 'schedule': renderSchedule(); break;
     case 'venue': renderVenue(); break;
     case 'faq': renderFAQ(); break;
   }
@@ -2544,18 +2566,17 @@ function renderHome() {
   // Stage colors for accents
   const stageColors = { 'Red Room': '#F9532F', 'Beach Living Room': '#03FFC7', 'Town Hall': '#C26CFF', 'Mare Nostrum': '#BED8EE', 'Off-site': '#FDD97C' };
 
+  const connCount = state.connections ? state.connections.length : connAtts.length;
+
   let html = '';
 
-  // ── SCROLLABLE AREA ──
-  html += `<div class="home-scroll">`;
-
-  // Header
+  // ── Header ──
   html += `<div class="page-header">
     <div class="page-title">Impact Week</div>
     <p class="page-intro">Your schedule, your people, your week.</p>
   </div>`;
 
-  // Notifications
+  // ── Notifications ──
   if (pendingAtts.length > 0) {
     html += `<div class="home-notif">
       <div class="home-notif-bar" onclick="homeToggleNotif(this)">
@@ -2576,7 +2597,7 @@ function renderHome() {
     html += `</div></div>`;
   }
 
-  // Search
+  // ── Ask bar ──
   html += `<div class="home-search">
     <div class="home-search-bar">
       <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="5" cy="5" r="4"/><line x1="8" y1="8" x2="11" y2="11"/></svg>
@@ -2585,123 +2606,67 @@ function renderHome() {
     <div id="homeSearchResults"></div>
   </div>`;
 
-  // Tabs
-  html += `<div class="home-tabs">
-    <button class="home-tab active" onclick="homeToggleTab('schedule', this)">Schedule</button>
-    <button class="home-tab" onclick="homeToggleTab('connections', this)">Connections</button>
+  // ── Personal nav buttons ──
+  html += `<div class="home-nav-btns">
+    <button class="home-nav-btn" onclick="navigate('schedule')">My Schedule${scheduleSessions.length > 0 ? ' (' + scheduleSessions.length + ')' : ''}</button>
+    <button class="home-nav-btn" onclick="navigate('connections')">My Connections${connCount > 0 ? ' (' + connCount + ')' : ''}</button>
   </div>`;
 
-  // Schedule tab — timeline view
-  html += `<div class="home-tab-content active" id="homeTabSchedule">`;
-  if (scheduleSessions.length > 0) {
-    // Group by day
-    const byDay = {};
-    scheduleSessions.forEach(s => {
-      if (!byDay[s.day]) byDay[s.day] = [];
-      byDay[s.day].push(s);
-    });
-    // Sort days
-    const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const sortedDays = Object.keys(byDay).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
-
-    sortedDays.forEach(day => {
-      const daySessions = byDay[day].sort((a, b) => {
-        const ta = parseFloat(a.start.replace(':', '.'));
-        const tb = parseFloat(b.start.replace(':', '.'));
-        return ta - tb;
-      });
-
-      html += `<div class="sched-day-header">${day}</div>`;
-      html += `<div class="sched-timeline">`;
-
-      daySessions.forEach((s, i) => {
-        const accent = stageColors[s.stage] || '#888';
-        const speakerNames = s.speakers.map(spId => {
-          const a = allAttendees.find(at => at.id === spId);
-          return a ? a.name : '';
-        }).filter(Boolean).join(', ');
-
-        // Check for overlap with previous session
-        let isOverlap = false;
-        if (i > 0) {
-          const prev = daySessions[i - 1];
-          const prevEndMin = prev.end.split(':').map(Number).reduce((h,m) => h*60+m);
-          const curStartMin = s.start.split(':').map(Number).reduce((h,m) => h*60+m);
-          if (curStartMin < prevEndMin) isOverlap = true;
-        }
-
-        // Gap before this session (only if no overlap)
-        if (i > 0 && !isOverlap) {
-          const prev = daySessions[i - 1];
-          const prevEndMin = prev.end.split(':').map(Number).reduce((h,m) => h*60+m);
-          const curStartMin = s.start.split(':').map(Number).reduce((h,m) => h*60+m);
-          const gapMin = curStartMin - prevEndMin;
-          if (gapMin > 0) {
-            const gapLabel = gapMin >= 60 ? Math.floor(gapMin / 60) + 'h' + (gapMin % 60 > 0 ? gapMin % 60 + 'min' : '') + ' free' : gapMin + 'min free';
-            html += `<div class="sched-gap">
-              <div class="sched-gap-time">${prev.end}</div>
-              <div class="sched-gap-line"><span class="sched-gap-label">${gapLabel}</span></div>
-            </div>`;
-          }
-        }
-
-        // Overlap warning
-        if (isOverlap) {
-          html += `<div class="sched-overlap"><span class="sched-overlap-label">Overlaps with previous session</span></div>`;
-        }
-
-        html += `<div class="sched-slot" onclick="navigate('session', {id:${s.id}})">
-          <div class="sched-time">${s.start}</div>
-          <div class="sched-block">
-            <div class="sched-block-title">${s.title}</div>
-            ${speakerNames ? `<div class="sched-block-meta">${speakerNames}</div>` : ''}
-            <div class="sched-block-meta"><span class="sched-block-stage" style="background:${accent};"></span>${s.start}–${s.end} · ${s.stage}</div>
-          </div>
-        </div>`;
-      });
-
-      html += `</div>`;
-    });
-  } else {
-    html += `<div class="home-section-empty">No sessions saved yet.<br><span style="text-decoration:underline;cursor:pointer;" onclick="navigate('agenda')">Browse the agenda</span></div>`;
-  }
-  html += `</div>`;
-
-  // Connections tab
-  html += `<div class="home-tab-content" id="homeTabConnections">`;
-  if (connAtts.length > 0) {
-    connAtts.forEach(a => {
-      const roleLabel = a.role.charAt(0).toUpperCase() + a.role.slice(1);
-      html += `<div class="home-conn-card" onclick="navigate('attendee', {id:${a.id}})">
-        <div class="home-conn-photo" style="background:${avatarColor(a.id)}"></div>
-        <div class="home-conn-info">
-          <div class="home-conn-name">${a.name}</div>
-          <div class="home-conn-role">${a.title}, ${a.company}</div>
-          <div class="home-conn-tag">${roleLabel}</div>
-        </div>
-      </div>`;
-    });
-  } else {
-    html += `<div class="home-section-empty">No connections yet.<br><span style="text-decoration:underline;cursor:pointer;" onclick="navigate('attendees')">Meet attendees</span></div>`;
-  }
-  html += `</div>`;
-
-  html += `</div>`; // end .home-scroll
-
-  // ── FIXED RECOMMENDATION ──
-  html += `<div class="home-reco-fixed">
-    <div class="home-reco-inner">
-      <button class="home-reco-btn" id="homeRecoBtn" onclick="homeGetRecommendation()" style="background:var(--grey-bg)">Get a recommendation</button>
+  // ── Recommendation ──
+  html += `<div style="margin:20px 16px 0;">
+    <div style="border:1px solid var(--grey-light);overflow:hidden;">
+      <button class="home-reco-btn" id="homeRecoBtn" onclick="homeGetRecommendation()" style="background:var(--grey-bg)">Click to get a recommendation</button>
       <div class="home-reco-result" id="homeRecoResult">
-        <div class="home-reco-result-label" id="homeRecoLabel">&mdash;</div>
-        <div class="home-reco-result-title" id="homeRecoTitle">&mdash;</div>
-        <div class="home-reco-result-meta" id="homeRecoMeta">&mdash;</div>
-        <div class="home-reco-reason" id="homeRecoReason" style="background:transparent">&nbsp;</div>
+        <div class="home-reco-result-label" id="homeRecoLabel"></div>
+        <div class="home-reco-result-title" id="homeRecoTitle"></div>
+        <div class="home-reco-result-meta" id="homeRecoMeta"></div>
+        <div class="home-reco-reason" id="homeRecoReason" style="background:transparent"></div>
       </div>
     </div>
   </div>`;
 
+  // ── News feed ──
+  const newsItems = [
+    { title: '100 Ways to Fix the Future', preamble: 'An interactive installation exploring 100 concrete solutions to the world\'s most pressing challenges. Walk through, get inspired, take action.', location: 'Lobby', color: '#D0D0D0', feature: true },
+    { title: 'Cafe Electro Union', preamble: 'Brussels\' favourite specialty coffee pop-up takes over Floor 3 for the entire week.', location: 'Floor 3 · All week', color: '#D0D0D0', feature: false },
+    { title: 'Prompt What Matters', preamble: 'A 24-hour fixathon where teams use AI to prototype solutions for real impact challenges.', location: 'Floor 2 · Tuesday', color: '#D0D0D0', feature: false },
+    { title: 'Rooftop Serves Coffee and Fika', preamble: 'Start your mornings with Swedish fika and panoramic views of Brussels.', location: 'Rooftop · Every morning', color: '#D0D0D0', feature: false }
+  ];
+
+  html += `<div class="home-news">
+    <div class="home-news-header">Happening this week</div>`;
+
+  // Feature item first (full width with large image)
+  const feature = newsItems.find(n => n.feature);
+  if (feature) {
+    html += `<div class="home-news-feature">
+      <div class="home-news-img" style="background:${feature.color};height:180px;"></div>
+      <div style="padding:16px 0 0;">
+        <div class="home-news-item-title" style="font-size:18px;line-height:22px;">${feature.title}</div>
+        <div class="home-news-item-preamble">${feature.preamble}</div>
+        <div class="home-news-item-detail">${feature.location}</div>
+      </div>
+    </div>`;
+  }
+
+  // Rest in 2-column grid
+  html += `<div class="home-news-grid">`;
+  newsItems.filter(n => !n.feature).forEach(n => {
+    html += `<div class="home-news-item">
+      <div class="home-news-img" style="background:${n.color};height:100px;margin-bottom:10px;"></div>
+      <div class="home-news-item-title">${n.title}</div>
+      <div class="home-news-item-preamble">${n.preamble}</div>
+      <div class="home-news-item-detail">${n.location}</div>
+    </div>`;
+  });
+  html += `</div>
+
+  </div>`;
+
   container.innerHTML = html;
+
+  // Auto-trigger first recommendation
+  setTimeout(() => homeGetRecommendation(), 100);
 }
 
 function homeToggleNotif(bar) {
@@ -3168,7 +3133,7 @@ function filterAgenda() {
         return a ? `${a.name}, ${a.title}` : '';
       }).filter(Boolean).join('<br>');
 
-      const desc120 = s.description ? s.description.substring(0, 120) + (s.description.length > 120 ? '...' : '') : '';
+      const descFull = s.description || '';
       const isFav = es.favorites.sessions.includes(s.id);
       const hostedBy = s.hostedBy || 'Norrsken VC';
 
@@ -3182,12 +3147,12 @@ function filterAgenda() {
             <span class="agenda-slot-meta-label">Hosted by:</span> ${hostedBy}<br>
             <span class="agenda-slot-meta-label">Stage:</span> ${s.stage}
           </div>
-          ${desc120 ? `<div class="agenda-slot-desc">${desc120} <a class="inline-readmore" onclick="event.stopPropagation(); navigate('session', {id:${s.id}})" style="cursor:pointer;">Read more</a></div>` : ''}
+          ${descFull ? `<div class="agenda-slot-desc">${descFull} <a class="inline-readmore" onclick="event.stopPropagation(); navigate('session', {id:${s.id}})" style="cursor:pointer; text-decoration:underline; text-transform:uppercase; letter-spacing:0.05em;">READ MORE</a></div>` : ''}
           <div class="agenda-slot-actions">
             <button class="heart-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavSession(${s.id}, this)">
               <svg viewBox="0 0 90 90" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
+              SAVE
             </button>
-            <button onclick="event.stopPropagation(); addToCalendar(${s.id})">Add to calendar</button>
           </div>
         </div>
       </div>`;
@@ -3384,10 +3349,7 @@ function renderPersonList(container, people) {
         <div class="person-card-actions">
           <a class="person-card-profile-link" onclick="event.stopPropagation(); navigate('attendee', {id:${a.id}})">Go to profile</a>
           <div class="person-card-shake-row">
-            <button class="person-card-shake-btn" style="background:${color}" onclick="event.stopPropagation(); shakeHands(${a.id})" ${handshakeSent ? 'disabled' : ''}>${handshakeSent ? 'Hand shaken' : 'Shake hands'}</button>
-            <button class="heart-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavAttendee(${a.id}, this)">
-              <svg viewBox="0 0 90 90" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
-            </button>
+            <button class="person-card-shake-btn" onclick="event.stopPropagation(); shakeHands(${a.id})" ${handshakeSent ? 'disabled' : ''}>${handshakeSent ? 'CONNECTED' : 'CONNECT'}</button>
           </div>
         </div>
       </div>
@@ -3462,7 +3424,7 @@ function renderAttendee(data) {
     </div>
     <div class="cta-bar">
       <button class="cta-primary ${handshakeSent ? 'success' : ''}" id="shakeBtn" onclick="shakeHands(${a.id})" ${handshakeSent ? 'disabled' : ''}>
-        ${handshakeSent ? 'HAND SHAKEN' : 'SHAKE HANDS'}
+        ${handshakeSent ? 'CONNECTED' : 'CONNECT'}
       </button>
       <button class="cta-fav ${isFav ? 'active' : ''}" onclick="toggleFavAttendee(${a.id}, this)">
         <svg viewBox="0 0 90 90" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="4"><path d="M45 84.3L6.8 46.1C2.4 41.8 0 35.9 0 29.7c0-6.2 2.4-12 6.8-16.4 4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8L45 18.7l5.4-5.4c4.4-4.4 10.2-6.8 16.4-6.8 6.2 0 12 2.4 16.4 6.8C87.6 17.7 90 23.5 90 29.7c0 6.2-2.4 12-6.8 16.4L45 84.3z" stroke-linejoin="round"/></svg>
@@ -3584,12 +3546,22 @@ function shakeHands(attendeeId) {
 
   const btn = document.getElementById('shakeBtn');
   if (btn) {
-    btn.textContent = 'HAND SHAKEN';
+    btn.textContent = 'CONNECTED';
     btn.classList.add('success');
     btn.disabled = true;
   }
 
-  showToast('Handshake sent');
+  // Also update card-level button
+  const card = document.getElementById('person-' + attendeeId);
+  if (card) {
+    const cardBtn = card.querySelector('.person-card-shake-btn');
+    if (cardBtn) {
+      cardBtn.textContent = 'CONNECTED';
+      cardBtn.disabled = true;
+    }
+  }
+
+  showToast('Connected');
 }
 
 function renderNotifications() {
@@ -3657,6 +3629,84 @@ function acceptHandshake(attendeeId, btn) {
 // GLOBAL CONNECTIONS
 // ============================================================
 
+function renderSchedule() {
+  const container = document.getElementById('scheduleContent');
+  if (!container) return;
+
+  const { sessions, attendees: allAttendees } = getEventData();
+  const es = getEventState();
+  const savedIds = es.favorites?.sessions || [];
+  const saved = sessions.filter(s => savedIds.includes(s.id));
+
+  if (saved.length === 0) {
+    container.innerHTML = '<div style="padding:40px 20px;color:var(--grey);font-size:11px;letter-spacing:0.03em;text-align:center;">No sessions saved yet.<br><span style="text-decoration:underline;cursor:pointer;" onclick="navigate(\'agenda\')">Browse the agenda</span></div>';
+    return;
+  }
+
+  const byDay = {};
+  saved.forEach(s => { if (!byDay[s.day]) byDay[s.day] = []; byDay[s.day].push(s); });
+  const dayOrder = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const days = Object.keys(byDay).sort((a,b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+
+  // Day toggle tabs
+  let html = `<div style="display:flex;gap:0;margin:0 20px;border-bottom:1px solid var(--black);">`;
+  days.forEach((d, i) => {
+    const active = i === 0 ? ' style="color:var(--black);border-bottom:2px solid var(--black);"' : '';
+    html += `<button class="sched-day-tab" onclick="schedToggleDay('${d}', this)"${active}>${d}</button>`;
+  });
+  html += `</div>`;
+
+  // One grid per day
+  days.forEach((day, i) => {
+    const daySessions = byDay[day].sort((a,b) => a.start.split(':').map(Number).reduce((h,m)=>h*60+m) - b.start.split(':').map(Number).reduce((h,m)=>h*60+m));
+
+    const timeSlots = {};
+    daySessions.forEach(s => { if (!timeSlots[s.start]) timeSlots[s.start] = []; timeSlots[s.start].push(s); });
+    const sortedTimes = Object.keys(timeSlots).sort((a,b) => a.split(':').map(Number).reduce((h,m)=>h*60+m) - b.split(':').map(Number).reduce((h,m)=>h*60+m));
+
+    html += `<div class="sched-day-panel" id="schedDay-${day}" style="display:${i===0?'block':'none'};">`;
+    html += `<div class="sched-grid" style="grid-template-columns:42px 1fr;">`;
+
+    sortedTimes.forEach(time => {
+      const ss = timeSlots[time];
+      html += `<div class="sched-grid-time">${time}</div>`;
+      if (ss.length === 1) {
+        const s = ss[0];
+        const spk = s.speakers.map(id => { const a = allAttendees.find(at=>at.id===id); return a?a.name:''; }).filter(Boolean).join(', ');
+        html += `<div class="sched-grid-cell">
+          <div class="sched-grid-block" onclick="navigate('session',{id:${s.id}})">
+            <div class="sched-grid-block-title">${s.title}</div>
+            ${spk?`<div class="sched-grid-block-meta">${spk}</div>`:''}
+            <div class="sched-grid-block-meta">${s.start}–${s.end} · ${s.stage}</div>
+          </div></div>`;
+      } else {
+        html += `<div class="sched-grid-cell"><div class="sched-grid-split">`;
+        ss.forEach(s => {
+          const spk = s.speakers.map(id => { const a = allAttendees.find(at=>at.id===id); return a?a.name:''; }).filter(Boolean).join(', ');
+          html += `<div class="sched-grid-block" onclick="navigate('session',{id:${s.id}})">
+            <div class="sched-grid-block-title">${s.title}</div>
+            ${spk?`<div class="sched-grid-block-meta">${spk}</div>`:''}
+            <div class="sched-grid-block-meta">${s.stage}</div>
+          </div>`;
+        });
+        html += `</div></div>`;
+      }
+    });
+
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function schedToggleDay(day, btn) {
+  document.querySelectorAll('.sched-day-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.sched-day-tab').forEach(t => { t.style.color = ''; t.style.borderBottom = ''; });
+  const panel = document.getElementById('schedDay-' + day);
+  if (panel) panel.style.display = 'block';
+  if (btn) { btn.style.color = 'var(--black)'; btn.style.borderBottom = '2px solid var(--black)'; }
+}
+
 function renderConnections() {
   const container = document.getElementById('connectionsList');
   if (!container) return;
@@ -3664,7 +3714,7 @@ function renderConnections() {
   const conns = state.connections || [];
 
   if (conns.length === 0) {
-    container.innerHTML = '<div style="padding:40px 20px;color:var(--grey);font-size:11px;letter-spacing:0.03em;">No connections yet. Shake hands with attendees at events.</div>';
+    container.innerHTML = '<div style="padding:40px 20px;color:var(--grey);font-size:11px;letter-spacing:0.03em;">No connections yet. Connect with attendees at events.</div>';
     return;
   }
 
@@ -3733,69 +3783,128 @@ function renderProfile() {
   const notifHtml = hasHandshakes ? renderNotifications() : '';
   state.currentEventSlug = savedSlug;
 
+  const connCount = state.connections ? state.connections.length : 0;
+
+  const tagOptions = ['Climate', 'Fintech', 'Regenerative', 'Deeptech', 'Healthtech', 'Circular Economy', 'Policy', 'Education', 'AI', 'Food Systems'];
+  const categoryOptions = ['Enabler', 'Investor', 'Founder', 'Operator', 'Media', 'Policy Maker'];
+  const userTags = a.tags || [];
+  const userIndustry = a.industry || [];
+
+  // Active category/tags for display
+  const activeCat = a.role ? a.role.charAt(0).toUpperCase() + a.role.slice(1) : '';
+  const activeTagCount = userTags.length + userIndustry.length;
+
   document.getElementById('profileContent').innerHTML = `
-    <div class="profile-hero">
-      <div class="profile-hero-name">${a.name}</div>
-      <div class="profile-hero-role">${a.title}, ${a.company} / ${a.location}</div>
-    </div>
-    <div class="profile-section-block">
-      <div class="profile-section-header" onclick="toggleProfileSection('account')">
-        <span>Account</span>
-        <span class="profile-section-toggle" id="toggle-account">+</span>
-      </div>
-      <div class="profile-section-body" id="section-account" style="display:none;">
-        <div class="profile-account-row" style="align-items:center;">
-          <div class="profile-account-label">Photo</div>
-          <div class="profile-account-value" style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
-            <img id="profilePhotoPreview" src="${a.photo}" alt="" style="width:36px; height:36px; object-fit:cover;" onerror="this.style.background='var(--grey-bg)'">
-            <label for="profilePhotoInput" style="font-family:var(--font-display); font-size:11px; letter-spacing:0.10em; text-transform:uppercase; text-decoration:underline; text-underline-offset:3px; cursor:pointer;">Change</label>
-            <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;" onchange="handleProfilePhoto(this)">
+    <div style="display:flex;flex-direction:column;min-height:calc(100dvh - var(--nav-h) - 50px);">
+      <div style="flex:1;">
+        <div class="profile-hero">
+          <div class="profile-hero-name">${a.name}</div>
+          <div class="profile-hero-role">${a.title}</div>
+          <div class="profile-hero-role">${a.company}</div>
+          <div class="profile-hero-role">${a.location}</div>
+        </div>
+
+        <div style="padding:0;">
+          <div class="filter-group" style="border-bottom:1px solid var(--grey-light);">
+            <div class="filter-header" onclick="toggleFilter(this)">
+              <span>Edit Profile</span>
+              <span class="filter-chevron">+</span>
+            </div>
+            <div class="filter-options" style="display:none;">
+              <div style="padding:0 20px;">
+                <div class="profile-account-row">
+                  <div class="profile-account-label">Name</div>
+                  <div class="profile-account-value">${a.name}</div>
+                </div>
+                <div class="profile-account-row">
+                  <div class="profile-account-label">Title</div>
+                  <div class="profile-account-value">${a.title}</div>
+                </div>
+                <div class="profile-account-row">
+                  <div class="profile-account-label">Company</div>
+                  <div class="profile-account-value">${a.company}</div>
+                </div>
+                <div class="profile-account-row">
+                  <div class="profile-account-label">Location</div>
+                  <div class="profile-account-value">${a.location}</div>
+                </div>
+                <div class="profile-account-row" style="align-items:center;">
+                  <div class="profile-account-label">Photo</div>
+                  <div class="profile-account-value" style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+                    <img id="profilePhotoPreview" src="${a.photo}" alt="" style="width:36px; height:36px; object-fit:cover;" onerror="this.style.background='var(--grey-bg)'">
+                    <label for="profilePhotoInput" style="font-family:var(--font-display); font-size:11px; letter-spacing:0.10em; text-transform:uppercase; text-decoration:underline; text-underline-offset:3px; cursor:pointer;">Change</label>
+                    <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;" onchange="handleProfilePhoto(this)">
+                  </div>
+                </div>
+                <div class="profile-account-row">
+                  <div class="profile-account-label">Linkedin</div>
+                  <div class="profile-account-value"><a href="${a.linkedin}" target="_blank" rel="noopener" style="color:var(--black); text-decoration:underline; text-underline-offset:3px;">${a.linkedin ? a.linkedin.replace('https://linkedin.com/in/','linkedin.com/in/') : '--'}</a></div>
+                </div>
+              </div>
+              <div class="filter-group" style="margin-top:8px;">
+                <div class="filter-header" onclick="event.stopPropagation(); toggleFilter(this)">
+                  <span>Category${activeCat ? ' · ' + activeCat : ''}</span>
+                  <span class="filter-chevron">+</span>
+                </div>
+                <div class="filter-options" style="display:none;">
+                  ${categoryOptions.map(c => {
+                    const active = a.role && a.role.toLowerCase() === c.toLowerCase();
+                    return `<div class="filter-option-item${active ? ' active' : ''}" onclick="profileToggleCategory('${c}', this)"><span class="filter-option-label">${c}</span><span class="filter-check"></span></div>`;
+                  }).join('')}
+                </div>
+              </div>
+              <div class="filter-group">
+                <div class="filter-header" onclick="event.stopPropagation(); toggleFilter(this)">
+                  <span>Tags${activeTagCount > 0 ? ' (' + activeTagCount + ')' : ''}</span>
+                  <span class="filter-chevron">+</span>
+                </div>
+                <div class="filter-options" style="display:none;">
+                  ${tagOptions.map(t => {
+                    const active = userTags.includes(t) || userIndustry.includes(t);
+                    return `<div class="filter-option-item${active ? ' active' : ''}" onclick="profileToggleTag('${t}', this)"><span class="filter-option-label">${t}</span><span class="filter-check"></span></div>`;
+                  }).join('')}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="profile-account-row">
-          <div class="profile-account-label">Name</div>
-          <div class="profile-account-value">${a.name}</div>
-        </div>
-        <div class="profile-account-row">
-          <div class="profile-account-label">Title</div>
-          <div class="profile-account-value">${a.title}</div>
-        </div>
-        <div class="profile-account-row">
-          <div class="profile-account-label">Company</div>
-          <div class="profile-account-value">${a.company}</div>
-        </div>
-        <div class="profile-account-row">
-          <div class="profile-account-label">Location</div>
-          <div class="profile-account-value">${a.location}</div>
-        </div>
-        <div class="profile-account-row">
-          <div class="profile-account-label">Linkedin</div>
-          <div class="profile-account-value"><a href="${a.linkedin}" target="_blank" rel="noopener" style="color:var(--black); text-decoration:underline; text-underline-offset:3px;">${a.linkedin ? a.linkedin.replace('https://linkedin.com/in/','linkedin.com/in/') : '--'}</a></div>
-        </div>
-        <div style="padding-top:16px;">
-          <div class="profile-edit-btn" onclick="showToast('Edit profile coming soon')">Edit Profile</div>
-        </div>
       </div>
-    </div>
-    <div class="profile-section-block">
-      <div class="profile-section-header" onclick="navigate('connections')">
-        <span>My Connections (${state.connections ? state.connections.length : 0})</span>
-        <span>&gt;</span>
-      </div>
-    </div>
-    <div class="profile-section-block">
-      <div class="profile-section-header" onclick="navigate('tickets')">
-        <span>My Tickets</span>
-        <span>&gt;</span>
-      </div>
-    </div>
-    <div class="profile-section-block">
-      <div class="profile-section-header" onclick="signOut()" style="color:red;">
-        <span>Sign Out</span>
-        <span></span>
+      <div style="border-top:1px solid var(--black);padding:0;">
+        <div class="profile-section-header" style="border-bottom:1px solid var(--grey-light);" onclick="navigate('connections')">
+          <span>My Connections${connCount > 0 ? ' (' + connCount + ')' : ''}</span>
+          <span>&gt;</span>
+        </div>
+        <div class="profile-section-header" style="border-bottom:1px solid var(--grey-light);" onclick="navigate('tickets')">
+          <span>My Tickets</span>
+          <span>&gt;</span>
+        </div>
+        <div class="profile-section-header" style="border-bottom:1px solid var(--grey-light);color:red;" onclick="signOut()">
+          <span>Sign Out</span>
+          <span></span>
+          </div>
+        </div>
       </div>
     </div>
   `;
+}
+
+function profileToggleTag(tag, el) {
+  el.classList.toggle('active');
+  if (!state.currentUser) state.currentUser = {};
+  if (!state.currentUser.tags) state.currentUser.tags = [];
+  const idx = state.currentUser.tags.indexOf(tag);
+  if (idx > -1) state.currentUser.tags.splice(idx, 1);
+  else state.currentUser.tags.push(tag);
+  saveState();
+}
+
+function profileToggleCategory(cat, el) {
+  // Only one active at a time — deselect siblings
+  el.closest('.filter-options').querySelectorAll('.filter-option-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  if (!state.currentUser) state.currentUser = {};
+  state.currentUser.role = cat.toLowerCase();
+  saveState();
 }
 
 function toggleProfileSection(id) {
@@ -4033,6 +4142,27 @@ function initScrollReveal() {
 const origFilterAttendees = filterAttendees;
 
 init();
+
+// Swipe right to go back
+(function() {
+  let touchStartX = 0;
+  let touchStartY = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+    // Swipe right: horizontal > 80px, mostly horizontal (not vertical scroll)
+    if (dx > 80 && dy < 60) {
+      const page = state.currentPage;
+      if (['schedule','connections','session','attendee'].includes(page)) {
+        goBack();
+      }
+    }
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
