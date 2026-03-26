@@ -589,10 +589,9 @@ button { cursor: pointer; }
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.1s ease;
-  margin-top: 12px;
-  padding: 10px 0 6px;
+  padding: 0;
 }
-.person-card.expanded .person-card-detail { max-height: 800px; }
+.person-card.expanded .person-card-detail { max-height: 800px; padding: 10px 0 6px; }
 
 .person-card-bio {
   font-size: 11px;
@@ -2859,23 +2858,16 @@ function homeGetRecommendation() {
   reasonEl.style.background = 'transparent';
   reasonEl.textContent = '\u00A0';
 
-  // Roulette — decelerating spin
-  let spinDelay = 80;
-  function spinTick() {
+  // Roulette — constant speed spin then stop
+  const spinInterval = setInterval(() => {
     const rand = all[Math.floor(Math.random() * all.length)];
     labelEl.textContent = rand.type === 'session' ? 'Attend' : 'Meet';
     titleEl.textContent = rand.type === 'session' ? rand.data.title : rand.data.name;
     metaEl.textContent = rand.type === 'session'
       ? rand.data.day + ' \u00B7 ' + rand.data.start + '\u2013' + rand.data.end
       : rand.data.title + ', ' + rand.data.company;
-    spinDelay += 30;
-    if (spinDelay < 500) {
-      setTimeout(spinTick, spinDelay);
-    } else {
-      onSpinDone();
-    }
-  }
-  setTimeout(spinTick, spinDelay);
+  }, 100);
+  setTimeout(() => { clearInterval(spinInterval); onSpinDone(); }, 1500);
 
   function onSpinDone() {
     btn.disabled = false;
@@ -4079,7 +4071,7 @@ function renderVenue() {
         <span class="venue-floor-name">Practical Info</span>
         <span class="venue-floor-toggle">+</span>
       </div>
-      <div class="venue-floor-body" style="padding:0 20px 16px;">
+      <div class="venue-floor-body">
         <div class="venue-practical-row">
           <div class="venue-practical-label">Address</div>
           <div class="venue-practical-value">Carrer de Pallars 108, 08018 Barcelona<br><a href="https://maps.google.com/?q=Norrsken+House+Barcelona" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:2px;">View on map</a></div>
