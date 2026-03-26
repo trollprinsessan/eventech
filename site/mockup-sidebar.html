@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impact/Week 2026 — Sidebar Layout Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #000000;
+    --white: #ffffff;
+    --blue: #0000ff;
+    --grey-mid: #999999;
+    --grey-light: #e5e5e5;
+    --grey-bg: #f2f2f2;
+    --pink: #FF7DC5;
+    --font: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { font-family: var(--font); color: var(--black); background: var(--white); }
+
+  /* NAV */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--white);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .nav-logo { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none; color: var(--black);
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--blue); }
+  .nav-links a.active { color: var(--blue); }
+
+  /* BANNER */
+  .banner {
+    background: var(--pink);
+    padding: 8px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .banner-track {
+    display: flex; gap: 60px;
+    animation: scroll-banner 20s linear infinite;
+  }
+  .banner-track span {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--black); flex-shrink: 0;
+  }
+  .banner-track span::after { content: '·'; margin-left: 60px; }
+  @keyframes scroll-banner {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* TWO-COLUMN LAYOUT */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 0;
+    min-height: 100vh;
+  }
+
+  .main-content {
+    padding: 0;
+    min-width: 0;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 52px; /* nav height */
+    height: calc(100vh - 52px);
+    overflow: hidden;
+    border-left: 1px solid var(--grey-light);
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* SIDEBAR MODULES */
+  .sidebar-module {
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .sidebar-module:last-child { border-bottom: none; }
+
+  .sidebar-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--grey-mid);
+    margin-bottom: 12px;
+  }
+
+  /* Sidebar ticket cards — compact */
+  .sb-ticket {
+    border: 1px solid var(--black);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sb-ticket:last-of-type { margin-bottom: 0; }
+  .sb-ticket-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .sb-ticket-name {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .sb-ticket-price {
+    font-size: 12px; font-weight: 400; letter-spacing: 0.02em;
+  }
+  .sb-ticket-price small { font-size: 9px; color: var(--grey-mid); margin-left: 2px; }
+  .sb-ticket-desc {
+    font-size: 11px; font-weight: 300; line-height: 1.5; color: var(--black);
+  }
+  .sb-ticket-btn {
+    display: block; text-align: center;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 10px; margin-top: 4px;
+    background: var(--grey-light); color: var(--black);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+  }
+  .sb-ticket:hover .sb-ticket-btn { background: var(--blue); color: var(--white); }
+
+  /* Sidebar venue info */
+  .sb-venue-line {
+    font-size: 11px; font-weight: 300; line-height: 1.6;
+    letter-spacing: 0.02em;
+  }
+  .sb-venue-line strong { font-weight: 500; }
+
+  /* Sidebar content box */
+  .sb-content-box {
+    background: var(--grey-bg);
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .sb-content-box-placeholder {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--grey-mid);
+  }
+
+
+  /* ===== MAIN CONTENT SECTIONS ===== */
+
+  /* Hero */
+  .hero {
+    position: relative;
+    height: 60vh;
+    background: #1a1a1a url('img/gallery/gallery-01.jpg') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px;
+    color: var(--white);
+  }
+  .hero-date {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .hero-cta {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--white); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .hero-cta:hover { color: var(--pink); }
+
+  /* Section shared */
+  .section { padding: 60px 40px; }
+  .section-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--grey-mid);
+    margin-bottom: 20px;
+  }
+
+  /* About */
+  .about-text {
+    font-size: 14px; font-weight: 300; line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 24px;
+  }
+  .about-ctas { display: flex; flex-direction: column; gap: 6px; }
+  .about-ctas a {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none; color: var(--black);
+    transition: color 0.15s;
+  }
+  .about-ctas a:hover { color: var(--pink); }
+
+  /* Speakers grid */
+  .speaker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .speaker-card { cursor: pointer; }
+  .speaker-photo {
+    aspect-ratio: 3/4;
+    background: var(--grey-bg);
+    overflow: hidden;
+  }
+  .speaker-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .speaker-info { padding: 6px 0 14px; }
+  .speaker-name {
+    font-size: 11px; font-weight: 400; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 0; line-height: 1.3;
+  }
+  .speaker-role {
+    font-size: 11px; font-weight: 300; letter-spacing: 0.06em;
+    text-transform: uppercase; line-height: 1.3; color: var(--black);
+  }
+
+  /* Gallery placeholder */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .gallery-item {
+    aspect-ratio: 4/3;
+    background: var(--grey-bg);
+    overflow: hidden;
+  }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* FAQ */
+  .faq-item {
+    border-bottom: 1px solid var(--grey-light);
+    padding: 16px 0;
+  }
+  .faq-q {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; cursor: pointer;
+  }
+
+  /* Placeholder blocks */
+  .ph-block {
+    background: var(--grey-bg);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--grey-mid);
+    font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .sidebar {
+      position: relative;
+      top: auto;
+      height: auto;
+      border-left: none;
+      border-top: 1px solid var(--grey-light);
+    }
+    .speaker-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero { height: 60vh; padding: 24px; }
+    .section { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">&lt;norrsken&gt;</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#speakers">Speakers</a>
+    <a href="#agenda">Agenda</a>
+    <a href="#faq">FAQ</a>
+    <a href="#tickets" class="active">Tickets</a>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-track">
+    <span>Impact/Week 2026 Agenda Released. Scroll down to read more</span>
+    <span>Apply for tickets now</span>
+    <span>Impact/Week 2026 Agenda Released. Scroll down to read more</span>
+    <span>Apply for tickets now</span>
+    <span>Impact/Week 2026 Agenda Released. Scroll down to read more</span>
+    <span>Apply for tickets now</span>
+  </div>
+</div>
+
+<!-- TWO-COLUMN LAYOUT -->
+<div class="layout">
+
+  <!-- MAIN CONTENT (left, scrollable) -->
+  <div class="main-content">
+
+    <!-- Hero -->
+    <div class="hero">
+      <p class="hero-date">14–15 October 2026 &nbsp; Norrsken House Barcelona</p>
+      <a href="#speakers" class="hero-cta">→</a>
+    </div>
+
+    <!-- About -->
+    <section class="section" id="about">
+      <p class="section-label">Impact/Week 2026</p>
+      <p class="about-text">Impact/Week gathers founders, investors, and enablers working on the world's most pressing problems. Two days. One question: what's it going to take?</p>
+      <div class="about-ctas">
+        <a href="#">Go to Impact/Return 2026 →</a>
+        <a href="https://norrsken.org" target="_blank">Read more about Norrsken →</a>
+      </div>
+    </section>
+
+    <!-- Speakers -->
+    <section class="section" id="speakers" style="padding-bottom: 20px;">
+      <p class="section-label">Speakers</p>
+      <div class="speaker-grid">
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/audrey-tang.jpg" alt="Audrey Tang"></div><div class="speaker-info"><h3 class="speaker-name">Audrey Tang</h3><p class="speaker-role">Digital Minister of Taiwan (fmr.)</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/andri-magnason.jpg" alt="Andri Snær Magnason"></div><div class="speaker-info"><h3 class="speaker-name">Andri Snær Magnason</h3><p class="speaker-role">Author & Activist</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/speaker-03.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Chief Scientist, DeepMind</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/speaker-04.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Policy Director</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/speaker-05.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Founder, Startup</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/audrey-tang.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Research Lead</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/andri-magnason.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">CEO, Impact Ventures</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/speaker-03.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Advisor, Government</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/speaker-04.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Head of AI Ethics</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/speaker-05.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Journalist & Author</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/audrey-tang.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Director, Open Society</p></div></div>
+        <div class="speaker-card"><div class="speaker-photo"><img src="img/speakers/andri-magnason.jpg" alt="Speaker"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Economist & Writer</p></div></div>
+      </div>
+    </section>
+
+    <!-- Agenda placeholder -->
+    <section class="section" id="agenda">
+      <p class="section-label">Agenda — Day 1</p>
+      <div class="faq-item"><p class="faq-q">09:00 — Registration & Coffee</p></div>
+      <div class="faq-item"><p class="faq-q">10:00 — Opening Keynote</p></div>
+      <div class="faq-item"><p class="faq-q">11:00 — AI & Planetary Boundaries</p></div>
+      <div class="faq-item"><p class="faq-q">12:30 — Lunch & Networking</p></div>
+      <div class="faq-item"><p class="faq-q">14:00 — Breakout: Circular Economy</p></div>
+      <div class="faq-item"><p class="faq-q">15:30 — Closing Keynote Day 1</p></div>
+    </section>
+
+    <!-- Gallery placeholder -->
+    <section class="section" id="gallery" style="padding-bottom: 20px;">
+      <p class="section-label">Previous Years</p>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="img/gallery/gallery-01.jpg" alt=""></div>
+        <div class="gallery-item"><img src="img/gallery/gallery-02.jpg" alt=""></div>
+        <div class="gallery-item"><img src="img/gallery/gallery-03.jpg" alt=""></div>
+        <div class="gallery-item"><img src="img/gallery/gallery-04.jpg" alt=""></div>
+        <div class="gallery-item"><img src="img/gallery/gallery-05.jpg" alt=""></div>
+        <div class="gallery-item"><img src="img/gallery/gallery-06.jpg" alt=""></div>
+        <div class="gallery-item"><img src="img/gallery/gallery-07.jpg" alt=""></div>
+        <div class="gallery-item"><img src="img/gallery/gallery-08.jpg" alt=""></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <p class="section-label">FAQ</p>
+      <div class="faq-item"><p class="faq-q">What is Impact/Week?</p></div>
+      <div class="faq-item"><p class="faq-q">Who should attend?</p></div>
+      <div class="faq-item"><p class="faq-q">Where is the venue?</p></div>
+      <div class="faq-item"><p class="faq-q">What's included in my ticket?</p></div>
+      <div class="faq-item"><p class="faq-q">Can I get a refund?</p></div>
+      <div class="faq-item"><p class="faq-q">Is there a code of conduct?</p></div>
+    </section>
+
+  </div>
+
+  <!-- SIDEBAR (right, sticky) -->
+  <aside class="sidebar">
+
+    <!-- Venue info -->
+    <div class="sidebar-module">
+      <p class="sidebar-label">Date & Venue</p>
+      <p class="sb-venue-line"><strong>14–15 October 2026</strong></p>
+      <p class="sb-venue-line">Norrsken House Barcelona</p>
+      <p class="sb-venue-line" style="margin-top:4px; color: var(--grey-mid);">Via Laietana 17, Barcelona</p>
+    </div>
+
+    <!-- Tickets -->
+    <div class="sidebar-module">
+      <p class="sidebar-label">Tickets</p>
+      <div class="sb-ticket">
+        <div class="sb-ticket-header">
+          <span class="sb-ticket-name">Founder</span>
+          <span class="sb-ticket-price">€295<small>+ VAT</small></span>
+        </div>
+        <p class="sb-ticket-desc">For founders building companies that solve real problems.</p>
+        <a href="#" class="sb-ticket-btn">Apply Now</a>
+      </div>
+      <div class="sb-ticket">
+        <div class="sb-ticket-header">
+          <span class="sb-ticket-name">Investor</span>
+          <span class="sb-ticket-price">€595<small>+ VAT</small></span>
+        </div>
+        <p class="sb-ticket-desc">For investors backing the companies that matter.</p>
+        <a href="#" class="sb-ticket-btn">Apply Now</a>
+      </div>
+      <div class="sb-ticket">
+        <div class="sb-ticket-header">
+          <span class="sb-ticket-name">Enabler</span>
+          <span class="sb-ticket-price">€795<small>+ VAT</small></span>
+        </div>
+        <p class="sb-ticket-desc">For advisors, operators, and experts.</p>
+        <a href="#" class="sb-ticket-btn">Apply Now</a>
+      </div>
+    </div>
+
+    <!-- Content slot (GIF/image placeholder) -->
+    <div class="sidebar-module">
+      <div class="sb-content-box">
+        <span class="sb-content-box-placeholder">GIF / Content slot</span>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+
+</body>
+</html>

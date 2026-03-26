@@ -288,7 +288,8 @@ button { cursor: pointer; }
 .filter-group.open .filter-chevron { transform: none; }
 
 .filter-options { display: none; }
-.filter-group.open .filter-options { display: block; }
+.filter-group.open > .filter-options { display: block; }
+.filter-group.open > .filter-options .filter-group:not(.open) > .filter-options { display: none; }
 
 .filter-option-item {
   display: flex;
@@ -983,48 +984,47 @@ button { cursor: pointer; }
 }
 .home-nav-btn:active { background: var(--black); color: #fff; }
 
-/* Home news — editorial */
-.home-news {
-  padding: 28px 20px 40px;
+/* Home editorial feed — System Magazine style */
+.home-editorial {
+  padding: 20px 20px 40px;
 }
-.home-news-header {
+.home-ed-header {
   font-family: var(--font); font-size: 9px; font-weight: 400;
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey);
-  margin-bottom: 20px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--black);
+  margin-bottom: 0;
 }
-.home-news-grid {
+.home-ed-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
+  gap: 16px;
+  padding-top: 16px;
 }
-.home-news-item {
-  padding: 14px 12px;
-  border-top: 1px solid var(--grey-light);
+.home-ed-item {
   cursor: default;
 }
-.home-news-item:nth-child(odd) { padding-right: 16px; border-right: 1px solid var(--grey-light); }
-.home-news-item:nth-child(even) { padding-left: 16px; }
-.home-news-item-title {
-  font-family: var(--font-display); font-size: 13px; font-weight: 400;
-  letter-spacing: 0.01em; text-transform: uppercase; line-height: 17px;
+.home-ed-item.full { grid-column: 1 / -1; }
+.home-ed-img {
+  width: 100%; aspect-ratio: 4/5;
+  background: #D0D0D0;
+  margin-bottom: 10px;
+}
+.home-ed-item.full .home-ed-img {
+  aspect-ratio: 16/9;
+}
+.home-ed-kicker {
+  font-family: var(--font); font-size: 9px; font-weight: 400;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--black);
+  margin-bottom: 4px;
+}
+.home-ed-title {
+  font-family: var(--font-display); font-size: 15px; font-weight: 400;
+  letter-spacing: -0.01em; line-height: 19px;
   color: var(--black);
 }
-.home-news-item-preamble {
-  font-family: var(--font); font-size: 11px; color: var(--black);
-  line-height: 15px; margin-top: 6px; font-weight: 400;
-}
-.home-news-item-detail {
-  font-family: var(--font); font-size: 10px; color: var(--grey);
-  letter-spacing: 0.02em; margin-top: 6px;
-}
-.home-news-img {
-  width: 100%;
-}
-/* Feature item — full width, outside grid */
-.home-news-feature {
-  padding: 0 0 20px;
-  border-bottom: 1px solid var(--grey-light);
-  margin-bottom: 0;
+.home-ed-body {
+  font-family: var(--font); font-size: 11px; color: var(--grey);
+  line-height: 15px; margin-top: 4px;
 }
 
 /* Schedule page — day toggle + grid */
@@ -1406,7 +1406,18 @@ button { cursor: pointer; }
 #page-venue > div:last-child { flex-shrink: 0; border-top: 1px solid var(--black); background: var(--white); }
 
 .venue-floor {
-  border-top: 1px solid var(--black);
+  border-top: 1px solid var(--grey-light);
+}
+.venue-floor:last-child {
+  border-bottom: 1px solid var(--grey-light);
+}
+.venue-floorplan {
+  margin: 12px 0 8px;
+  background: #f5f5f5;
+  min-height: 120px;
+}
+.venue-floorplan img {
+  width: 100%; height: auto; display: block;
 }
 .venue-floor-header {
   display: flex;
@@ -1459,16 +1470,29 @@ button { cursor: pointer; }
   font-size: 11px; color: var(--grey);
 }
 .venue-practical {
-  padding: 14px 20px;
+  padding: 20px;
 }
 .venue-practical-title {
-  font-size: 11px; font-weight: 500; letter-spacing: 0.05em;
-  text-transform: uppercase; margin-bottom: 10px;
+  font-family: var(--font); font-size: 9px; font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey);
+  padding-bottom: 10px;
+  margin-bottom: 0;
 }
-.venue-practical-item {
-  font-size: 11px; line-height: 16px; padding: 3px 0;
+.venue-practical-row {
+  display: flex; gap: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--grey-light);
+  font-family: var(--font); font-size: 11px; line-height: 16px;
 }
-.venue-practical-item strong { font-weight: 500; }
+.venue-practical-label {
+  width: 90px; flex-shrink: 0;
+  font-weight: 400; letter-spacing: 0.03em;
+  text-transform: uppercase; font-size: 10px;
+  color: var(--grey);
+}
+.venue-practical-value {
+  flex: 1; color: var(--black);
+}
 
 .venue-body { padding: 20px; }
 .venue-body h2 {
@@ -2070,7 +2094,7 @@ button { cursor: pointer; }
   <div style="flex:1; overflow-y:auto;">
     <div class="page-header">
       <div class="page-title">Venue</div>
-      <p class="page-intro">Norrsken House Brussels. Rue du Commerce 72, 1000 Brussels.</p>
+      <p class="page-intro">Norrsken House Barcelona. Carrer de Pallars 108, 08018 Barcelona.</p>
     </div>
     <div id="venueFloors"></div>
   </div>
@@ -2096,10 +2120,10 @@ const EVENTS = {
     name: 'Impact/Week 2026',
     shortName: 'IMPACT/WEEK',
     tagline: '1,200 founders, funders & enablers',
-    location: 'Brussels',
-    house: 'Norrsken House Brussels',
+    location: 'Barcelona',
+    house: 'Norrsken House Barcelona',
     dates: 'June 1–7, 2026',
-    description: 'Join 1,200 founders, funders, and enablers in Brussels for the week where impact meets action.',
+    description: 'Join 1,200 founders, funders, and enablers in Barcelona for the week where impact meets action.',
     heroImage: '../site/img/hero_gif.gif',
     marqueeItems: ['Impact Week 2026', 'Brussels', '1,200 founders, funders & enablers', 'Seven days of impact'],
     ticketStatus: 'confirmed'
@@ -2107,7 +2131,7 @@ const EVENTS = {
 };
 
 const EVENTS_FEED = [
-  { slug: 'impactweek2026', name: 'Impact/Week 2026', location: 'Brussels', dates: 'June 1–7, 2026', tagline: '1,200 founders, funders & enablers', description: '1,200 founders, funders and enablers convene for seven days of programming across four stages.', house: 'Norrsken House Brussels', status: 'upcoming', category: 'flagship' },
+  { slug: 'impactweek2026', name: 'Impact/Week 2026', location: 'Barcelona', dates: 'June 1–7, 2026', tagline: '1,200 founders, funders & enablers', description: '1,200 founders, funders and enablers convene for seven days of programming across four stages.', house: 'Norrsken House Barcelona', status: 'upcoming', category: 'flagship' },
   { slug: 'founders-sthlm-2026', name: 'Founders Meetup Stockholm', location: 'Stockholm', dates: 'April 15, 2026', tagline: 'Monthly founder gathering at Norrsken House', description: 'Monthly founder gathering. Pitch practice, peer feedback, and open networking.', house: 'Norrsken House Stockholm', status: 'upcoming', category: 'meetup' },
   { slug: 'climate-nairobi-2026', name: 'Climate Action Nairobi', location: 'Nairobi', dates: 'May 20–22, 2026', tagline: 'East Africa\'s largest climate tech convening', description: 'East Africa\'s largest climate tech convening. Three days of panels, demos and deal-making.', house: 'Norrsken House Kigali', status: 'upcoming', category: 'conference' },
   { slug: 'bcn-demo-day-2026', name: 'Demo Day Barcelona', location: 'Barcelona', dates: 'March 28, 2026', tagline: '12 startups. 200 investors. One afternoon.', description: '12 startups. 200 investors. One afternoon of pitches and structured introductions.', house: 'Norrsken House Barcelona', status: 'past', category: 'demo_day' },
@@ -2139,14 +2163,14 @@ function getEventState() {
 const ATTENDEES = [
   { id: 1, name: "Erik Granholm", title: "Digital Marketing Manager", company: "Norrsken", location: "Stockholm, Sweden", role: "enabler", industry: ["Climatetech"], linkedin: "https://linkedin.com/in/", bio: "Driving digital marketing strategy across Norrsken's portfolio. Previously led growth at three impact startups.", photo: "../site/img/speakers/speaker-03.jpg", tags: ["Enabler", "Climatetech", "Marketing"] },
   { id: 2, name: "Alex Bakir", title: "General Partner", company: "Norrsken Evolve", location: "Amsterdam, Netherlands", role: "investor", industry: ["Fintech", "Climatetech"], linkedin: "https://linkedin.com/in/", bio: "Investing in category-defining companies tackling the world's most pressing challenges. 15 years in venture capital.", photo: "../site/img/speakers/speaker-04.jpg", tags: ["Investor", "Fintech", "Climatetech"] },
-  { id: 3, name: "Olivia Lazard", title: "Visiting Scholar", company: "Carnegie Europe", location: "Brussels, Belgium", role: "speaker", industry: ["Climatetech", "Policy"], linkedin: "https://linkedin.com/in/", bio: "Researching the intersection of ecological transition, geopolitics, and digital governance. Fellow at Carnegie Europe.", photo: "../site/img/speakers/speaker-05.jpg", tags: ["Speaker", "Climatetech", "Policy"] },
+  { id: 3, name: "Olivia Lazard", title: "Visiting Scholar", company: "Carnegie Europe", location: "Barcelona, Spain", role: "speaker", industry: ["Climatetech", "Policy"], linkedin: "https://linkedin.com/in/", bio: "Researching the intersection of ecological transition, geopolitics, and digital governance. Fellow at Carnegie Europe.", photo: "../site/img/speakers/speaker-05.jpg", tags: ["Speaker", "Climatetech", "Policy"] },
   { id: 4, name: "Daniel Goldberg", title: "CCO & Deputy CEO", company: "Norrsken", location: "Stockholm, Sweden", role: "enabler", industry: ["Impact"], linkedin: "https://linkedin.com/in/", bio: "Building the narrative for the world's largest impact ecosystem. Former journalist, author of two bestsellers.", photo: "../site/img/speakers/andri-magnason.jpg", tags: ["Enabler", "Impact", "Media"] },
   { id: 5, name: "Johan Attby", title: "General Partner", company: "Norrsken Evolve", location: "Stockholm, Sweden", role: "investor", industry: ["Deeptech", "Climatetech"], linkedin: "https://linkedin.com/in/", bio: "Serial entrepreneur turned investor. Co-founded two unicorns before joining Norrsken Evolve.", photo: "../site/img/speakers/audrey-tang.jpg", tags: ["Investor", "Deeptech", "Climatetech"] },
   { id: 6, name: "Nina Wenstrom", title: "Creative Director", company: "Norrsken", location: "Stockholm, Sweden", role: "speaker", industry: ["Design", "Impact"], linkedin: "https://linkedin.com/in/", bio: "Leading creative strategy across Norrsken's ecosystem. Background in editorial design and art direction.", photo: "../site/img/speakers/speaker-03.jpg", tags: ["Speaker", "Design", "Impact"] },
   { id: 7, name: "Bengt Ekegren", title: "Managing Director", company: "Stockholm Resilience Centre", location: "Stockholm, Sweden", role: "speaker", industry: ["Climatetech", "Regeneration"], linkedin: "https://linkedin.com/in/", bio: "Leading research on planetary boundaries and sustainable business transformation.", photo: "../site/img/speakers/speaker-04.jpg", tags: ["Speaker", "Regeneration", "Climatetech"] },
   { id: 8, name: "Sara Lindqvist", title: "Managing Partner, Co-founder", company: "Intimate Investments", location: "Berlin, Germany", role: "investor", industry: ["Healthtech", "Femtech"], linkedin: "https://linkedin.com/in/", bio: "Pioneer in femtech investing. Portfolio of 22 companies across health, wellness, and longevity.", photo: "../site/img/speakers/speaker-05.jpg", tags: ["Investor", "Healthtech", "Femtech"] },
   { id: 9, name: "Marcus Henriksson", title: "CEO", company: "Syre", location: "Gothenburg, Sweden", role: "enabler", industry: ["Climatetech", "Circular Economy"], linkedin: "https://linkedin.com/in/", bio: "Building the world's largest textile-to-textile recycling operation. Former McKinsey partner.", photo: "../site/img/speakers/andri-magnason.jpg", tags: ["Enabler", "Climatetech", "Circular Economy"] },
-  { id: 10, name: "Ebba Forsberg", title: "Policy Director", company: "Norrsken Brussels", location: "Brussels, Belgium", role: "enabler", industry: ["Policy", "Impact"], linkedin: "https://linkedin.com/in/", bio: "Connecting Europe's impact ecosystem with EU policy-making. Former advisor to the European Commission.", photo: "../site/img/speakers/audrey-tang.jpg", tags: ["Enabler", "Policy", "Impact"] }
+  { id: 10, name: "Ebba Forsberg", title: "Policy Director", company: "Norrsken Barcelona", location: "Barcelona, Spain", role: "enabler", industry: ["Policy", "Impact"], linkedin: "https://linkedin.com/in/", bio: "Connecting Europe's impact ecosystem with EU policy-making. Former advisor to the European Commission.", photo: "../site/img/speakers/audrey-tang.jpg", tags: ["Enabler", "Policy", "Impact"] }
 ];
 
 const SESSIONS = [
@@ -2157,16 +2181,16 @@ const SESSIONS = [
   { id: 5, title: "Femtech and the Gender Investment Gap", description: "Women's health is a $1T market -- yet receives 3% of health R&D funding. What will it take to close the gap?", start: "10:00", end: "11:00", day: "Tuesday", stage: "Beach Living Room", speakers: [8], themes: ["Healthtech", "Investing"], type: "session", image: "../site/img/gallery/gallery-05.jpg" },
   { id: 6, title: "Design as Strategy: Making Impact Visible", description: "How creative direction and design thinking can make the impact ecosystem more compelling, more legible, and more human.", start: "10:00", end: "11:00", day: "Tuesday", stage: "Mare Nostrum", speakers: [6], themes: ["Design", "Impact"], type: "session", image: "../site/img/gallery/gallery-06.jpg" },
   { id: 7, title: "Norrsken x Riche: Opening Night Dinner", description: "Join us for the official opening dinner at Riche Brussels. Champagne reception, three-course dinner, and the conversations that set the tone for the week.", start: "19:00", end: "23:00", day: "Monday", stage: "Off-site", speakers: [], themes: ["Side Event"], type: "side_event", image: "../site/img/gallery/gallery-07.jpg", externalUrl: "https://norrsken.org/impactweek/dinner", venue: "Riche Brussels, Rue du Tabellion 12, Belgium" },
-  { id: 8, title: "Sunrise Run: Brussels Park", description: "Start your Tuesday with a 5K run through Brussels Park. All levels welcome. Meeting point at the venue lobby.", start: "06:30", end: "07:30", day: "Tuesday", stage: "Off-site", speakers: [], themes: ["Side Event", "Wellbeing"], type: "side_event", image: "../site/img/gallery/gallery-08.jpg", externalUrl: "https://norrsken.org/impactweek/run", venue: "Brussels Park, Rue Royale, Belgium" },
+  { id: 8, title: "Sunrise Run: Barceloneta Beach", description: "Start your Tuesday with a 5K run through Barceloneta Beach. All levels welcome. Meeting point at the venue lobby.", start: "06:30", end: "07:30", day: "Tuesday", stage: "Off-site", speakers: [], themes: ["Side Event", "Wellbeing"], type: "side_event", image: "../site/img/gallery/gallery-08.jpg", externalUrl: "https://norrsken.org/impactweek/run", venue: "Barceloneta Beach, Rue Royale, Belgium" },
   { id: 9, title: "Deeptech for Climate: What VCs Are Missing", description: "A candid conversation about the blind spots in climate venture capital and where the next breakthroughs will come from.", start: "14:00", end: "15:00", day: "Tuesday", stage: "Red Room", speakers: [5, 2], themes: ["Deeptech", "Climatetech", "Investing"], type: "session", image: "../site/img/gallery/gallery-09.jpg" },
   { id: 10, title: "The Regeneration Workshop", description: "Hands-on workshop exploring regenerative design principles. Bring your laptop and an open mind.", start: "16:00", end: "18:00", day: "Tuesday", stage: "Mare Nostrum", speakers: [7], themes: ["Regeneration", "Design"], type: "session", image: "../site/img/gallery/gallery-01.jpg" }
 ];
 
 const FAQS = [
-  { id: 1, q: "What is Impact/Week?", a: "Impact/Week is Norrsken's annual gathering of founders, funders, and enablers working on the world's most pressing challenges. It takes place across multiple venues in Brussels over seven days." },
-  { id: 2, q: "Where is the venue?", a: "The main venue is Norrsken House Brussels at Rue du Commerce 72, 1000 Brussels, Belgium. Side events may take place at partner locations across the city." },
-  { id: 3, q: "How do I get to the venue?", a: "Norrsken House Brussels is a 10-minute walk from Brussels-Central station. The nearest metro stops are Troon/Troon (lines 1, 5) and Arts-Loi/Kunst-Wet (lines 2, 6). Underground parking is available." },
-  { id: 4, q: "What should I wear?", a: "Smart casual. Brussels in late spring can be unpredictable -- bring layers. There's no dress code for sessions, but the opening dinner is business casual." },
+  { id: 1, q: "What is Impact/Week?", a: "Impact/Week is Norrsken's annual gathering of founders, funders, and enablers working on the world's most pressing challenges. It takes place across multiple venues in Barcelona over seven days." },
+  { id: 2, q: "Where is the venue?", a: "The main venue is Norrsken House Barcelona at Rue du Commerce 72, 1000 Barcelona, Spain. Side events may take place at partner locations across the city." },
+  { id: 3, q: "How do I get to the venue?", a: "Norrsken House Barcelona is in Poblenou, a 5-minute walk from Llacuna metro (L4). Bicing stations and parking are nearby." },
+  { id: 4, q: "What should I wear?", a: "Smart casual. Barcelona in early June is warm -- dress light. There's no dress code for sessions, but the opening dinner is business casual." },
   { id: 5, q: "Is there WiFi?", a: "Yes. Network: NorrskenGuest, Password: impact2026. Available across all floors." },
   { id: 6, q: "Can I bring a guest?", a: "Impact/Week is invite-only. Each attendee has a personal invitation. If you'd like to recommend someone, contact our team at events@norrsken.org." },
   { id: 7, q: "What is the Shake Hands feature?", a: "Shake Hands is our way of facilitating warm introductions. When you find someone you'd like to connect with, tap 'Shake Hands' on their profile. If they shake back, you're matched and can see each other's contact details." },
@@ -2625,42 +2649,40 @@ function renderHome() {
     </div>
   </div>`;
 
-  // ── News feed ──
-  const newsItems = [
-    { title: '100 Ways to Fix the Future', preamble: 'An interactive installation exploring 100 concrete solutions to the world\'s most pressing challenges. Walk through, get inspired, take action.', location: 'Lobby', color: '#D0D0D0', feature: true },
-    { title: 'Cafe Electro Union', preamble: 'Brussels\' favourite specialty coffee pop-up takes over Floor 3 for the entire week.', location: 'Floor 3 · All week', color: '#D0D0D0', feature: false },
-    { title: 'Prompt What Matters', preamble: 'A 24-hour fixathon where teams use AI to prototype solutions for real impact challenges.', location: 'Floor 2 · Tuesday', color: '#D0D0D0', feature: false },
-    { title: 'Rooftop Serves Coffee and Fika', preamble: 'Start your mornings with Swedish fika and panoramic views of Brussels.', location: 'Rooftop · Every morning', color: '#D0D0D0', feature: false }
-  ];
+  // ── Editorial news feed — System Magazine grid ──
+  html += `<div class="home-editorial">
+    <div class="home-ed-header">This week</div>
+    <div class="home-ed-grid">
 
-  html += `<div class="home-news">
-    <div class="home-news-header">Happening this week</div>`;
-
-  // Feature item first (full width with large image)
-  const feature = newsItems.find(n => n.feature);
-  if (feature) {
-    html += `<div class="home-news-feature">
-      <div class="home-news-img" style="background:${feature.color};height:180px;"></div>
-      <div style="padding:16px 0 0;">
-        <div class="home-news-item-title" style="font-size:18px;line-height:22px;">${feature.title}</div>
-        <div class="home-news-item-preamble">${feature.preamble}</div>
-        <div class="home-news-item-detail">${feature.location}</div>
+      <div class="home-ed-item full">
+        <div class="home-ed-img"></div>
+        <div class="home-ed-kicker">Installation · Lobby</div>
+        <div class="home-ed-title">100 Ways to Fix the Future</div>
+        <div class="home-ed-body">An interactive walk-through installation presenting one hundred concrete, actionable solutions to the world's most urgent challenges. From carbon capture to ocean farming, from circular textiles to regenerative finance. Open all week in the lobby.</div>
       </div>
-    </div>`;
-  }
 
-  // Rest in 2-column grid
-  html += `<div class="home-news-grid">`;
-  newsItems.filter(n => !n.feature).forEach(n => {
-    html += `<div class="home-news-item">
-      <div class="home-news-img" style="background:${n.color};height:100px;margin-bottom:10px;"></div>
-      <div class="home-news-item-title">${n.title}</div>
-      <div class="home-news-item-preamble">${n.preamble}</div>
-      <div class="home-news-item-detail">${n.location}</div>
-    </div>`;
-  });
-  html += `</div>
+      <div class="home-ed-item">
+        <div class="home-ed-img"></div>
+        <div class="home-ed-kicker">Pop-up · Floor 3</div>
+        <div class="home-ed-title">Cafe Electro Union</div>
+        <div class="home-ed-body">Barcelona's favourite specialty coffee collective takes over Floor 3 for the entire week. Natural wines after 17:00.</div>
+      </div>
 
+      <div class="home-ed-item">
+        <div class="home-ed-img"></div>
+        <div class="home-ed-kicker">Fixathon · Floor 2</div>
+        <div class="home-ed-title">Prompt What Matters</div>
+        <div class="home-ed-body">A 24-hour fixathon where cross-disciplinary teams use AI to prototype solutions for real impact challenges. Tuesday only.</div>
+      </div>
+
+      <div class="home-ed-item full">
+        <div class="home-ed-img"></div>
+        <div class="home-ed-kicker">Rooftop · Every morning</div>
+        <div class="home-ed-title">Coffee + Fika</div>
+        <div class="home-ed-body">Start your morning with Swedish fika on the rooftop. Coffee, cinnamon buns, and views over Barcelona. A slow start before the sessions begin. 07:30 to 09:00, every day.</div>
+      </div>
+
+    </div>
   </div>`;
 
   container.innerHTML = html;
@@ -2773,7 +2795,7 @@ function getMatchReasons(pick) {
   if (pick.type === 'person') {
     const d = pick.data;
     if (d.location.includes('Sweden')) reasons.push('Both based in Sweden');
-    if (d.location.includes('Belgium')) reasons.push('Both in Brussels');
+    if (d.location.includes('Belgium')) reasons.push('Both in Barcelona');
     if (d.industry.includes('Climatetech')) reasons.push('Climatetech');
     if (d.industry.includes('Fintech')) reasons.push('Fintech');
     if (d.industry.includes('Policy')) reasons.push('Policy');
@@ -3226,7 +3248,7 @@ function renderSession(data) {
       <div class="detail-desc">${s.description}</div>
       <div class="detail-meta">
         ${speakerNames ? `<div class="detail-meta-row">${speakerNames}</div>` : ''}
-        <div class="detail-meta-row">${isSideEvent && s.venue ? s.venue : s.stage}, <a href="https://maps.google.com/?q=${encodeURIComponent(isSideEvent && s.venue ? s.venue : 'Norrsken House Brussels')}" target="_blank" rel="noopener">View on map</a></div>
+        <div class="detail-meta-row">${isSideEvent && s.venue ? s.venue : s.stage}, <a href="https://maps.google.com/?q=${encodeURIComponent(isSideEvent && s.venue ? s.venue : 'Norrsken House Barcelona')}" target="_blank" rel="noopener">View on map</a></div>
         <div class="detail-meta-row">${s.start}–${s.end}</div>
       </div>
       <div class="detail-tags">${tags}</div>
@@ -3259,7 +3281,7 @@ function addToCalendar(sessionId) {
     `DTEND:${date}T${endTime}`,
     `SUMMARY:${s.title}`,
     `DESCRIPTION:${s.description.replace(/\n/g, '\\n')}`,
-    `LOCATION:${s.stage}, Norrsken House Brussels`,
+    `LOCATION:${s.stage}, Norrsken House Barcelona`,
     'END:VEVENT',
     'END:VCALENDAR'
   ].join('\r\n');
@@ -3810,7 +3832,7 @@ function renderProfile() {
               <span>Edit Profile</span>
               <span class="filter-chevron">+</span>
             </div>
-            <div class="filter-options" style="display:none;">
+            <div class="filter-options">
               <div style="padding:0 20px;">
                 <div class="profile-account-row">
                   <div class="profile-account-label">Name</div>
@@ -3846,7 +3868,7 @@ function renderProfile() {
                   <span>Category${activeCat ? ' · ' + activeCat : ''}</span>
                   <span class="filter-chevron">+</span>
                 </div>
-                <div class="filter-options" style="display:none;">
+                <div class="filter-options">
                   ${categoryOptions.map(c => {
                     const active = a.role && a.role.toLowerCase() === c.toLowerCase();
                     return `<div class="filter-option-item${active ? ' active' : ''}" onclick="profileToggleCategory('${c}', this)"><span class="filter-option-label">${c}</span><span class="filter-check"></span></div>`;
@@ -3858,7 +3880,7 @@ function renderProfile() {
                   <span>Tags${activeTagCount > 0 ? ' (' + activeTagCount + ')' : ''}</span>
                   <span class="filter-chevron">+</span>
                 </div>
-                <div class="filter-options" style="display:none;">
+                <div class="filter-options">
                   ${tagOptions.map(t => {
                     const active = userTags.includes(t) || userIndustry.includes(t);
                     return `<div class="filter-option-item${active ? ' active' : ''}" onclick="profileToggleTag('${t}', this)"><span class="filter-option-label">${t}</span><span class="filter-check"></span></div>`;
@@ -3949,16 +3971,19 @@ function renderVenue() {
     {
       name: 'Lobby',
       desc: 'Registration, cantina, patio.',
+      floorplan: 'img/venue/lobby.png',
       stages: []
     },
     {
       name: 'Floor 3',
       desc: 'Networking area, first-come-first-serve meeting rooms.',
+      floorplan: 'img/venue/floor3.png',
       stages: []
     },
     {
       name: 'Floor 4',
       desc: '4 stages, networking area, headphones and streaming.',
+      floorplan: 'img/venue/floor4.png',
       stages: [
         { name: 'Town Hall', desc: 'Community sessions and open discussions. Capacity 120.' },
         { name: 'Red Room', desc: 'Main stage. Keynotes, panels, and flagship sessions. Capacity 400.' },
@@ -3970,6 +3995,7 @@ function renderVenue() {
     {
       name: 'Rooftop',
       desc: 'Networking, headphones and streaming, coffee, fika.',
+      floorplan: 'img/venue/rooftop.png',
       stages: []
     }
   ];
@@ -3983,7 +4009,8 @@ function renderVenue() {
         <span class="venue-floor-toggle">${i === 0 ? '\u2212' : '+'}</span>
       </div>
       <div class="venue-floor-body">
-        <div class="venue-floor-desc">${floor.desc}</div>`;
+        <div class="venue-floor-desc">${floor.desc}</div>
+        ${floor.floorplan ? `<div class="venue-floorplan"><img src="${floor.floorplan}" alt="${floor.name} floor plan" onerror="this.parentElement.style.background='#D0D0D0';this.style.display='none';"></div>` : ''}`;
 
     floor.stages.forEach(stage => {
       const color = stageColors[stage.name] || '#888';
@@ -4003,13 +4030,33 @@ function renderVenue() {
   floorsContainer.innerHTML = html;
 
   if (practicalContainer) {
-    practicalContainer.innerHTML = `<div class="venue-practical">
-      <div class="venue-practical-title">Practical Info</div>
-      <div class="venue-practical-item"><strong>WiFi:</strong> NorrskenGuest / impact2026</div>
-      <div class="venue-practical-item"><strong>Parking:</strong> Underground at Rue du Commerce. EUR 12/day.</div>
-      <div class="venue-practical-item"><strong>Accessibility:</strong> All stages wheelchair accessible. Elevators available.</div>
-      <div class="venue-practical-item"><strong>Cloakroom:</strong> Ground floor, 08:00–21:00 daily.</div>
-      <div class="venue-practical-item"><strong>Address:</strong> <a href="https://maps.google.com/?q=Norrsken+House+Brussels" target="_blank" rel="noopener">View on map</a></div>
+    practicalContainer.innerHTML = `<div class="venue-floor" id="venuePractical_fold">
+      <div class="venue-floor-header" onclick="document.getElementById('venuePractical_fold').classList.toggle('open'); this.querySelector('.venue-floor-toggle').textContent = document.getElementById('venuePractical_fold').classList.contains('open') ? String.fromCharCode(8722) : '+'">
+        <span class="venue-floor-name">Practical Info</span>
+        <span class="venue-floor-toggle">+</span>
+      </div>
+      <div class="venue-floor-body" style="padding:0 20px 16px;">
+        <div class="venue-practical-row">
+          <div class="venue-practical-label">Address</div>
+          <div class="venue-practical-value">Carrer de Pallars 108, 08018 Barcelona<br><a href="https://maps.google.com/?q=Norrsken+House+Barcelona" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:2px;">View on map</a></div>
+        </div>
+        <div class="venue-practical-row">
+          <div class="venue-practical-label">WiFi</div>
+          <div class="venue-practical-value">NorrskenGuest / impact2026</div>
+        </div>
+        <div class="venue-practical-row">
+          <div class="venue-practical-label">Accessibility</div>
+          <div class="venue-practical-value">Wheelchair accessible. Elevators on all floors.</div>
+        </div>
+        <div class="venue-practical-row">
+          <div class="venue-practical-label">Cloakroom</div>
+          <div class="venue-practical-value">Ground floor, 08:00–21:00</div>
+        </div>
+        <div class="venue-practical-row">
+          <div class="venue-practical-label">Parking</div>
+          <div class="venue-practical-value">BSM Pallars, 2 min walk</div>
+        </div>
+      </div>
     </div>`;
   }
 }

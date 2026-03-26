@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impact/Week 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #000000;
+    --white: #ffffff;
+    --blue: #0000ff;
+    --blue-hover: #0000cc;
+    --grey-mid: #999999;
+    --grey-light: #e5e5e5;
+    --grey-bg: #f2f2f2;
+    --grey-muted: #c8c8c8;
+    --warm: #e8ddd0;
+    --font: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 76px;
+  }
+
+  body {
+    font-family: var(--font);
+    color: var(--black);
+    background: var(--white);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { color: var(--blue-hover); }
+  ::selection { background: var(--blue); color: var(--white); }
+
+  /* ===== SCROLL SNAP — soft sticky sections ===== */
+  .hero,
+  .about-tickets,
+  .speakers,
+  .gallery-section,
+  .agenda,
+  .faq-register,
+  .cta-links,
+  .logo-wall {
+    scroll-snap-align: start;
+  }
+
+  /* ===== NAV ===== */
+  .nav-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--white);
+  }
+
+  nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 24px;
+    height: 44px;
+    border-bottom: 1px solid var(--grey-light);
+  }
+
+  .nav-left {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .nav-logo {
+    margin-right: 24px;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-logo svg { height: 11px; width: auto; }
+
+  .nav-left a, .nav-right a {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--black);
+    transition: color 0.15s;
+  }
+
+  .nav-left a:hover, .nav-right a:hover { color: var(--blue); }
+  .nav-left a.nav-active, .nav-right a.nav-active { color: var(--blue); }
+
+  .nav-center-text {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    text-align: center;
+  }
+
+  .nav-right {
+    display: flex;
+    gap: 24px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  /* ===== HAMBURGER & MOBILE MENU ===== */
+  .hamburger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .hamburger svg { display: block; }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 200;
+    background: var(--white);
+    flex-direction: column;
+  }
+
+  .mobile-menu.is-open { display: flex; }
+
+  .mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--grey-light);
+  }
+
+  .mobile-menu-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mobile-menu-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    grid-template-columns: none;
+    height: auto;
+    padding: 0;
+    border: none;
+  }
+
+  .mobile-menu-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    height: 48px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+    border-bottom: 1px solid var(--grey-light);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .mobile-menu-nav a:hover { color: var(--blue); }
+
+  .mobile-menu-nav a::after {
+    content: '>';
+    color: var(--grey-mid);
+    font-size: 13px;
+    font-weight: 300;
+  }
+
+  .mobile-menu-footer {
+    padding: 24px 16px;
+    margin-top: auto;
+  }
+
+  .mobile-menu-footer-title {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 4px;
+  }
+
+  .mobile-menu-footer-sub {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--grey-mid);
+    margin-bottom: 16px;
+  }
+
+  .mobile-menu-footer-link {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  /* ===== ROLLING BANNER ===== */
+  .rolling-banner {
+    height: 32px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 99;
+    background: #FF7DC5;
+  }
+
+  .rolling-banner-track {
+    display: flex;
+    white-space: nowrap;
+    animation: roll 30s linear infinite;
+    width: max-content;
+  }
+
+  .rolling-banner-track span {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+    padding: 0 40px;
+  }
+
+  .rolling-banner-track .dot { padding: 0 4px; color: var(--grey-mid); }
+
+  @keyframes roll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ===== HERO ===== */
+  .hero { padding-top: 76px; }
+
+  .hero-image {
+    width: 100%;
+    height: calc(100vh - 120px); /* 44 nav + 32 banner + 44 hero-bar */
+    background: #1a1a1a url('img/hero.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .hero-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    height: 44px;
+    padding: 0 24px;
+    border-top: 1px solid var(--grey-light);
+  }
+
+  .hero-bar-left { display: flex; gap: 24px; align-items: center; }
+
+  .hero-bar-left p {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+
+  .hero-bar-right { text-align: right; display: flex; align-items: center; justify-content: flex-end; }
+
+  .hero-bar-right a {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    transition: opacity 0.15s;
+  }
+
+  .hero-bar-right a:hover { opacity: 0.7; }
+
+  .blink-text { animation: blink 1.2s step-end infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  .arrow-static { animation: none; display: inline; }
+
+  /* ===== SHARED ===== */
+  .label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 16px;
+  }
+
+  /* ===== ABOUT + TICKETS (side by side, one viewport) ===== */
+  .about-tickets {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    padding: 24px 24px 80px;
+    gap: 60px;
+    align-items: start;
+  }
+
+  /* Manifesto */
+  .about-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 560px;
+  }
+
+  .manifesto-title {
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+
+  .manifesto-subtitle {
+    font-size: 13px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--black);
+    margin-bottom: 28px;
+  }
+
+  .manifesto-details {
+    margin-bottom: 28px;
+  }
+
+  .manifesto-details p {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--black);
+    line-height: 1.7;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .manifesto-details p::before {
+    content: '*';
+    position: absolute;
+    left: 0;
+  }
+
+  .manifesto-text {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--black);
+  }
+
+  .about-ctas {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .about-ctas a {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .about-ctas a:hover { color: var(--blue); }
+
+  /* Tickets */
+  .tickets-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tickets-bg {
+    background: var(--white);
+    padding: 0;
+    position: relative;
+  }
+
+  .ticket-card {
+    border: 1px solid var(--black);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+    background: var(--white);
+    min-height: 260px;
+  }
+
+  .ticket-card:last-child { margin-bottom: 0; }
+
+  .ticket-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+
+  .ticket-name {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .ticket-price {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+
+  .ticket-price span {
+    font-size: 10px;
+    color: var(--grey-mid);
+    margin-left: 3px;
+  }
+
+  .ticket-for {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--black);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+
+  .ticket-btn {
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px;
+    background: var(--grey-light);
+    color: var(--black);
+    transition: background 0.15s, color 0.15s;
+    margin-top: auto;
+  }
+
+  .ticket-card:hover .ticket-btn {
+    background: var(--blue);
+    color: var(--white);
+  }
+
+  /* ===== SPEAKERS ===== */
+  .speakers { padding: 80px 24px; }
+
+  .speakers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+  }
+
+  .year-toggle { display: flex; }
+
+  .year-toggle button {
+    font-family: var(--font);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    background: none;
+    border: 1px solid var(--black);
+    cursor: pointer;
+    color: var(--grey-mid);
+    transition: all 0.15s;
+  }
+
+  .year-toggle button + button { border-left: none; }
+  .year-toggle button.active { color: var(--white); background: var(--black); }
+  .year-toggle button:hover:not(.active) { color: var(--black); }
+
+  .speaker-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    background: none;
+    border: none;
+  }
+
+  .speaker-card { background: var(--white); position: relative; }
+  .speaker-card:hover .speaker-photo { background: #eaeaea; }
+  .speaker-card:nth-child(3) .speaker-photo { background: var(--warm); }
+
+  .speaker-photo {
+    width: 100%;
+    aspect-ratio: 1/1.05;
+    background: var(--grey-bg);
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+
+  .speaker-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .speaker-photo .ph {
+    width: 36%; aspect-ratio: 1; border-radius: 50%; background: var(--grey-light);
+  }
+
+  .speaker-info { padding: 6px 0 10px; position: relative; }
+
+  .speaker-name {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: -1px;
+    line-height: 1.3;
+  }
+
+  .speaker-role {
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 1.3;
+    color: var(--black);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding-right: 24px;
+  }
+
+  .speaker-expand {
+    position: absolute;
+    bottom: 10px; right: 0;
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px; font-weight: 300;
+    color: var(--black); line-height: 1;
+    transition: transform 0.2s;
+  }
+
+  .speaker-card.expanded .speaker-expand { transform: rotate(45deg); }
+
+  .speaker-bio {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease;
+    font-size: 12px; font-weight: 300;
+    color: var(--black); line-height: 1.6;
+  }
+
+  .speaker-card.expanded {
+    z-index: 10;
+  }
+
+  .speaker-card.expanded .speaker-bio {
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--white);
+    padding: 8px 0 18px;
+    border: none;
+    overflow: visible;
+    max-height: none;
+  }
+
+  .speaker-bio-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--black);
+  }
+
+  .speaker-bio-cta {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .speaker-bio-cta:hover {
+    color: #FF7DC5;
+  }
+
+  /* ===== GALLERY — masonry grid, alive ===== */
+  .gallery-section {
+    padding: 80px 24px;
+    position: relative;
+  }
+
+  .gallery-floor {
+    columns: 5;
+    column-gap: 4px;
+  }
+
+  .gallery-photo {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    break-inside: avoid;
+    margin-bottom: 4px;
+  }
+
+  .gallery-photo-img {
+    width: 100%;
+    background: var(--grey-bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gallery-photo-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.4s ease;
+  }
+
+  .gallery-photo:hover .gallery-photo-img img {
+    transform: scale(1.03);
+  }
+
+  .gallery-photo-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--white);
+    padding: 24px 12px 10px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.5));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .gallery-photo:hover .gallery-photo-caption { opacity: 1; }
+
+  /* Lightbox overlay */
+  .gallery-lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.9);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .gallery-lightbox.active {
+    display: flex;
+  }
+
+  .gallery-lightbox img {
+    max-width: 85vw;
+    max-height: 80vh;
+    object-fit: contain;
+  }
+
+  .gallery-lightbox-caption {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-top: 16px;
+  }
+
+  /* ===== AGENDA — clean straight-line grid ===== */
+  .agenda { padding: 80px 24px; }
+
+  .agenda-day-tab {
+    font-family: var(--font);
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 10px 20px;
+    background: none;
+    border: 1px solid var(--black);
+    cursor: pointer;
+    color: var(--grey-mid);
+    transition: all 0.15s;
+  }
+
+  .agenda-day-tab + .agenda-day-tab { border-left: none; }
+
+  .agenda-day-tab.active { color: var(--white); background: var(--black); }
+  .agenda-day-tab:hover:not(.active) { color: var(--black); }
+
+  .agenda-day { display: none; }
+  .agenda-day.active { display: block; }
+
+  .agenda-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(3, 1fr);
+    gap: 1px;
+    background: var(--black);
+    border: 1px solid var(--black);
+    margin-top: 0;
+  }
+
+  .agenda-time-cell {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--grey-mid);
+    padding: 14px 12px;
+    background: var(--grey-bg);
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .agenda-slot {
+    padding: 14px 16px;
+    min-height: 80px;
+    background: var(--white);
+    display: flex; flex-direction: column;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .agenda-slot:hover:not(.agenda-slot--empty) { background: var(--grey-bg); }
+
+  .agenda-slot--empty {
+    background: var(--grey-bg);
+    cursor: default;
+  }
+
+  .agenda-slot-title {
+    font-size: 13px; font-weight: 400;
+    line-height: 1.4; margin-bottom: 4px;
+    padding-right: 28px;
+    color: var(--black);
+  }
+
+  .agenda-slot-speaker {
+    font-size: 11px; color: var(--black); letter-spacing: 0.02em;
+  }
+
+  .agenda-slot-expand {
+    position: absolute;
+    top: 12px; right: 14px;
+    font-size: 18px; font-weight: 300;
+    color: var(--black); line-height: 1;
+    transition: transform 0.2s;
+  }
+
+  .agenda-slot.expanded .agenda-slot-expand { transform: rotate(45deg); }
+
+  .agenda-slot-detail {
+    display: none;
+    font-size: 12px; font-weight: 300;
+    color: var(--black); line-height: 1.6;
+  }
+
+  .agenda-slot-detail p { margin: 0; }
+
+  .agenda-slot-detail a.agenda-cal-link {
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-top: 8px;
+  }
+  .agenda-slot-detail a.agenda-cal-link:hover { color: var(--blue-hover); }
+
+  .agenda-slot-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--grey-light);
+  }
+
+  .agenda-slot-meta {
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    color: var(--black);
+    line-height: 1.7;
+  }
+
+  .agenda-slot-meta strong {
+    font-weight: 600;
+  }
+
+  .agenda-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 16px;
+  }
+
+  .agenda-day-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 0;
+  }
+
+  .agenda-search-wrap {
+    display: flex;
+    border: 1px solid var(--grey-light);
+  }
+
+  .agenda-search-input {
+    width: 220px;
+    padding: 10px 14px;
+    font-family: var(--font);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    border: none;
+    background: var(--white);
+    color: var(--black);
+    outline: none;
+  }
+
+  .agenda-search-input::placeholder { color: var(--grey-mid); }
+
+  .agenda-search-btn {
+    padding: 10px 20px;
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .agenda-search-btn:hover { background: #222; }
+
+  .agenda-slot.search-hidden {
+    opacity: 0.08;
+    pointer-events: none;
+  }
+  .agenda-slot--empty.search-dimmed {
+    opacity: 0.08;
+  }
+
+  .agenda-slot.expanded { z-index: 10; }
+  .agenda-slot.expanded .agenda-slot-detail {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: -1px;
+    right: -1px;
+    background: var(--white);
+    padding: 12px 16px 18px;
+    border-left: 1px solid var(--black);
+    border-right: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
+  }
+
+  /* ===== FAQ + REGISTER ===== */
+  .faq-register {
+    padding: 80px 24px;
+    display: grid;
+    grid-template-columns: 5fr 3fr;
+    gap: 80px;
+  }
+
+  .faq-item { border-bottom: 1px solid var(--black); }
+
+  .faq-question {
+    width: 100%;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 0;
+    background: none; border: none;
+    font-family: var(--font);
+    font-size: 14px; font-weight: 400;
+    text-align: left; cursor: pointer;
+    color: var(--black); line-height: 1.4;
+    transition: color 0.15s;
+  }
+
+  .faq-question:hover { color: var(--grey-mid); }
+
+  .faq-toggle {
+    font-size: 18px; font-weight: 300;
+    color: var(--black); flex-shrink: 0; margin-left: 16px;
+    transition: transform 0.2s; display: inline-block;
+  }
+
+  .faq-toggle::after { content: '+'; }
+  .faq-item.open .faq-toggle { transform: rotate(45deg); }
+
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+
+  .faq-answer p {
+    padding: 0 0 16px;
+    font-size: 13px; font-weight: 300;
+    color: var(--black); line-height: 1.65;
+  }
+
+  .faq-item.open .faq-answer { max-height: 300px; }
+
+  .register-side { padding-top: 32px; }
+
+  .register-title {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .register-desc {
+    font-size: 13px; font-weight: 300;
+    color: var(--black); line-height: 1.55;
+    margin-bottom: 24px;
+  }
+
+  .register-input {
+    width: 100%; padding: 14px 16px;
+    background: var(--grey-bg); border: none;
+    font-family: var(--font); font-size: 13px;
+    color: var(--black); margin-bottom: 12px; outline: none;
+  }
+
+  .register-input::placeholder { color: var(--grey-mid); }
+  .register-input:focus { outline: 1px solid var(--black); }
+
+  .register-btn {
+    display: block; width: 100%; text-align: center;
+    font-family: var(--font);
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 14px; background: var(--black); color: var(--white);
+    border: none; cursor: pointer; transition: background 0.15s;
+  }
+
+  .register-btn:hover { background: #222; }
+
+  /* ===== CTA LINKS ===== */
+  .cta-links {
+    padding: 60px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cta-links a {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+    transition: color 0.15s;
+  }
+
+  .cta-links a:hover { color: var(--blue); }
+
+  /* ===== LOGO WALL ===== */
+  .logo-wall { padding: 80px 24px; overflow: hidden; }
+  .marquee-wrap { overflow: hidden; }
+
+  .marquee-track {
+    display: flex; gap: 48px; align-items: center;
+    animation: marquee 35s linear infinite; width: max-content;
+  }
+
+  .marquee-track .logo-ph {
+    flex-shrink: 0;
+    font-size: 14px; font-weight: 400;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--grey-light); white-space: nowrap;
+    transition: color 0.15s;
+  }
+
+  .marquee-track .logo-ph:hover { color: var(--black); }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ===== FOOTER ===== */
+  footer { padding: 20px 24px; }
+
+  .footer-nav {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 24px; padding-bottom: 40px;
+    border-bottom: 1px solid var(--grey-light); margin-bottom: 20px;
+  }
+
+  .footer-col-title {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--black); margin-bottom: 16px;
+  }
+
+  .footer-col a {
+    display: block; font-size: 13px; font-weight: 400;
+    color: var(--blue); line-height: 2; transition: opacity 0.15s;
+  }
+
+  .footer-col a:hover { opacity: 0.6; }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-logo { display: flex; align-items: center; }
+  .footer-logo svg { height: 11px; width: auto; }
+
+  .footer-legal { font-size: 10px; color: var(--grey-mid); letter-spacing: 0.04em; }
+
+  /* ===== RESPONSIVE ===== */
+
+  /* ---- Tablet: 900px ---- */
+  @media (max-width: 900px) {
+    /* Disable scroll snap — terrible UX on touch */
+    html { scroll-snap-type: none; }
+    .hero, .about-tickets, .speakers, .gallery-section,
+    .agenda, .faq-register, .cta-links, .logo-wall { scroll-snap-align: none; }
+
+    /* Nav */
+    .nav-center-text { display: none; }
+
+    /* Hero bar */
+    .hero-bar { grid-template-columns: 1fr; height: auto; padding: 10px 16px; }
+    .hero-bar-left { flex-wrap: wrap; gap: 6px; }
+    .hero-bar-right { justify-content: flex-start; margin-top: 2px; }
+
+    /* About + Tickets */
+    .about-tickets { grid-template-columns: 1fr; min-height: auto; padding: 56px 20px; gap: 40px; }
+    .tickets-col { width: 100%; }
+    .about-col { max-width: 100%; }
+
+    /* Speakers */
+    .speakers { padding: 56px 20px; }
+    .speaker-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* Gallery */
+    .gallery-section { padding: 56px 20px; }
+    .gallery-floor { columns: 4; }
+
+    /* Agenda */
+    .agenda { padding: 56px 20px; }
+    .agenda-grid { grid-template-columns: 60px repeat(3, 1fr); }
+    .agenda-slot { min-height: 60px; }
+    /* Stack toolbar: tabs on top, search below */
+    .agenda-toolbar { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .agenda-day-tabs { overflow-x: auto; }
+    .agenda-search-wrap { width: 100%; }
+    .agenda-search-input { width: 100%; flex: 1; }
+
+    /* FAQ + Register */
+    .faq-register { grid-template-columns: 1fr; gap: 48px; padding: 56px 20px; }
+    .register-side { padding-top: 0; }
+
+    /* Logo wall */
+    .logo-wall { padding: 56px 20px; }
+
+    /* Footer */
+    .footer-nav { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ---- Mobile: 560px ---- */
+  @media (max-width: 560px) {
+    /* Nav — logo left, tickets right, nothing else */
+    nav {
+      grid-template-columns: 1fr 1fr;
+      padding: 0 16px;
+      height: 48px;
+    }
+    .nav-left a { display: none; }
+    .nav-right a:not(:last-child) { display: none; }
+    .hamburger { display: flex; }
+    .nav-logo svg { height: 13px; }
+    html { scroll-padding-top: 48px; }
+
+    /* Hero */
+    .hero { padding-top: 48px; }
+    .hero-image { height: calc(100svh - 130px); } /* 48 nav + 32 banner + ~50 hero-bar */
+
+    /* Manifesto */
+    .about-tickets { padding: 40px 16px; }
+    .manifesto-title { font-size: 18px; line-height: 1.25; }
+    .manifesto-text { font-size: 12px; }
+    .ticket-card { min-height: auto; }
+
+    /* Speakers */
+    .speakers { padding: 40px 16px; }
+    .speakers-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .speaker-grid { grid-template-columns: 1fr 1fr; }
+    .speaker-name { font-size: 11px; }
+    .speaker-role { font-size: 10px; }
+
+    /* Gallery — convert scattered layout to simple grid on mobile */
+    .gallery-section { padding: 40px 16px; }
+    .gallery-floor { columns: 2; }
+    .gallery-photo-caption { opacity: 1; position: static; background: none; color: var(--black); padding: 4px 0 8px; }
+
+    /* Agenda — vertical list view on mobile */
+    .agenda { padding: 40px 16px; }
+    .agenda-day-tab { padding: 10px 14px; font-size: 10px; }
+
+    /* Switch grid to block: time cells become section dividers, sessions stack full-width */
+    .agenda-grid {
+      display: block;
+      gap: 0;
+      background: transparent;
+      border: none;
+      margin-top: 0;
+    }
+    .agenda-time-cell {
+      display: block;
+      border: 1px solid var(--black);
+      font-size: 10px;
+      padding: 8px 14px;
+      background: var(--grey-bg);
+      width: 100%;
+    }
+    .agenda-slot {
+      display: block;
+      border-left: 1px solid var(--black);
+      border-right: 1px solid var(--black);
+      border-bottom: 1px solid var(--grey-light);
+      min-height: auto;
+      padding: 14px 16px;
+      width: 100%;
+    }
+    .agenda-slot:last-child {
+      border-bottom: 1px solid var(--black);
+    }
+    /* Hide empty filler cells — not needed in list view */
+    .agenda-slot--empty { display: none; }
+
+    /* Foldout detail: full width in list mode */
+    .agenda-slot.expanded .agenda-slot-detail {
+      left: 0;
+      right: 0;
+    }
+
+    .agenda-slot-title { font-size: 12px; padding-right: 24px; }
+    .agenda-slot-speaker { font-size: 10px; }
+
+    /* FAQ */
+    .faq-register { padding: 40px 16px; }
+    .faq-question { font-size: 13px; }
+
+    /* CTA */
+    .cta-links { padding: 40px 16px; }
+
+    /* Logo wall */
+    .logo-wall { padding: 40px 16px; }
+
+    /* Footer */
+    footer { padding: 20px 16px; }
+    .footer-nav { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 10px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV + ROLLING BANNER -->
+<div class="nav-wrap">
+  <nav>
+    <div class="nav-left">
+      <span class="nav-logo">
+        <svg style="height:11px;width:auto;display:block;" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1535.2 214.5">
+<style type="text/css">.st0{fill:#231F20;}</style>
+<g>
+	<path class="st0" d="M149.1,207.9v2.8l-10.3-4.5c-44.7-19.8-89.3-39.6-134-59.3c-1.6-0.4-2.5-2-2.3-3.6c0.1-5.4,0.1-10.9,0-16.3c-0.2-1.2,0.5-2.3,1.6-2.7C52.1,103,99.9,81.8,147.8,60.6c0.4-0.2,0.9-0.3,1.4-0.4c0,9.5,0.1,18.8-0.1,28.1c0,0.7-1.1,1.7-2,2.1c-15.7,6.7-31.4,13.4-47.1,20.1l-55.8,23.7c-0.7,0.3-1.4,0.6-2.5,1.1c1.1,0.5,1.9,0.9,2.6,1.2c34.1,14.5,68.2,29,102.3,43.4c2,0.9,2.7,1.9,2.7,4.1C149,192,149.1,200,149.1,207.9z"/>
+	<path class="st0" d="M330.8,205.8v2.4h-39.9v-3.2c0-34.5,0-69.1-0.1-103.6c0-3.8-0.5-7.6-1.3-11.3c-1.2-5.7-5-9.2-10.7-9.9c-4-0.5-8.1-0.3-12.1,0.5c-6.8,1.5-10.8,6.4-12.4,13c-1,4.1-1.5,8.2-1.5,12.4c-0.1,33-0.1,66-0.1,99v3.2h-39.8v-155h38v18.4c0.7-0.9,1-1.2,1.1-1.5C261.1,54.9,275,49,292,49.1c5.8-0.1,11.6,0.9,17,2.9c11.6,4.5,18,13.4,20.1,25.3c1,5.2,1.5,10.4,1.6,15.7C330.8,130.6,330.8,168.2,330.8,205.8z"/>
+	<path class="st0" d="M607.8,86.8c-0.1,0.3-0.2,0.6-0.3,0.8c-3.4-0.2-6.8-0.4-10.2-0.5c-5.5-0.3-11.1,0.7-16.2,2.9c-9.2,4.2-14,11.5-15,21.5c-0.1,1.3-0.1,2.6-0.1,3.8v92.8h-39.6V53.3h37.9v20.3l0.5,0.1c0.4-0.7,0.8-1.4,1.3-2c2.6-3.5,5-7.1,7.8-10.4c8.4-9.8,19.2-13.3,31.8-11.9c1.3,0.1,2.2,0.3,2.2,2C607.8,63.2,607.8,75,607.8,86.8z"/>
+	<path class="st0" d="M720.4,87.7c-2.2-0.1-4.2-0.3-6.2-0.3c-4.5,0.1-9.1-0.2-13.4,0.7c-14.2,2.6-22.2,12.4-22.2,26.9c0,30,0,60,0,90.1v3.3h-39.7V53.3h37.9v20.2l0.5,0.2c0.4-0.5,0.8-1.1,1.1-1.6c3.2-5.6,7.3-10.7,12.2-14.9c8.1-7.2,17.8-8.8,28.1-7.6c0.6,0.1,1.5,0.9,1.5,1.5C720.4,63.1,720.4,75.2,720.4,87.7z"/>
+	<path class="st0" d="M860.5,179.3c-5.5,17.2-17.8,26.8-35.2,30.2c-4.5,0.9-9,1.4-13.6,2.1h-14.3c-5-0.7-10.1-1.2-15.1-2.1c-2.8-0.5-5.6-1.2-8.4-2.2c-14.6-4.9-22.8-15.3-25-30.4c-0.9-6.3-1.1-12.8-1.6-19.4h36.2c0,1-0.1,2,0,3c0,3,0.3,5.9,0.7,8.9c2.5,11.7,12.1,17.6,24.8,15.4c12-2,18.2-12,14.6-23.6c-0.7-2.3-2.1-4.4-3.9-6c-3.3-2.6-7-4.8-10.9-6.4c-9.2-3.7-18.7-6.8-28-10.3c-3-1.1-6-2.4-8.8-3.9c-17.4-9.2-24.5-23.6-22.8-43.3c1.9-21.2,13.6-34.4,35-39.8c14.7-3.7,30.1-3.7,44.7,0.2c18.7,4.9,29.3,18.5,30.1,37.9c0.1,3.1,0,6.3,0,9.7h-35.4c-0.2-2.1-0.4-4.3-0.6-6.4c-1.2-12.2-7.1-19-22.9-16c-7.4,1.4-12,6.5-12.8,13.1c-1,7.6,2,13.9,8.8,17.4c4.1,1.9,8.4,3.6,12.8,5c7.5,2.6,15,5,22.4,7.7c4.2,1.6,8.3,3.5,12.2,5.8c9.5,5.1,16.2,14.3,18,25C863.2,160.5,863.4,170.1,860.5,179.3z"/>
+	<path class="st0" d="M1026.8,208.4c-12.8,0-25.5,0-38.3,0.1c-1.7,0.2-3.3-0.8-3.9-2.4c-10.1-19.6-20.2-39.1-30.4-58.6c-0.4-0.8-0.9-1.6-1.5-2.7c-3,3.9-5.5,7.9-8.7,11.2c-4.4,4.7-5.8,9.8-5.5,16.2c0.5,11,0.1,22.1,0.1,33.2v2.9H899V2.5h39.6v108.2l0.5,0.2c0.5-0.7,1.1-1.4,1.6-2.1c12.3-17.9,24.6-35.7,36.9-53.5c0.8-1.5,2.4-2.4,4.1-2.2c12.7,0.1,25.3,0,38,0h3.3c-0.9,1.3-1.4,2-2,2.7c-13.7,18.8-27.5,37.6-41.3,56.4c-1.1,1.2-1.2,3-0.3,4.3c16.2,29.6,32.4,59.2,48.5,88.8c0.5,0.9,0.9,1.8,1.5,2.9C1028.4,208.3,1027.6,208.4,1026.8,208.4z"/>
+	<path class="st0" d="M1320.1,205.6v2.7h-39.7c-0.1-1.1-0.1-2.1-0.1-3.2c0-34.5,0-69.1-0.1-103.6c-0.1-3.8-0.5-7.6-1.3-11.4c-1.2-5.7-5-9.2-10.7-9.8c-4.1-0.6-8.3-0.3-12.3,0.6c-8.9,2.3-12.1,9.5-13.2,17.8c-0.3,2.7-0.5,5.4-0.5,8.1c0,32.8,0,65.5,0,98.2v3.2h-39.7v-155h38.1v18.2c0.3-0.3,0.7-0.7,0.9-1.1c9-15.7,23.2-21.8,40.7-21.2c5.4,0.2,10.8,1.1,16,2.9c12,4.1,18.3,13.4,20.4,25.5c0.9,5,1.4,10.1,1.5,15.2C1320.2,130.4,1320.1,168,1320.1,205.6z"/>
+	<path class="st0" d="M1532.7,143.6c0.2,1.4-0.6,2.7-1.9,3.1c-47.7,21.1-95.3,42.1-142.9,63.3c-0.4,0.2-0.9,0.3-1.7,0.6c0-9.6-0.1-18.8,0.1-28c0-0.8,1.2-1.9,2.1-2.3c19-8.2,38-16.3,57-24.3l45.8-19.5c0.8-0.3,1.5-0.7,2.7-1.2c-1.6-0.7-2.9-1.3-4.2-1.8c-33.6-14.3-67.3-28.6-100.9-42.9c-1.9-0.8-2.6-1.7-2.6-3.9c0.1-8.8,0.1-17.5,0.1-26.6c1,0.4,1.8,0.7,2.5,1c47.2,20.9,94.5,41.9,141.8,62.8c1.6,0.7,2.3,1.5,2.3,3.3C1532.6,132.7,1532.6,138.1,1532.7,143.6z"/>
+	<path class="st0" d="M489.3,117.7c-0.6-11.4-1.8-22.7-5.3-33.7c-5.9-18.3-17.8-30-37-33.5c-10.2-1.8-20.5-2-30.8-0.6c-18.5,2.4-32.5,11.5-40.3,28.9c-2.3,5.1-4,10.5-5.2,16c-3.8,17.2-4.1,34.8-2.9,52.3c0.7,10,1.9,20,4.9,29.6c5.5,17.8,16.7,29.6,35.4,33.2c3.8,0.7,7.7,1.2,11.5,1.8H435c1.1-0.2,2.1-0.4,3.2-0.5c22-1.9,37.6-12.4,45-33.7c0.9-2.5,1.7-5,2.3-7.6C489.6,152.7,490.2,135.2,489.3,117.7z M448,166.9c-0.7,3.5-1.9,6.9-3.7,10c-6.1,10.7-21.2,11.4-28.5,1.5c-4-5.3-5.4-11.6-6-17.9c-0.9-9.9-1.2-19.8-2-32.3c0.8-9.2,1.7-20.9,2.9-32.5c0.5-4.9,2.4-9.5,5.5-13.3c7.2-9,21.8-8.4,27.6,1.7c2.4,4.3,4,9,4.7,13.9C452.1,120.9,452.3,144,448,166.9z"/>
+	<path class="st0" d="M1087.9,136.8h77.6c0-8.2,0.3-16.2-0.1-24.2c-0.5-9.8-1.5-19.5-4.5-28.9c-5.4-17.1-16.3-28.7-34.1-32.8c-12.3-2.7-25-2.7-37.2,0.1c-13.7,3-24.4,10.5-31.5,22.8c-3.9,6.7-6.6,14.1-7.9,21.7c-3.1,17.4-3.2,34.9-2.3,52.4c0.5,8.6,1,17.1,3.3,25.5c5.4,19.4,17.2,32.3,37.4,36.4c4,0.8,8,1.2,12.1,1.8h12.8l7.5-1c20.2-2.8,33.4-13.6,39.2-33.3c0.6-2,1.2-4.1,1.5-6.2c0.8-4.9,1.3-9.8,2-14.9h-36c-0.2,1.3-0.4,2.5-0.6,3.7c-1,6.1-2.3,12.2-5.6,17.6c-5.5,9.1-18.9,10.4-26.2,2.7c-3.1-3.3-4.8-7.4-6-11.7c-2.9-10.2-2.3-20.7-2.1-31.2C1087.3,137.3,1087.6,137.1,1087.9,136.8z M1092.6,81.7c4.2-6.7,10.5-8.9,18-7.9c6.9,0.9,11.3,4.8,13.7,11.4c2.9,8.1,2.8,16.5,3.5,25.2h-40.6C1087,100.3,1087.1,90.5,1092.6,81.7L1092.6,81.7z"/>
+</g>
+</svg>
+      </span>
+      <a href="#about-tickets">About</a>
+      <a href="#speakers">Speakers</a>
+      <a href="#agenda">Agenda</a>
+    </div>
+    <span class="nav-center-text">Impact/Week 2026</span>
+    <div class="nav-right">
+      <a href="#faq">FAQ</a>
+      <a href="#about-tickets">Tickets</a>
+      <button class="hamburger" aria-label="Menu" onclick="document.querySelector('.mobile-menu').classList.add('is-open')">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><line y1="1" x2="18" y2="1" stroke="black" stroke-width="1.5"/><line y1="6" x2="18" y2="6" stroke="black" stroke-width="1.5"/><line y1="11" x2="18" y2="11" stroke="black" stroke-width="1.5"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu">
+    <div class="mobile-menu-header">
+      <button class="mobile-menu-close" onclick="document.querySelector('.mobile-menu').classList.remove('is-open')">
+        <span>X</span> Close
+      </button>
+      <button class="hamburger" aria-label="Menu">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><line y1="1" x2="18" y2="1" stroke="black" stroke-width="1.5"/><line y1="6" x2="18" y2="6" stroke="black" stroke-width="1.5"/><line y1="11" x2="18" y2="11" stroke="black" stroke-width="1.5"/></svg>
+      </button>
+    </div>
+    <nav class="mobile-menu-nav">
+      <a href="#agenda" onclick="document.querySelector('.mobile-menu').classList.remove('is-open')">Agenda</a>
+      <a href="#speakers" onclick="document.querySelector('.mobile-menu').classList.remove('is-open')">Speakers</a>
+      <a href="#about-tickets" onclick="document.querySelector('.mobile-menu').classList.remove('is-open')">About</a>
+      <a href="#faq" onclick="document.querySelector('.mobile-menu').classList.remove('is-open')">FAQ</a>
+      <a href="#about-tickets" onclick="document.querySelector('.mobile-menu').classList.remove('is-open')">Tickets</a>
+    </nav>
+    <div class="mobile-menu-footer">
+      <p class="mobile-menu-footer-title">Impact/Week 2026</p>
+      <p class="mobile-menu-footer-sub">Hosted by Norrsken Foundation.</p>
+      <a href="https://norrsken.org" class="mobile-menu-footer-link">Go to Norrsken.org</a>
+    </div>
+  </div>
+  <div class="rolling-banner">
+    <div class="rolling-banner-track">
+      <span>IMPACT/WEEK 2026 AGENDA RELEASED. SCROLL DOWN TO READ MORE.</span><span class="dot">·</span>
+      <span>APPLY FOR TICKETS NOW.</span><span class="dot">·</span>
+      <span>IMPACT/WEEK 2026 AGENDA RELEASED. SCROLL DOWN TO READ MORE.</span><span class="dot">·</span>
+      <span>APPLY FOR TICKETS NOW.</span><span class="dot">·</span>
+      <span>IMPACT/WEEK 2026 AGENDA RELEASED. SCROLL DOWN TO READ MORE.</span><span class="dot">·</span>
+      <span>APPLY FOR TICKETS NOW.</span><span class="dot">·</span>
+      <span>IMPACT/WEEK 2026 AGENDA RELEASED. SCROLL DOWN TO READ MORE.</span><span class="dot">·</span>
+      <span>APPLY FOR TICKETS NOW.</span><span class="dot">·</span>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-image"></div>
+  <div class="hero-bar">
+    <div class="hero-bar-left">
+      <p>14–15 October 2026</p>
+      <p>Norrsken House Barcelona</p>
+    </div>
+    <div class="hero-bar-right">
+      <a href="#about-tickets"><span class="blink-text">Apply for Ticket</span><span class="arrow-static"> →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT + TICKETS -->
+<section class="about-tickets" id="about-tickets">
+  <div class="about-col">
+    <div>
+      <p class="label">Impact/Week 2026</p>
+      <p class="manifesto-text">
+        Impact Week is an annual summit dedicated to defining the critical problems of our time and enabling solutions to them. Curated by <a href="https://norrsken.org" target="_blank" style="color:var(--blue);">Norrsken Foundation</a> together with our friends and partners. It gathers the world's greatest thinkers from within business, academia, entrepreneurship, and policy. Join in, and be the leader you've been waiting for. Be part of the solution.
+      </p>
+      <div class="about-ctas">
+        <a href="#">Go to Impact/Return 2026 →</a>
+        <a href="https://norrsken.org" target="_blank">Read more about Norrsken →</a>
+      </div>
+    </div>
+  </div>
+  <div class="tickets-col">
+    <div class="tickets-bg">
+      <p class="label">Choose your pass</p>
+      <div class="ticket-card">
+        <div class="ticket-card-header">
+          <h3 class="ticket-name">Founder Pass</h3>
+          <p class="ticket-price">€295<span>+ VAT</span></p>
+        </div>
+        <p class="ticket-for">For founders building companies that solve real problems.</p>
+        <a href="#" class="ticket-btn">Apply Now</a>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-card-header">
+          <h3 class="ticket-name">Investor Pass</h3>
+          <p class="ticket-price">€595<span>+ VAT</span></p>
+        </div>
+        <p class="ticket-for">For investors backing the companies that matter.</p>
+        <a href="#" class="ticket-btn">Apply Now</a>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-card-header">
+          <h3 class="ticket-name">Enabler Pass</h3>
+          <p class="ticket-price">€795<span>+ VAT</span></p>
+        </div>
+        <p class="ticket-for">For the advisors, operators, and experts who make it all work.</p>
+        <a href="#" class="ticket-btn">Apply Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPEAKERS -->
+<section class="speakers" id="speakers">
+  <div class="speakers-header">
+    <p class="label" style="margin-bottom:0">Speakers</p>
+    <div class="year-toggle">
+      <button class="active" onclick="toggleYear(this)">2026</button>
+      <button onclick="toggleYear(this)">Previous</button>
+    </div>
+  </div>
+  <div class="speaker-grid">
+    <!-- Row 1 -->
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/audrey-tang.jpg" alt="Audrey Tang" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Audrey Tang</h3><p class="speaker-role">Digital Minister of Taiwan (fmr.)</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Audrey Tang served as Taiwan's first Digital Minister, pioneering digital democracy and civic tech. She is recognised globally for her work on open government, radical transparency, and using technology to empower citizens.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/andri-magnason.jpg" alt="Andri Snær Magnason" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Andri Snær Magnason</h3><p class="speaker-role">Author & Activist</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Andri Snær Magnason is an Icelandic author and environmental campaigner whose book On Time and Water connects personal stories with the planetary crisis.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-03.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Dr Rumman Chowdhury</h3><p class="speaker-role">Co-Founder, Humane Intelligence</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Dr Rumman Chowdhury is a pioneer in the field of responsible AI and co-founder of tech non-profit Humane Intelligence.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-04.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Chief Scientist, DeepMind</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-05.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Policy Director, Organisation</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <!-- Row 2 -->
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/andri-magnason.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Founder, Climate Fund</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-04.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">CEO, Impact Ventures</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/audrey-tang.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Research Lead, Institute</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-05.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Managing Director, Fund</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-03.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Advisor, Government</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <!-- Row 3 -->
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-03.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Partner, Sustainability VC</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/audrey-tang.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Director, Open Society</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/andri-magnason.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Head of AI Ethics, Google</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-05.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Journalist & Author</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-04.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Founder, EdTech Platform</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <!-- Row 4 -->
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-04.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">VP Impact, Norrsken</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-03.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Minister of Innovation</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/audrey-tang.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Executive Director, UN Agency</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/andri-magnason.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">CTO, HealthTech Startup</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+    <div class="speaker-card" onclick="toggleBio(this)"><div class="speaker-photo"><img src="img/speakers/speaker-05.jpg" alt="Speaker Name" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"></div><div class="speaker-info"><h3 class="speaker-name">Speaker Name</h3><p class="speaker-role">Economist & Writer</p><span class="speaker-expand">+</span><div class="speaker-bio"><p class="speaker-bio-label">Bio</p>Three or four sentences about what this person does and why they matter.<br><a href="#agenda" class="speaker-bio-cta">View session →</a></div></div></div>
+</section>
+
+<!-- GALLERY — scattered photos, caption overlaid in white -->
+<section class="gallery-section" id="gallery">
+  <p class="label">Previous Years</p>
+  <div class="gallery-floor" id="galleryFloor">
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-01.jpg" alt="Arriving at Norrsken House Stockholm"></div><p class="gallery-photo-caption">Arriving at Norrsken House Stockholm</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-02.jpg" alt="Networking between sessions"></div><p class="gallery-photo-caption">Networking between sessions</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-03.jpg" alt="Full auditorium during keynote"></div><p class="gallery-photo-caption">Full auditorium during keynote</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-04.jpg" alt="Speaker backstage"></div><p class="gallery-photo-caption">Speaker backstage</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-05.jpg" alt="Impact Week Barcelona"></div><p class="gallery-photo-caption">Impact Week Barcelona</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-06.jpg" alt="Conversations in the hallway"></div><p class="gallery-photo-caption">Conversations in the hallway</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-07.jpg" alt="Morning rave to start the day"></div><p class="gallery-photo-caption">Morning rave to start the day</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-08.jpg" alt="VR demo in the expo area"></div><p class="gallery-photo-caption">VR demo in the expo area</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-09.jpg" alt="Deep dive workshop"></div><p class="gallery-photo-caption">Deep dive workshop</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-10.jpg" alt="Breakout session on climate"></div><p class="gallery-photo-caption">Breakout session on climate</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-11.jpg" alt="Closing ceremony vibes"></div><p class="gallery-photo-caption">Closing ceremony vibes</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-03.jpg" alt="Keynote audience"></div><p class="gallery-photo-caption">Keynote audience</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-07.jpg" alt="Morning energy"></div><p class="gallery-photo-caption">Morning energy</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-01.jpg" alt="Welcome hall"></div><p class="gallery-photo-caption">Welcome hall</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-05.jpg" alt="Barcelona venue"></div><p class="gallery-photo-caption">Barcelona venue</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-09.jpg" alt="Workshop in action"></div><p class="gallery-photo-caption">Workshop in action</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-02.jpg" alt="Between talks"></div><p class="gallery-photo-caption">Between talks</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-06.jpg" alt="Hallway conversations"></div><p class="gallery-photo-caption">Hallway conversations</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-10.jpg" alt="Climate breakout"></div><p class="gallery-photo-caption">Climate breakout</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-04.jpg" alt="Backstage moments"></div><p class="gallery-photo-caption">Backstage moments</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-08.jpg" alt="Expo demos"></div><p class="gallery-photo-caption">Expo demos</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-11.jpg" alt="Closing vibes"></div><p class="gallery-photo-caption">Closing vibes</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-01.jpg" alt="Registration"></div><p class="gallery-photo-caption">Registration</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-05.jpg" alt="Stage setup"></div><p class="gallery-photo-caption">Stage setup</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-03.jpg" alt="Full house"></div><p class="gallery-photo-caption">Full house</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-07.jpg" alt="Dance floor"></div><p class="gallery-photo-caption">Dance floor</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-09.jpg" alt="Deep dive session"></div><p class="gallery-photo-caption">Deep dive session</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-02.jpg" alt="Connections"></div><p class="gallery-photo-caption">Connections</p></div>
+    <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-photo-img"><img src="img/gallery/gallery-06.jpg" alt="Candid moments"></div><p class="gallery-photo-caption">Candid moments</p></div>
+  </div>
+  <div class="gallery-lightbox" id="galleryLightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="">
+    <p class="gallery-lightbox-caption" id="lightboxCaption"></p>
+  </div>
+</section>
+
+<!-- AGENDA — clean grid with straight lines -->
+<section class="agenda" id="agenda">
+  <p class="label">Agenda</p>
+  <div class="agenda-toolbar">
+    <div class="agenda-day-tabs">
+      <button class="agenda-day-tab active" onclick="switchDay(this,'day1')">14 Oct</button>
+      <button class="agenda-day-tab" onclick="switchDay(this,'day2')">15 Oct</button>
+    </div>
+    <div class="agenda-search-wrap">
+      <input type="text" class="agenda-search-input" id="agendaSearch" placeholder="Search speakers, themes, sectors..." oninput="filterAgenda()">
+      <button class="agenda-search-btn" onclick="filterAgenda()">Search</button>
+    </div>
+  </div>
+
+  <div class="agenda-day active" id="day1">
+    <div class="agenda-grid">
+      <div class="agenda-time-cell">09:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Registration & Coffee</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Start the day right. Doors open for badge pickup, with freshly brewed coffee and light pastries to ease you into two days of high-impact conversations. A chance to meet fellow attendees before the programme kicks off.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 09.00–09.45<br><strong>Stage:</strong> Main Hall</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Early-Stage Founders Meetup</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>An informal, pre-programme gathering for pre-seed and seed-stage founders building solutions to the world's biggest problems. Share what you're working on, swap lessons learned, and connect with others at the same stage of the journey.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 09.00–09.45<br><strong>Stage:</strong> Green Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">10:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Opening Keynote</p><p class="agenda-slot-speaker">Speaker Name</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>The opening keynote sets the tone for Impact/Week 2026 — a provocation, not a summary. Expect a sharp perspective on where the world stands today and what it will take to move the needle on the problems that matter most.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 10.00–10.45<br><strong>Stage:</strong> Main Stage</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Investor Briefing: State of Impact</p><p class="agenda-slot-speaker">Panel — 3 speakers</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Three leading impact investors share where capital is actually flowing — and where it should be. A candid look at what's working, what's not, and what the next generation of impact investing needs to look like.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 10.00–11.00<br><strong>Stage:</strong> Red Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">11:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">AI & planetary boundaries</p><p class="agenda-slot-speaker">Victor Galaz</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>If AI can help revolutionize science, can it also help accelerate scientific breakthroughs about our future on this planet? We're delighted to welcome Victor Galaz, founder of the AI, People and Planet initiative at Stockholm Resilience Centre, to Impact/Week.</p><p style="margin-top:8px">This session will explore learnings from Stockholm Resilience Centre's recent collaboration with Google Deepmind, to understand how AI can help us make better sense of urgent climate and sustainability issues.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 11.00–12.15<br><strong>Stage:</strong> Main Stage</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Health Tech in Emerging Markets</p><p class="agenda-slot-speaker">Speaker Name</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Healthcare access remains one of the starkest inequalities on the planet. This session explores how technology is being deployed to build health infrastructure in underserved regions — from diagnostics to telemedicine to supply chain innovation.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 11.00–12.00<br><strong>Stage:</strong> Red Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Policy Lab: Carbon Markets</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>A working session bringing together policymakers, carbon market practitioners, and researchers to examine the current state of carbon market regulation. What's broken, what's promising, and what needs to happen next.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 11.00–12.15<br><strong>Stage:</strong> Green Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+
+      <div class="agenda-time-cell">12:30</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Lunch & Networking</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>A hosted lunch with curated networking tables organised by theme — climate, health, education, fintech, and more. Sit where your curiosity takes you and meet the people behind the work.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 12.30–13.45<br><strong>Stage:</strong> Courtyard</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">14:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Breakout: Circular Economy</p><p class="agenda-slot-speaker">Multiple tracks</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>From waste-to-value supply chains to product-as-a-service models, this breakout digs into the business models making circularity real. Multiple tracks run in parallel — choose the one closest to your work.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 14.00–15.15<br><strong>Stage:</strong> Red Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Breakout: Education Access</p><p class="agenda-slot-speaker">Speaker Name</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Scaling education technology in underserved communities is one of the most promising levers for long-term impact. This session examines what's working, what's failing, and what the next wave of edtech needs to get right.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 14.00–15.15<br><strong>Stage:</strong> Green Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Breakout: Food Systems</p><p class="agenda-slot-speaker">Speaker Name</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Feeding 10 billion people without destroying the planet requires a fundamental rethink of how we produce, distribute, and consume food. Hear from founders and researchers reimagining food systems at global scale.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 14.00–15.15<br><strong>Stage:</strong> Blue Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+
+      <div class="agenda-time-cell">15:30</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Fireside: The Founder's Reality</p><p class="agenda-slot-speaker">Speaker Name</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>A raw, honest conversation about what it actually takes to build an impact company when the market, the press, and the fundraising climate aren't on your side. No sugarcoating.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 15.30–16.30<br><strong>Stage:</strong> Main Stage</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Workshop: Impact Measurement</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Practical frameworks for measuring impact — not just reporting it. This hands-on workshop walks through the tools, metrics, and mindsets that separate meaningful measurement from box-ticking.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 15.30–16.45<br><strong>Stage:</strong> Green Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">17:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Closing Fireside</p><p class="agenda-slot-speaker">Speaker Name</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>A reflective closing conversation to synthesise the themes, tensions, and breakthroughs of Day 1. What surprised us? What challenged us? What do we carry into tomorrow?</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 17.00–17.45<br><strong>Stage:</strong> Main Stage</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">19:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Evening Reception</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Drinks on the Norrsken House terrace as the sun sets over Barcelona. An evening to decompress, connect, and continue the conversations that started on stage.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 19.00–22.00<br><strong>Stage:</strong> Terrace</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+    </div>
+  </div>
+
+  <div class="agenda-day" id="day2">
+    <div class="agenda-grid">
+      <div class="agenda-time-cell">09:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Morning Coffee</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Coffee and light breakfast to ease into Day 2. Grab a seat, catch up with yesterday's connections, and prepare for another day of deep work.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 09.00–09.25<br><strong>Stage:</strong> Main Hall</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">09:30</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Keynote: Policy Meets Practice</p><p class="agenda-slot-speaker">Speaker Name</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Policy shapes what's possible — but only if it's grounded in what's practical. This keynote explores the frameworks, incentives, and political realities that either accelerate or stall innovation at scale.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 09.30–10.30<br><strong>Stage:</strong> Main Stage</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Investor Deep-Dive: Due Diligence</p><p class="agenda-slot-speaker">Panel</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>A rigorous look at how impact due diligence actually works in practice. What questions should investors be asking? What red flags get missed? A panel of experienced practitioners shares the playbook.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 09.30–10.45<br><strong>Stage:</strong> Red Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">11:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Working Group: Water</p><p class="agenda-slot-speaker">Multiple tracks</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Water access and sanitation remain among the most urgent global challenges. This working group brings together technologists, policymakers, and field practitioners to identify scalable solutions and unblock collaboration.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 11.00–12.15<br><strong>Stage:</strong> Red Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Working Group: Energy Transition</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>The energy transition in the Global South demands different solutions than in the North. This session examines what renewable energy deployment looks like in emerging markets — the challenges, the opportunities, and the capital gaps.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 11.00–12.15<br><strong>Stage:</strong> Green Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Working Group: Gender Equity</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Women-led ventures receive a fraction of global venture funding. This working group tackles the structural barriers, explores new funding models, and identifies what it takes to close the gap for good.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 11.00–12.15<br><strong>Stage:</strong> Blue Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+
+      <div class="agenda-time-cell">12:30</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Lunch</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Hosted lunch with themed networking tables. Continue the morning's conversations or start new ones. The best ideas often emerge between sessions.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 12.30–13.45<br><strong>Stage:</strong> Courtyard</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">14:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">From Ideas to Commitments</p><p class="agenda-slot-speaker">Panel</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Two days of conversation mean nothing without action. This panel pushes attendees and speakers alike to move from ideas to concrete commitments — what will you do differently starting Monday?</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 14.00–15.15<br><strong>Stage:</strong> Main Stage</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Founder Pitches: Final Round</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>Selected founders present their companies to a room of investors, operators, and fellow builders. Short pitches, sharp feedback, and real connections that lead to real deals.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 14.00–15.15<br><strong>Stage:</strong> Red Room</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">15:30</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Reflections & Next Steps</p><p class="agenda-slot-speaker">Speaker Name</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>A synthesis of the themes, debates, and breakthroughs from both days. What emerged? What surprised us? And what are the concrete next steps we're collectively committing to?</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 15.30–16.00<br><strong>Stage:</strong> Main Stage</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">16:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Closing Address</p><p class="agenda-slot-speaker">Speaker Name</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>The final words of Impact/Week 2026. A call to action that's personal, specific, and designed to stick with you long after you leave Barcelona.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 16.00–16.30<br><strong>Stage:</strong> Main Stage</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+
+      <div class="agenda-time-cell">17:00</div>
+      <div class="agenda-slot" onclick="toggleAgenda(this)"><p class="agenda-slot-title">Farewell Drinks</p><span class="agenda-slot-expand">+</span><div class="agenda-slot-detail"><p>One last round on the terrace. Swap contacts, seal partnerships, and say goodbye — until next year.</p><div class="agenda-slot-footer"><p class="agenda-slot-meta"><strong>Time:</strong> 17.00–19.00<br><strong>Stage:</strong> Terrace</p><a href="#" class="agenda-cal-link" onclick="event.stopPropagation()">Add to calendar</a></div></div></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+      <div class="agenda-slot agenda-slot--empty"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ + REGISTER -->
+<section class="faq-register" id="faq">
+  <div>
+    <p class="label">FAQ</p>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What's included in my ticket?<span class="faq-toggle"></span></button><div class="faq-answer"><p>Full access to all keynotes, panels, breakout sessions, and networking events across both days. Lunch and refreshments included. Evening reception on Day 1.</p></div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Which ticket should I choose?<span class="faq-toggle"></span></button><div class="faq-answer"><p>Founder Pass is for people building impact-driven companies. Investor Pass is for those deploying capital. Enabler Pass is for advisors, operators, academics, and policymakers.</p></div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Where is the venue?<span class="faq-toggle"></span></button><div class="faq-answer"><p>Norrsken House Barcelona. Full address and directions sent after registration.</p></div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Is there a refund policy?<span class="faq-toggle"></span></button><div class="faq-answer"><p>Tickets are transferable but non-refundable. Transfer up to 7 days before the event.</p></div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">How do I apply?<span class="faq-toggle"></span></button><div class="faq-answer"><p>Click "Apply for Ticket" and fill out the short application. You'll hear back within 5 business days.</p></div></div>
+    </div>
+  </div>
+  <div class="register-side">
+    <h3 class="register-title">Good News from Norrsken</h3>
+    <p class="register-desc">Sign up to receive updates about Impact/Week 2026 speakers, agenda, and ticket availability.</p>
+    <input type="email" class="register-input" placeholder="Email">
+    <button class="register-btn">Subscribe</button>
+  </div>
+</section>
+
+<!-- CTA LINKS -->
+<section class="cta-links">
+  <a href="#faq">Got more questions?</a>
+  <a href="https://norrsken.org" target="_blank">Go to Norrsken →</a>
+</section>
+
+<!-- LOGO WALL -->
+<section class="logo-wall" id="attendees">
+  <p class="label">Previous Attendees</p>
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="logo-ph"><img src="img/logos/spotify.png" alt="Spotify" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/syre.png" alt="Syre" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/eqt-foundation.png" alt="EQT Foundation" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/eqt-ventures.png" alt="EQT Ventures" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/creandum.png" alt="Creandum" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/sequoia.png" alt="Sequoia" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/northzone.png" alt="Northzone" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/breakthrough-energy.png" alt="Breakthrough Energy" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/harvard-sici.png" alt="Harvard SICI" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/mit-solve.png" alt="MIT Solve" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/felix-capital.png" alt="Felix Capital" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/obvious-ventures.png" alt="Obvious Ventures" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/agteria.png" alt="Agteria" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/riche.png" alt="Riche" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/pale-blue-dot.png" alt="Pale Blue Dot" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/spotify.png" alt="Spotify" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/syre.png" alt="Syre" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/eqt-foundation.png" alt="EQT Foundation" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/eqt-ventures.png" alt="EQT Ventures" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/creandum.png" alt="Creandum" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/sequoia.png" alt="Sequoia" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/northzone.png" alt="Northzone" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/breakthrough-energy.png" alt="Breakthrough Energy" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/harvard-sici.png" alt="Harvard SICI" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/mit-solve.png" alt="MIT Solve" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/felix-capital.png" alt="Felix Capital" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/obvious-ventures.png" alt="Obvious Ventures" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/agteria.png" alt="Agteria" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/riche.png" alt="Riche" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span><span class="logo-ph"><img src="img/logos/pale-blue-dot.png" alt="Pale Blue Dot" style="height:28px;width:auto;opacity:0.35;transition:opacity 0.15s;filter:grayscale(100%);" onmouseover="this.style.opacity=1;this.style.filter='grayscale(0)'" onmouseout="this.style.opacity=0.35;this.style.filter='grayscale(100%)'"></span>
+        </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-nav">
+    <div class="footer-col">
+      <p class="footer-col-title">Impact/Week</p>
+      <a href="#about-tickets">About</a><a href="#about-tickets">Tickets</a><a href="#speakers">Speakers</a><a href="#agenda">Agenda</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Information</p>
+      <a href="#faq">FAQ</a><a href="#">Venue</a><a href="#">Contact</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Social</p>
+      <a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">X</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Norrsken</p>
+      <a href="#">Norrsken Foundation</a><a href="#">Norrsken House</a><a href="#">Impact100</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-logo">
+      <svg style="height:11px;width:auto;display:block;" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1535.2 214.5">
+<style type="text/css">.st0{fill:#231F20;}</style>
+<g>
+	<path class="st0" d="M149.1,207.9v2.8l-10.3-4.5c-44.7-19.8-89.3-39.6-134-59.3c-1.6-0.4-2.5-2-2.3-3.6c0.1-5.4,0.1-10.9,0-16.3c-0.2-1.2,0.5-2.3,1.6-2.7C52.1,103,99.9,81.8,147.8,60.6c0.4-0.2,0.9-0.3,1.4-0.4c0,9.5,0.1,18.8-0.1,28.1c0,0.7-1.1,1.7-2,2.1c-15.7,6.7-31.4,13.4-47.1,20.1l-55.8,23.7c-0.7,0.3-1.4,0.6-2.5,1.1c1.1,0.5,1.9,0.9,2.6,1.2c34.1,14.5,68.2,29,102.3,43.4c2,0.9,2.7,1.9,2.7,4.1C149,192,149.1,200,149.1,207.9z"/>
+	<path class="st0" d="M330.8,205.8v2.4h-39.9v-3.2c0-34.5,0-69.1-0.1-103.6c0-3.8-0.5-7.6-1.3-11.3c-1.2-5.7-5-9.2-10.7-9.9c-4-0.5-8.1-0.3-12.1,0.5c-6.8,1.5-10.8,6.4-12.4,13c-1,4.1-1.5,8.2-1.5,12.4c-0.1,33-0.1,66-0.1,99v3.2h-39.8v-155h38v18.4c0.7-0.9,1-1.2,1.1-1.5C261.1,54.9,275,49,292,49.1c5.8-0.1,11.6,0.9,17,2.9c11.6,4.5,18,13.4,20.1,25.3c1,5.2,1.5,10.4,1.6,15.7C330.8,130.6,330.8,168.2,330.8,205.8z"/>
+	<path class="st0" d="M607.8,86.8c-0.1,0.3-0.2,0.6-0.3,0.8c-3.4-0.2-6.8-0.4-10.2-0.5c-5.5-0.3-11.1,0.7-16.2,2.9c-9.2,4.2-14,11.5-15,21.5c-0.1,1.3-0.1,2.6-0.1,3.8v92.8h-39.6V53.3h37.9v20.3l0.5,0.1c0.4-0.7,0.8-1.4,1.3-2c2.6-3.5,5-7.1,7.8-10.4c8.4-9.8,19.2-13.3,31.8-11.9c1.3,0.1,2.2,0.3,2.2,2C607.8,63.2,607.8,75,607.8,86.8z"/>
+	<path class="st0" d="M720.4,87.7c-2.2-0.1-4.2-0.3-6.2-0.3c-4.5,0.1-9.1-0.2-13.4,0.7c-14.2,2.6-22.2,12.4-22.2,26.9c0,30,0,60,0,90.1v3.3h-39.7V53.3h37.9v20.2l0.5,0.2c0.4-0.5,0.8-1.1,1.1-1.6c3.2-5.6,7.3-10.7,12.2-14.9c8.1-7.2,17.8-8.8,28.1-7.6c0.6,0.1,1.5,0.9,1.5,1.5C720.4,63.1,720.4,75.2,720.4,87.7z"/>
+	<path class="st0" d="M860.5,179.3c-5.5,17.2-17.8,26.8-35.2,30.2c-4.5,0.9-9,1.4-13.6,2.1h-14.3c-5-0.7-10.1-1.2-15.1-2.1c-2.8-0.5-5.6-1.2-8.4-2.2c-14.6-4.9-22.8-15.3-25-30.4c-0.9-6.3-1.1-12.8-1.6-19.4h36.2c0,1-0.1,2,0,3c0,3,0.3,5.9,0.7,8.9c2.5,11.7,12.1,17.6,24.8,15.4c12-2,18.2-12,14.6-23.6c-0.7-2.3-2.1-4.4-3.9-6c-3.3-2.6-7-4.8-10.9-6.4c-9.2-3.7-18.7-6.8-28-10.3c-3-1.1-6-2.4-8.8-3.9c-17.4-9.2-24.5-23.6-22.8-43.3c1.9-21.2,13.6-34.4,35-39.8c14.7-3.7,30.1-3.7,44.7,0.2c18.7,4.9,29.3,18.5,30.1,37.9c0.1,3.1,0,6.3,0,9.7h-35.4c-0.2-2.1-0.4-4.3-0.6-6.4c-1.2-12.2-7.1-19-22.9-16c-7.4,1.4-12,6.5-12.8,13.1c-1,7.6,2,13.9,8.8,17.4c4.1,1.9,8.4,3.6,12.8,5c7.5,2.6,15,5,22.4,7.7c4.2,1.6,8.3,3.5,12.2,5.8c9.5,5.1,16.2,14.3,18,25C863.2,160.5,863.4,170.1,860.5,179.3z"/>
+	<path class="st0" d="M1026.8,208.4c-12.8,0-25.5,0-38.3,0.1c-1.7,0.2-3.3-0.8-3.9-2.4c-10.1-19.6-20.2-39.1-30.4-58.6c-0.4-0.8-0.9-1.6-1.5-2.7c-3,3.9-5.5,7.9-8.7,11.2c-4.4,4.7-5.8,9.8-5.5,16.2c0.5,11,0.1,22.1,0.1,33.2v2.9H899V2.5h39.6v108.2l0.5,0.2c0.5-0.7,1.1-1.4,1.6-2.1c12.3-17.9,24.6-35.7,36.9-53.5c0.8-1.5,2.4-2.4,4.1-2.2c12.7,0.1,25.3,0,38,0h3.3c-0.9,1.3-1.4,2-2,2.7c-13.7,18.8-27.5,37.6-41.3,56.4c-1.1,1.2-1.2,3-0.3,4.3c16.2,29.6,32.4,59.2,48.5,88.8c0.5,0.9,0.9,1.8,1.5,2.9C1028.4,208.3,1027.6,208.4,1026.8,208.4z"/>
+	<path class="st0" d="M1320.1,205.6v2.7h-39.7c-0.1-1.1-0.1-2.1-0.1-3.2c0-34.5,0-69.1-0.1-103.6c-0.1-3.8-0.5-7.6-1.3-11.4c-1.2-5.7-5-9.2-10.7-9.8c-4.1-0.6-8.3-0.3-12.3,0.6c-8.9,2.3-12.1,9.5-13.2,17.8c-0.3,2.7-0.5,5.4-0.5,8.1c0,32.8,0,65.5,0,98.2v3.2h-39.7v-155h38.1v18.2c0.3-0.3,0.7-0.7,0.9-1.1c9-15.7,23.2-21.8,40.7-21.2c5.4,0.2,10.8,1.1,16,2.9c12,4.1,18.3,13.4,20.4,25.5c0.9,5,1.4,10.1,1.5,15.2C1320.2,130.4,1320.1,168,1320.1,205.6z"/>
+	<path class="st0" d="M1532.7,143.6c0.2,1.4-0.6,2.7-1.9,3.1c-47.7,21.1-95.3,42.1-142.9,63.3c-0.4,0.2-0.9,0.3-1.7,0.6c0-9.6-0.1-18.8,0.1-28c0-0.8,1.2-1.9,2.1-2.3c19-8.2,38-16.3,57-24.3l45.8-19.5c0.8-0.3,1.5-0.7,2.7-1.2c-1.6-0.7-2.9-1.3-4.2-1.8c-33.6-14.3-67.3-28.6-100.9-42.9c-1.9-0.8-2.6-1.7-2.6-3.9c0.1-8.8,0.1-17.5,0.1-26.6c1,0.4,1.8,0.7,2.5,1c47.2,20.9,94.5,41.9,141.8,62.8c1.6,0.7,2.3,1.5,2.3,3.3C1532.6,132.7,1532.6,138.1,1532.7,143.6z"/>
+	<path class="st0" d="M489.3,117.7c-0.6-11.4-1.8-22.7-5.3-33.7c-5.9-18.3-17.8-30-37-33.5c-10.2-1.8-20.5-2-30.8-0.6c-18.5,2.4-32.5,11.5-40.3,28.9c-2.3,5.1-4,10.5-5.2,16c-3.8,17.2-4.1,34.8-2.9,52.3c0.7,10,1.9,20,4.9,29.6c5.5,17.8,16.7,29.6,35.4,33.2c3.8,0.7,7.7,1.2,11.5,1.8H435c1.1-0.2,2.1-0.4,3.2-0.5c22-1.9,37.6-12.4,45-33.7c0.9-2.5,1.7-5,2.3-7.6C489.6,152.7,490.2,135.2,489.3,117.7z M448,166.9c-0.7,3.5-1.9,6.9-3.7,10c-6.1,10.7-21.2,11.4-28.5,1.5c-4-5.3-5.4-11.6-6-17.9c-0.9-9.9-1.2-19.8-2-32.3c0.8-9.2,1.7-20.9,2.9-32.5c0.5-4.9,2.4-9.5,5.5-13.3c7.2-9,21.8-8.4,27.6,1.7c2.4,4.3,4,9,4.7,13.9C452.1,120.9,452.3,144,448,166.9z"/>
+	<path class="st0" d="M1087.9,136.8h77.6c0-8.2,0.3-16.2-0.1-24.2c-0.5-9.8-1.5-19.5-4.5-28.9c-5.4-17.1-16.3-28.7-34.1-32.8c-12.3-2.7-25-2.7-37.2,0.1c-13.7,3-24.4,10.5-31.5,22.8c-3.9,6.7-6.6,14.1-7.9,21.7c-3.1,17.4-3.2,34.9-2.3,52.4c0.5,8.6,1,17.1,3.3,25.5c5.4,19.4,17.2,32.3,37.4,36.4c4,0.8,8,1.2,12.1,1.8h12.8l7.5-1c20.2-2.8,33.4-13.6,39.2-33.3c0.6-2,1.2-4.1,1.5-6.2c0.8-4.9,1.3-9.8,2-14.9h-36c-0.2,1.3-0.4,2.5-0.6,3.7c-1,6.1-2.3,12.2-5.6,17.6c-5.5,9.1-18.9,10.4-26.2,2.7c-3.1-3.3-4.8-7.4-6-11.7c-2.9-10.2-2.3-20.7-2.1-31.2C1087.3,137.3,1087.6,137.1,1087.9,136.8z M1092.6,81.7c4.2-6.7,10.5-8.9,18-7.9c6.9,0.9,11.3,4.8,13.7,11.4c2.9,8.1,2.8,16.5,3.5,25.2h-40.6C1087,100.3,1087.1,90.5,1092.6,81.7L1092.6,81.7z"/>
+</g>
+</svg>
+    </span>
+    <span class="footer-legal">© 2026 Norrsken Foundation · Privacy · Terms</span>
+  </div>
+</footer>
+
+<script>
+function toggleBio(card) {
+  if (card.classList.contains('expanded')) {
+    card.classList.remove('expanded');
+  } else {
+    document.querySelectorAll('.speaker-card.expanded').forEach(c => c.classList.remove('expanded'));
+    card.classList.add('expanded');
+  }
+}
+function toggleYear(btn) {
+  document.querySelectorAll('.year-toggle button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function toggleFaq(btn) { btn.parentElement.classList.toggle('open'); }
+function switchDay(btn, dayId) {
+  document.querySelectorAll('.agenda-day-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.agenda-day').forEach(d => d.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(dayId).classList.add('active');
+}
+function toggleAgenda(cell) {
+  if (cell.classList.contains('expanded')) {
+    cell.classList.remove('expanded');
+  } else {
+    document.querySelectorAll('.agenda-slot.expanded').forEach(c => c.classList.remove('expanded'));
+    cell.classList.add('expanded');
+  }
+}
+
+function filterAgenda() {
+  var q = document.getElementById('agendaSearch').value.toLowerCase().trim();
+  document.querySelectorAll('.agenda-slot').forEach(function(slot) {
+    if (slot.classList.contains('agenda-slot--empty')) {
+      if (!q) {
+        slot.classList.remove('search-dimmed');
+      } else {
+        slot.classList.add('search-dimmed');
+      }
+      return;
+    }
+    if (!q) {
+      slot.classList.remove('search-hidden');
+      return;
+    }
+    var text = slot.textContent.toLowerCase();
+    if (text.indexOf(q) !== -1) {
+      slot.classList.remove('search-hidden');
+    } else {
+      slot.classList.add('search-hidden');
+    }
+  });
+}
+
+// Gallery — click to open lightbox
+function openLightbox(el) {
+  var img = el.querySelector('img');
+  var caption = el.querySelector('.gallery-photo-caption');
+  document.getElementById('lightboxImg').src = img.src;
+  document.getElementById('lightboxCaption').textContent = caption ? caption.textContent : '';
+  document.getElementById('galleryLightbox').classList.add('active');
+}
+function closeLightbox() {
+  document.getElementById('galleryLightbox').classList.remove('active');
+}
+
+// Active nav section indicator
+(function() {
+  var sectionLabels = {
+    'about-tickets': 'About',
+    'speakers': 'Speakers',
+    'gallery': 'Gallery',
+    'agenda': 'Agenda',
+    'faq': 'FAQ & Register',
+    'attendees': 'Attendees'
+  };
+  var defaultLabel = 'Impact/Week 2026';
+  var navLinks = document.querySelectorAll('.nav-left a[href^="#"], .nav-right a[href^="#"]');
+  var centerText = document.querySelector('.nav-center-text');
+
+  function setActive(id) {
+    navLinks.forEach(function(link) {
+      var href = link.getAttribute('href').replace('#', '');
+      link.classList.toggle('nav-active', href === id);
+    });
+    if (centerText) {
+      centerText.textContent = sectionLabels[id] || defaultLabel;
+    }
+  }
+
+  var sections = document.querySelectorAll('section[id]');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        setActive(entry.target.id);
+      }
+    });
+  }, {
+    threshold: 0.25,
+    rootMargin: '-76px 0px -20% 0px'
+  });
+
+  sections.forEach(function(s) { observer.observe(s); });
+
+  // Reset to default when back at top (hero)
+  var hero = document.querySelector('.hero');
+  if (hero) {
+    var heroObs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        navLinks.forEach(function(l) { l.classList.remove('nav-active'); });
+        if (centerText) centerText.textContent = defaultLabel;
+      }
+    }, { threshold: 0.3 });
+    heroObs.observe(hero);
+  }
+})();
+</script>
+
+</body>
+</html>
