@@ -3718,17 +3718,34 @@ function renderSchedule() {
   days.forEach((day, i) => {
     const daySessions = byDay[day].sort((a,b) => a.start.split(':').map(Number).reduce((h,m)=>h*60+m) - b.start.split(':').map(Number).reduce((h,m)=>h*60+m));
 
+    // Build session lookup by start time
     const timeSlots = {};
     daySessions.forEach(s => { if (!timeSlots[s.start]) timeSlots[s.start] = []; timeSlots[s.start].push(s); });
-    const sortedTimes = Object.keys(timeSlots).sort((a,b) => a.split(':').map(Number).reduce((h,m)=>h*60+m) - b.split(':').map(Number).reduce((h,m)=>h*60+m));
+
+    // Find earliest and latest times, then generate all 30-min slots
+    const toMin = t => t.split(':').map(Number).reduce((h,m) => h*60+m);
+    const fromMin = m => { const h = Math.floor(m/60); const mm = m%60; return (h<10?'0':'')+h+':'+(mm<10?'0':'')+mm; };
+    let earliest = Infinity, latest = 0;
+    daySessions.forEach(s => {
+      earliest = Math.min(earliest, toMin(s.start));
+      latest = Math.max(latest, toMin(s.end));
+    });
+    // Round earliest down and latest up to nearest 30
+    earliest = Math.floor(earliest / 30) * 30;
+    latest = Math.ceil(latest / 30) * 30;
+
+    const allSlots = [];
+    for (let m = earliest; m < latest; m += 30) allSlots.push(fromMin(m));
 
     html += `<div class="sched-day-panel" id="schedDay-${day}" style="display:${i===0?'block':'none'};">`;
     html += `<div class="sched-grid" style="grid-template-columns:42px 1fr;">`;
 
-    sortedTimes.forEach(time => {
-      const ss = timeSlots[time];
+    allSlots.forEach(time => {
+      const ss = timeSlots[time] || [];
       html += `<div class="sched-grid-time">${time}</div>`;
-      if (ss.length === 1) {
+      if (ss.length === 0) {
+        html += `<div class="sched-grid-empty"></div>`;
+      } else if (ss.length === 1) {
         const s = ss[0];
         const spk = s.speakers.map(id => { const a = allAttendees.find(at=>at.id===id); return a?a.name:''; }).filter(Boolean).join(', ');
         html += `<div class="sched-grid-cell">
