@@ -91,7 +91,8 @@ button { cursor: pointer; }
   gap: 5px;
   cursor: pointer;
 }
-.nav-burger span { display: block; width: 18px; height: 1px; background: var(--black); }
+.nav-burger span { display: block; width: 18px; height: 1px; background: var(--black); transition: height 0.1s ease; }
+.nav-burger.active span { height: 2px; }
 
 .nav-title {
   font-family: var(--font);
@@ -145,7 +146,8 @@ button { cursor: pointer; }
   position: relative;
   cursor: pointer;
 }
-.nav-profile svg { width: 16px; height: 16px; }
+.nav-profile svg { width: 16px; height: 16px; transition: stroke-width 0.1s ease; }
+.nav-profile.active svg { stroke-width: 2; }
 
 .notif-dot { display: none !important; }
 
@@ -768,7 +770,7 @@ button { cursor: pointer; }
   transform: translateX(-50%);
   width: 100%;
   max-width: 600px;
-  bottom: 44px;
+  bottom: 0;
   background: var(--white);
   z-index: 200;
   flex-direction: column;
@@ -1035,6 +1037,12 @@ button { cursor: pointer; }
 }
 
 /* Schedule page — day toggle + grid */
+.sched-day-tabs {
+  display: flex; gap: 0; margin: 0 20px;
+  border-bottom: 1px solid var(--black);
+  position: sticky; top: 0;
+  background: var(--white); z-index: 10;
+}
 .sched-day-tab {
   font-family: var(--font); font-size: 11px; font-weight: 400;
   letter-spacing: 0.05em; text-transform: uppercase;
@@ -2472,12 +2480,17 @@ function updateNav(page, data) {
   // Always show nav, but hide profile icon on login
   document.getElementById('mainNav').style.display = 'flex';
   const profBtn = document.querySelector('.nav-profile');
-  if (profBtn) profBtn.style.visibility = page === 'login' ? 'hidden' : 'visible';
+  if (profBtn) {
+    profBtn.style.visibility = page === 'login' ? 'hidden' : 'visible';
+    profBtn.classList.toggle('active', page === 'profile');
+  }
+  // Clear burger active when navigating away
+  document.querySelector('.nav-burger')?.classList.remove('active');
 
   // Show/hide bottom tab bar — always visible when logged in
   const eventBar = document.getElementById('eventBar');
   if (eventBar) {
-    eventBar.classList.toggle('visible', page !== 'login');
+    eventBar.classList.toggle('visible', page !== 'login' && page !== 'profile');
     // Active states
     eventBar.querySelectorAll('.event-bar-item').forEach(b => b.classList.remove('active'));
     const barMap = { home: '#ebHome', events: '#ebHome', agenda: '#ebAgenda', session: '#ebAgenda', attendees: '#ebAttendees', attendee: '#ebAttendees', venue: '#ebVenue', faq: '#ebFaq' };
@@ -2521,6 +2534,14 @@ function updateMenuItems() {
   if (!menuItems) return;
 
   let html = '<div class="menu-section">';
+
+  // Show ticketed event at top
+  const config = getEventConfig();
+  if (config || state.currentEventSlug) {
+    const evName = config ? config.name : 'Impact/Week 2026';
+    html += `<div class="menu-item" onclick="document.getElementById('menuOverlay').classList.remove('active'); document.querySelector('.nav-burger').classList.remove('active'); enterEvent('${state.currentEventSlug || 'impactweek2026'}');" style="font-weight:500;"><span>${evName}</span><span>&gt;</span></div>`;
+  }
+
   html += `<div class="menu-item" onclick="menuNav('events')"><span>All Norrsken Events</span><span>&gt;</span></div>`;
   html += `<div class="menu-item" onclick="menuNav('search')"><span>Search</span><span>&gt;</span></div>`;
   html += `<div class="menu-item" onclick="window.open('https://norrsken.org','_blank')"><span>Norrsken.org</span><span>&gt;</span></div>`;
@@ -2544,7 +2565,9 @@ function signOut() {
 
 function toggleMenu() {
   updateMenuItems();
-  document.getElementById('menuOverlay').classList.toggle('active');
+  const overlay = document.getElementById('menuOverlay');
+  overlay.classList.toggle('active');
+  document.querySelector('.nav-burger').classList.toggle('active', overlay.classList.contains('active'));
 }
 
 function menuNav(page) {
@@ -3714,7 +3737,7 @@ function renderSchedule() {
   const days = Object.keys(byDay).sort((a,b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
 
   // Day toggle tabs
-  let html = `<div style="display:flex;gap:0;margin:0 20px;border-bottom:1px solid var(--black);">`;
+  let html = `<div class="sched-day-tabs">`;
   days.forEach((d, i) => {
     const active = i === 0 ? ' style="color:var(--black);border-bottom:2px solid var(--black);"' : '';
     html += `<button class="sched-day-tab" onclick="schedToggleDay('${d}', this)"${active}>${d}</button>`;
@@ -3951,7 +3974,7 @@ function renderProfile() {
           </div>
         </div>
       </div>
-      <div style="border-top:1px solid var(--black);padding:0;">
+      <div style="position:fixed;bottom:0;left:0;right:0;max-width:600px;margin:0 auto;background:var(--white);border-top:1px solid var(--black);z-index:50;">
         <div class="profile-section-header" style="border-bottom:1px solid var(--grey-light);" onclick="navigate('connections')">
           <span>My Connections${connCount > 0 ? ' (' + connCount + ')' : ''}</span>
           <span>&gt;</span>
@@ -3963,7 +3986,6 @@ function renderProfile() {
         <div class="profile-section-header" style="border-bottom:1px solid var(--grey-light);color:red;" onclick="signOut()">
           <span>Sign Out</span>
           <span></span>
-          </div>
         </div>
       </div>
     </div>

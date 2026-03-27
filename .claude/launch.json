@@ -34,10 +34,10 @@
     },
     {
       "name": "norrsken-org",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["/tmp/norrsken-org-serve.py"],
-      "port": 8096,
-      "env": { "PORT": "8096" }
+      "runtimeExecutable": "/Users/ninawenstrom/.nvm/versions/node/v24.14.1/bin/npx",
+      "runtimeArgs": ["next", "dev", "--turbopack", "-p", "3100"],
+      "port": 3100,
+      "cwd": "/Users/ninawenstrom/Downloads/Impact Week 2026/norrsken-org"
     }
   ]
 }
